@@ -69,62 +69,61 @@ Nuestro enfoque se basa en el **Cálculo Vigesimal Muisca (Gueta)** — rigor ma
 
 ## 🛠️ Herramientas del Repositorio
 
-### 1. 📊 GQ Position Sizer — MetaTrader 4 & 5
+### 📊 MetaTrader 4 & 5 (MQL4/MQL5)
 
-> **Calcula el tamaño de posición exacto** basado en el riesgo del 2% sobre el capital de la cuenta y la volatilidad ATR(14).
-
-```mql5
-// Ejemplo de uso en MQL5
-double atrValue = iATR(_Symbol, PERIOD_H1, 14, 1);
-double stopLoss = atrValue * 2.5;
-double lotSize  = CalcLot(2.0, stopLoss); // Riesgo 2%, SL = 2.5×ATR
-```
-
-| Campo | Valor |
-|---|---|
-| **Plataformas** | MetaTrader 4, MetaTrader 5 |
-| **Lenguaje** | MQL4 / MQL5 |
-| **Riesgo por Defecto** | 2% del capital |
-| **Stop Loss** | 2.5× ATR(14) |
-| **Archivos** | `mql/GQ_Position_Sizer.mq4`, `mql/GQ_Position_Sizer.mq5` |
+| # | Herramienta | Tipo | Archivo | Descripción |
+|---|------------|------|---------|-------------|
+| 1 | **GQ Position Sizer** | EA | `mql/GQ_Position_Sizer.mq4` / `.mq5` | Calcula lotaje por ATR y riesgo 2% |
+| 2 | **GQ SuperTrend** | EA | `mql/GQ_SuperTrend.mq4` / `.mq5` | Trend following con trailing stop ATR |
+| 3 | **GQ MACD Trader** | EA | `mql/GQ_MACD_Trader.mq4` / `.mq5` | Cruces MACD + gestión de riesgo ATR |
+| 4 | **GQ Bollinger Reversion** | EA | `mql/GQ_Bollinger_Reversion.mq4` / `.mq5` | Reversión al medio con BB + RSI |
+| 5 | **GQ Trend Follow** | EA | `mql/GQ_Trend_Follow.mq4` / `.mq5` | Seguidor de tendencia con MA crossover |
+| 6 | **GQ RSI Pro** | Indicador | `mql/GQ_RSI_Pro.mq4` / `.mq5` | RSI con detección de divergencias |
+| 7 | **GQ ATR Stop Loss** | Indicador | `mql/GQ_ATR_Stop_Loss.mq4` / `.mq5` | Trailing stop visual basado en ATR |
+| 8 | **GQ Market Structure** | Indicador | `mql/GQ_Market_Structure.mq4` / `.mq5` | Estructura de mercado BOS/CHoCH |
+| 9 | **GQ Ichimoku Cloud** | Indicador | `mql/GQ_Ichimoku_Cloud.mq4` / `.mq5` | Sistema Ichimoku completo |
+| 10 | **GQ Support & Resistance** | Indicador | `mql/GQ_Support_Resistance.mq4` / `.mq5` | S/R dinámicos con clustering de pivotes |
+| 11 | **GQ Volume Profile** | Indicador | `mql/GQ_Volume_Profile.mq4` / `.mq5` | Perfil de volumen con POC/VA |
 
 ---
 
-### 2. 📈 GQ Volume Profile Mini — Pine Script v6
+### 📈 TradingView (Pine Script v6)
 
-> **Calcula niveles POC, VAH y VAL** (Point of Control, Value Area High/Low) directamente en TradingView.
-
-```pine
-// Pine Script v6 — Auditoria pública completa en pinescript/
-//@version=6
-indicator("GQ Volume Profile Mini", overlay=true)
-// POC, VAH, VAL calculados con bins de precio
-// Ver archivo completo: pinescript/GQ_Volume_Profile.mini.pb
-```
-
-| Campo | Valor |
-|---|---|
-| **Plataforma** | TradingView |
-| **Lenguaje** | Pine Script v6 |
-| **Funcionalidad** | POC, VAH, VAL, Risk/Reward Sizer |
-| **Archivo** | `pinescript/GQ_Volume_Profile.mini.pb` |
+| # | Herramienta | Archivo | Descripción |
+|---|------------|---------|-------------|
+| 1 | **GQ Volume Profile Mini** | `pinescript/GQ_Volume_Profile.mini.pb` | POC, Value Area, histograma de volumen |
+| 2 | **GQ SuperTrend** | `pinescript/GQ_SuperTrend.pb` | Trailing stop ATR con cambios de trend |
+| 3 | **GQ VWAP Standard** | `pinescript/GQ_VWAP_Standard.pb` | VWAP con bandas de desviación σ |
+| 4 | **GQ RSI Pro** | `pinescript/GQ_RSI_Pro.pb` | RSI + divergencias regulares/ocultas |
+| 5 | **GQ MACD Pro** | `pinescript/GQ_MACD_Pro.pb` | MACD con histograma de momentum |
+| 6 | **GQ Bollinger Bands** | `pinescript/GQ_Bollinger_Bands.pb` | Bandas con detección de squeeze |
+| 7 | **GQ Market Structure** | `pinescript/GQ_Market_Structure.pb` | SMC/ICT: FVG, BOS, CHoCH, order blocks |
+| 8 | **GQ Order Flow CVD** | `pinescript/GQ_Order_Flow_CVD.pb` | Delta de volumen acumulativo |
+| 9 | **GQ Anchored VWAP** | `pinescript/GQ_Anchored_VWAP.pb` | VWAP multi-ancla con 3 líneas simultáneas |
+| 10 | **GQ Support & Resistance** | `pinescript/GQ_Support_Resistance.pb` | S/R con clustering de pivotes |
+| 11 | **GQ MTF Trend Matrix** | `pinescript/GQ_MTF_Trend_Matrix.pb` | Matriz de tendencia multi-timeframe |
 
 ---
 
-### 3. 🤖 GQ Position Sizer — cTrader cBot
+### 🤖 cTrader (C# cBots)
 
-> **Gestor de riesgo paramétrico** para cTrader escrito en C#.
-
-| Campo | Valor |
-|---|---|
-| **Plataforma** | cTrader |
-| **Lenguaje** | C# (.NET) |
-| **Funcionalidad** | Sizing automático por volatilidad ATR |
-| **Archivo** | `ctrader/GQ_Position_Sizer_cBot.cs` |
+| # | Herramienta | Archivo | Descripción |
+|---|------------|---------|-------------|
+| 1 | **GQ Position Sizer** | `ctrader/GQ_Position_Sizer_cBot.cs` | Sizing automático por ATR |
+| 2 | **GQ Trend Follower** | `ctrader/GQ_Trend_Follower.cs` | Trend multi-indicador con EMA + SuperTrend |
+| 3 | **GQ Breakout ORB** | `ctrader/GQ_Breakout_Orb.cs` | Breakout de rango de apertura |
+| 4 | **GQ Grid Scalper** | `ctrader/GQ_Grid_Scalper.cs` | Grid adaptativo por ATR |
+| 5 | **GQ Mean Reversion** | `ctrader/GQ_Mean_Reversion.cs` | Reversión BB + RSI con volumen |
+| 6 | **GQ Divergence Scanner** | `ctrader/GQ_Divergence_Scanner.cs` | Escáner de divergencias multi-símbolo |
+| 7 | **GQ Trailing Stop Manager** | `ctrader/GQ_Trailing_Stop_Manager.cs` | 4 métodos de trailing + gestión parcial |
+| 8 | **GQ DCA Recovery** | `ctrader/GQ_DCA_Recovery.cs` | Recuperación DCA adaptativa |
+| 9 | **GQ Session Scalper** | `ctrader/GQ_Session_Scalper.cs` | Scalper por sesiones horarias |
+| 10 | **GQ Multi-Symbol Scanner** | `ctrader/GQ_Multi_Symbol_Scanner.cs` | Escáner multi-símbolo con ranking |
+| 11 | **GQ Risk Manager** | `ctrader/GQ_Risk_Manager.cs` | Gestión de riesgo a nivel portafolio |
 
 ---
 
-### 4. 🔐 Auditoría de Privacidad Zero-Knowledge
+### 🔐 Auditoría de Privacidad Zero-Knowledge
 
 > Documentación técnica completa para verificar que el **Trading Journal no transmite datos** a ningún servidor.
 
@@ -142,14 +141,54 @@ indicator("GQ Volume Profile Mini", overlay=true)
 ```
 guetaquant-tools/
 ├── 📂 mql/
-│   ├── GQ_Position_Sizer.mq4       # EA para MetaTrader 4
-│   └── GQ_Position_Sizer.mq5       # EA para MetaTrader 5
+│   ├── GQ_Position_Sizer.mq4       # EA Position Sizer (MT4)
+│   ├── GQ_Position_Sizer.mq5       # EA Position Sizer (MT5)
+│   ├── GQ_SuperTrend.mq4           # EA SuperTrend (MT4)
+│   ├── GQ_SuperTrend.mq5           # EA SuperTrend (MT5)
+│   ├── GQ_MACD_Trader.mq4          # EA MACD Trader (MT4)
+│   ├── GQ_MACD_Trader.mq5          # EA MACD Trader (MT5)
+│   ├── GQ_Bollinger_Reversion.mq4  # EA Bollinger Reversion (MT4)
+│   ├── GQ_Bollinger_Reversion.mq5  # EA Bollinger Reversion (MT5)
+│   ├── GQ_Trend_Follow.mq4         # EA Trend Follow (MT4)
+│   ├── GQ_Trend_Follow.mq5         # EA Trend Follow (MT5)
+│   ├── GQ_RSI_Pro.mq4              # Indicator RSI Pro (MT4)
+│   ├── GQ_RSI_Pro.mq5              # Indicator RSI Pro (MT5)
+│   ├── GQ_ATR_Stop_Loss.mq4        # Indicator ATR Stop Loss (MT4)
+│   ├── GQ_ATR_Stop_Loss.mq5        # Indicator ATR Stop Loss (MT5)
+│   ├── GQ_Market_Structure.mq4     # Indicator Market Structure (MT4)
+│   ├── GQ_Market_Structure.mq5     # Indicator Market Structure (MT5)
+│   ├── GQ_Ichimoku_Cloud.mq4       # Indicator Ichimoku Cloud (MT4)
+│   ├── GQ_Ichimoku_Cloud.mq5       # Indicator Ichimoku Cloud (MT5)
+│   ├── GQ_Support_Resistance.mq4   # Indicator S/R (MT4)
+│   ├── GQ_Support_Resistance.mq5   # Indicator S/R (MT5)
+│   ├── GQ_Volume_Profile.mq4       # Indicator Volume Profile (MT4)
+│   └── GQ_Volume_Profile.mq5       # Indicator Volume Profile (MT5)
 ├── 📂 pinescript/
-│   └── GQ_Volume_Profile.mini.pb   # Indicador Volume Profile para TradingView
+│   ├── GQ_Volume_Profile.mini.pb   # Volume Profile con POC/VA
+│   ├── GQ_SuperTrend.pb            # SuperTrend ATR
+│   ├── GQ_VWAP_Standard.pb         # VWAP con bandas σ
+│   ├── GQ_RSI_Pro.pb               # RSI + divergencias
+│   ├── GQ_MACD_Pro.pb              # MACD con histograma
+│   ├── GQ_Bollinger_Bands.pb       # BB con squeeze
+│   ├── GQ_Market_Structure.pb      # SMC/ICT: FVG, BOS
+│   ├── GQ_Order_Flow_CVD.pb        # Cumulative Volume Delta
+│   ├── GQ_Anchored_VWAP.pb         # VWAP multi-ancla
+│   ├── GQ_Support_Resistance.pb    # S/R dinámicos
+│   └── GQ_MTF_Trend_Matrix.pb      # Matriz multi-timeframe
 ├── 📂 ctrader/
-│   └── GQ_Position_Sizer_cBot.cs   # cBot de gestión de riesgo para cTrader
+│   ├── GQ_Position_Sizer_cBot.cs   # Risk manager básico
+│   ├── GQ_Trend_Follower.cs        # Trend multi-indicador
+│   ├── GQ_Breakout_Orb.cs          # ORB breakout
+│   ├── GQ_Grid_Scalper.cs          # Grid ATR
+│   ├── GQ_Mean_Reversion.cs        # BB + RSI
+│   ├── GQ_Divergence_Scanner.cs    # Escáner divergencias
+│   ├── GQ_Trailing_Stop_Manager.cs # Trailing stop
+│   ├── GQ_DCA_Recovery.cs          # DCA recovery
+│   ├── GQ_Session_Scalper.cs       # Scalper por sesión
+│   ├── GQ_Multi_Symbol_Scanner.cs  # Scanner multi-símbolo
+│   └── GQ_Risk_Manager.cs          # Riesgo portafolio
 ├── 📂 docs/
-│   └── ZERO_KNOWLEDGE_PRIVACY_AUDIT.md  # Auditoría de privacidad técnica
+│   └── ZERO_KNOWLEDGE_PRIVACY_AUDIT.md  # Auditoría de privacidad
 ├── LICENSE                          # Licencia AGPLv3
 └── README.md                        # Este archivo
 ```
@@ -161,11 +200,11 @@ guetaquant-tools/
 ### MetaTrader 4 / MetaTrader 5
 
 ```bash
-# 1. Descarga el archivo .mq4 o .mq5 desde este repositorio
+# 1. Descarga el/los archivos .mq4 / .mq5 desde mql/
 # 2. Abre MetaEditor (F4 en MT5/MT4)
-# 3. Archivo → Abrir → Selecciona el archivo descargado
-# 4. Compila (F7)
-# 5. Arrastra el EA desde el Navegador a un gráfico
+# 3. Archivo → Abrir → Selecciona el/los archivos descargados
+# 4. Compila (F7) cada archivo
+# 5. Arrastra el EA/indicador desde el Navegador a un gráfico
 ```
 
 ### TradingView (Pine Script v6)
@@ -179,7 +218,7 @@ guetaquant-tools/
 ### cTrader
 
 ```bash
-# 1. Descarga GQ_Position_Sizer_cBot.cs
+# 1. Descarga el .cs desde ctrader/
 # 2. cTrader → Automate → New cBot → Source Files
 # 3. Reemplaza el código generado con el archivo descargado
 # 4. Compila y adjunta al símbolo
@@ -271,54 +310,61 @@ Our approach is rooted in **Muisca Vigesimal Calculus (Gueta)** — pure mathema
 
 ## 🛠️ Repository Tools
 
-### 1. 📊 GQ Position Sizer — MetaTrader 4 & 5
+### 📊 MetaTrader 4 & 5 (MQL4/MQL5)
 
-> **Calculates exact position size** based on 2% account equity risk and ATR(14) volatility.
-
-```mql5
-// MQL5 usage example
-double atrValue = iATR(_Symbol, PERIOD_H1, 14, 1);
-double stopLoss = atrValue * 2.5;
-double lotSize  = CalcLot(2.0, stopLoss); // 2% risk, SL = 2.5×ATR
-```
-
-| Field | Value |
-|---|---|
-| **Platforms** | MetaTrader 4, MetaTrader 5 |
-| **Language** | MQL4 / MQL5 |
-| **Default Risk** | 2% of account equity |
-| **Stop Loss** | 2.5× ATR(14) |
-| **Files** | `mql/GQ_Position_Sizer.mq4`, `mql/GQ_Position_Sizer.mq5` |
+| # | Tool | Type | File | Description |
+|---|------|------|------|-------------|
+| 1 | **GQ Position Sizer** | EA | `mql/GQ_Position_Sizer.mq4` / `.mq5` | ATR-based position sizing |
+| 2 | **GQ SuperTrend** | EA | `mql/GQ_SuperTrend.mq4` / `.mq5` | Trend following with ATR trailing stop |
+| 3 | **GQ MACD Trader** | EA | `mql/GQ_MACD_Trader.mq4` / `.mq5` | MACD crossovers + ATR risk |
+| 4 | **GQ Bollinger Reversion** | EA | `mql/GQ_Bollinger_Reversion.mq4` / `.mq5` | BB + RSI mean reversion |
+| 5 | **GQ Trend Follow** | EA | `mql/GQ_Trend_Follow.mq4` / `.mq5` | MA crossover trend follower |
+| 6 | **GQ RSI Pro** | Indicator | `mql/GQ_RSI_Pro.mq4` / `.mq5` | RSI with divergence detection |
+| 7 | **GQ ATR Stop Loss** | Indicator | `mql/GQ_ATR_Stop_Loss.mq4` / `.mq5` | ATR trailing stop on chart |
+| 8 | **GQ Market Structure** | Indicator | `mql/GQ_Market_Structure.mq4` / `.mq5` | Market structure BOS/CHoCH |
+| 9 | **GQ Ichimoku Cloud** | Indicator | `mql/GQ_Ichimoku_Cloud.mq4` / `.mq5` | Complete Ichimoku system |
+| 10 | **GQ Support & Resistance** | Indicator | `mql/GQ_Support_Resistance.mq4` / `.mq5` | Dynamic S/R with pivot clustering |
+| 11 | **GQ Volume Profile** | Indicator | `mql/GQ_Volume_Profile.mq4` / `.mq5` | Volume Profile with POC/VA |
 
 ---
 
-### 2. 📈 GQ Volume Profile Mini — Pine Script v6
+### 📈 TradingView (Pine Script v6)
 
-> **Calculates POC, VAH and VAL levels** (Point of Control, Value Area High/Low) directly on TradingView.
-
-| Field | Value |
-|---|---|
-| **Platform** | TradingView |
-| **Language** | Pine Script v6 |
-| **Functionality** | POC, VAH, VAL, Risk/Reward Sizer |
-| **File** | `pinescript/GQ_Volume_Profile.mini.pb` |
-
----
-
-### 3. 🤖 GQ Position Sizer — cTrader cBot
-
-> **Parametric risk manager** for cTrader written in C#.
-
-| Field | Value |
-|---|---|
-| **Platform** | cTrader |
-| **Language** | C# (.NET) |
-| **Functionality** | Automatic position sizing via ATR volatility |
-| **File** | `ctrader/GQ_Position_Sizer_cBot.cs` |
+| # | Tool | File | Description |
+|---|------|------|-------------|
+| 1 | **GQ Volume Profile Mini** | `pinescript/GQ_Volume_Profile.mini.pb` | POC, Value Area, volume histogram |
+| 2 | **GQ SuperTrend** | `pinescript/GQ_SuperTrend.pb` | ATR trailing stop with trend flips |
+| 3 | **GQ VWAP Standard** | `pinescript/GQ_VWAP_Standard.pb` | VWAP with σ deviation bands |
+| 4 | **GQ RSI Pro** | `pinescript/GQ_RSI_Pro.pb` | RSI + regular/hidden divergences |
+| 5 | **GQ MACD Pro** | `pinescript/GQ_MACD_Pro.pb` | MACD momentum histogram |
+| 6 | **GQ Bollinger Bands** | `pinescript/GQ_Bollinger_Bands.pb` | Bands with squeeze detection |
+| 7 | **GQ Market Structure** | `pinescript/GQ_Market_Structure.pb` | SMC/ICT: FVG, BOS, CHoCH |
+| 8 | **GQ Order Flow CVD** | `pinescript/GQ_Order_Flow_CVD.pb` | Cumulative Volume Delta |
+| 9 | **GQ Anchored VWAP** | `pinescript/GQ_Anchored_VWAP.pb` | Multi-anchor VWAP (3 lines) |
+| 10 | **GQ Support & Resistance** | `pinescript/GQ_Support_Resistance.pb` | S/R with pivot clustering |
+| 11 | **GQ MTF Trend Matrix** | `pinescript/GQ_MTF_Trend_Matrix.pb` | Multi-timeframe trend matrix |
 
 ---
 
-### 4. 🔐 Zero-Knowledge Privacy Audit
+### 🤖 cTrader (C# cBots)
+
+| # | Tool | File | Description |
+|---|------|------|-------------|
+| 1 | **GQ Position Sizer** | `ctrader/GQ_Position_Sizer_cBot.cs` | ATR-based position sizing |
+| 2 | **GQ Trend Follower** | `ctrader/GQ_Trend_Follower.cs` | Multi-indicator trend bot |
+| 3 | **GQ Breakout ORB** | `ctrader/GQ_Breakout_Orb.cs` | Opening range breakout |
+| 4 | **GQ Grid Scalper** | `ctrader/GQ_Grid_Scalper.cs` | ATR-adaptive grid |
+| 5 | **GQ Mean Reversion** | `ctrader/GQ_Mean_Reversion.cs` | BB + RSI reversion |
+| 6 | **GQ Divergence Scanner** | `ctrader/GQ_Divergence_Scanner.cs` | Multi-symbol divergence scanner |
+| 7 | **GQ Trailing Stop Manager** | `ctrader/GQ_Trailing_Stop_Manager.cs` | 4 trailing methods + partial close |
+| 8 | **GQ DCA Recovery** | `ctrader/GQ_DCA_Recovery.cs` | Adaptive DCA recovery |
+| 9 | **GQ Session Scalper** | `ctrader/GQ_Session_Scalper.cs` | Time-window scalper |
+| 10 | **GQ Multi-Symbol Scanner** | `ctrader/GQ_Multi_Symbol_Scanner.cs` | Ranked multi-symbol scanner |
+| 11 | **GQ Risk Manager** | `ctrader/GQ_Risk_Manager.cs` | Portfolio-level risk management |
+
+---
+
+### 🔐 Zero-Knowledge Privacy Audit
 
 > Complete technical documentation to verify the **Trading Journal transmits zero data** to any server.
 
@@ -336,14 +382,54 @@ double lotSize  = CalcLot(2.0, stopLoss); // 2% risk, SL = 2.5×ATR
 ```
 guetaquant-tools/
 ├── 📂 mql/
-│   ├── GQ_Position_Sizer.mq4       # Expert Advisor for MetaTrader 4
-│   └── GQ_Position_Sizer.mq5       # Expert Advisor for MetaTrader 5
+│   ├── GQ_Position_Sizer.mq4       # EA Position Sizer (MT4)
+│   ├── GQ_Position_Sizer.mq5       # EA Position Sizer (MT5)
+│   ├── GQ_SuperTrend.mq4           # EA SuperTrend (MT4)
+│   ├── GQ_SuperTrend.mq5           # EA SuperTrend (MT5)
+│   ├── GQ_MACD_Trader.mq4          # EA MACD Trader (MT4)
+│   ├── GQ_MACD_Trader.mq5          # EA MACD Trader (MT5)
+│   ├── GQ_Bollinger_Reversion.mq4  # EA Bollinger Reversion (MT4)
+│   ├── GQ_Bollinger_Reversion.mq5  # EA Bollinger Reversion (MT5)
+│   ├── GQ_Trend_Follow.mq4         # EA Trend Follow (MT4)
+│   ├── GQ_Trend_Follow.mq5         # EA Trend Follow (MT5)
+│   ├── GQ_RSI_Pro.mq4              # Indicator RSI Pro (MT4)
+│   ├── GQ_RSI_Pro.mq5              # Indicator RSI Pro (MT5)
+│   ├── GQ_ATR_Stop_Loss.mq4        # Indicator ATR Stop Loss (MT4)
+│   ├── GQ_ATR_Stop_Loss.mq5        # Indicator ATR Stop Loss (MT5)
+│   ├── GQ_Market_Structure.mq4     # Indicator Market Structure (MT4)
+│   ├── GQ_Market_Structure.mq5     # Indicator Market Structure (MT5)
+│   ├── GQ_Ichimoku_Cloud.mq4       # Indicator Ichimoku Cloud (MT4)
+│   ├── GQ_Ichimoku_Cloud.mq5       # Indicator Ichimoku Cloud (MT5)
+│   ├── GQ_Support_Resistance.mq4   # Indicator S/R (MT4)
+│   ├── GQ_Support_Resistance.mq5   # Indicator S/R (MT5)
+│   ├── GQ_Volume_Profile.mq4       # Indicator Volume Profile (MT4)
+│   └── GQ_Volume_Profile.mq5       # Indicator Volume Profile (MT5)
 ├── 📂 pinescript/
-│   └── GQ_Volume_Profile.mini.pb   # Volume Profile indicator for TradingView
+│   ├── GQ_Volume_Profile.mini.pb   # Volume Profile POC/VA
+│   ├── GQ_SuperTrend.pb            # SuperTrend ATR
+│   ├── GQ_VWAP_Standard.pb         # VWAP σ bands
+│   ├── GQ_RSI_Pro.pb               # RSI + divergences
+│   ├── GQ_MACD_Pro.pb              # MACD histogram
+│   ├── GQ_Bollinger_Bands.pb       # BB squeeze
+│   ├── GQ_Market_Structure.pb      # SMC/ICT: FVG, BOS
+│   ├── GQ_Order_Flow_CVD.pb        # Cumulative Volume Delta
+│   ├── GQ_Anchored_VWAP.pb         # Multi-anchor VWAP
+│   ├── GQ_Support_Resistance.pb    # Dynamic S/R
+│   └── GQ_MTF_Trend_Matrix.pb      # MTF trend matrix
 ├── 📂 ctrader/
-│   └── GQ_Position_Sizer_cBot.cs   # Risk management cBot for cTrader
+│   ├── GQ_Position_Sizer_cBot.cs   # Basic risk manager
+│   ├── GQ_Trend_Follower.cs        # Multi-indicator trend
+│   ├── GQ_Breakout_Orb.cs          # ORB breakout
+│   ├── GQ_Grid_Scalper.cs          # ATR grid
+│   ├── GQ_Mean_Reversion.cs        # BB + RSI
+│   ├── GQ_Divergence_Scanner.cs    # Divergence scanner
+│   ├── GQ_Trailing_Stop_Manager.cs # Trailing stop
+│   ├── GQ_DCA_Recovery.cs          # DCA recovery
+│   ├── GQ_Session_Scalper.cs       # Session scalper
+│   ├── GQ_Multi_Symbol_Scanner.cs  # Multi-symbol scanner
+│   └── GQ_Risk_Manager.cs          # Portfolio risk
 ├── 📂 docs/
-│   └── ZERO_KNOWLEDGE_PRIVACY_AUDIT.md  # Technical privacy audit
+│   └── ZERO_KNOWLEDGE_PRIVACY_AUDIT.md  # Privacy audit
 ├── LICENSE                          # AGPLv3 License
 └── README.md                        # This file
 ```
@@ -355,11 +441,11 @@ guetaquant-tools/
 ### MetaTrader 4 / MetaTrader 5
 
 ```bash
-# 1. Download the .mq4 or .mq5 file from this repository
+# 1. Download the .mq4 / .mq5 file(s) from mql/
 # 2. Open MetaEditor (F4 inside MT5/MT4)
-# 3. File → Open → Select the downloaded file
-# 4. Compile (F7)
-# 5. Drag the EA from the Navigator onto a chart
+# 3. File → Open → Select the downloaded file(s)
+# 4. Compile (F7) each file
+# 5. Drag the EA/indicator from the Navigator onto a chart
 ```
 
 ### TradingView (Pine Script v6)
@@ -373,7 +459,7 @@ guetaquant-tools/
 ### cTrader
 
 ```bash
-# 1. Download GQ_Position_Sizer_cBot.cs
+# 1. Download the .cs file from ctrader/
 # 2. cTrader → Automate → New cBot → Source Files
 # 3. Replace the generated code with the downloaded file
 # 4. Compile and attach to a symbol
