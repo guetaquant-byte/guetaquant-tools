@@ -1,0 +1,14 @@
+GNU AFFERO GENERAL PUBLIC LICENSE
+Version 3, 19 November 2007
+
+Copyright (C) 2026 Gueta Quant <https://guetaquant.com>
+
+Everyone is permitted to copy and distribute verbatim copies of this license document, but changing it is not allowed.
+
+Preamble
+
+The GNU Affero General Public License is a free, copyleft license for software and other kinds of works, specifically designed to ensure cooperation with the community in the case of network server software.
+
+If you release a modified version to the public in any way, your modified version must prominently offer all users interacting with it remotely through a computer network an opportunity to receive the Corresponding Source of your version by providing access to the Corresponding Source from a network server at no charge.
+
+This license ensures that proprietary commercial platforms cannot clone or package Gueta Quant tools or local-first journal software into closed-source commercial applications without making their full modified source code publicly available under the exact same AGPLv3 license terms.
