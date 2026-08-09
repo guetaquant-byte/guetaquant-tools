@@ -63,7 +63,7 @@ int OnCalculate(const int rates_total,
       bool isHigh = true;
       bool isLow = true;
 
-      for (int j = 1; j <= lookback; j++)
+      for (j = 1; j <= lookback; j++)
       {
          if (high[i + j] > high[i]) isHigh = false;
          if (low[i + j] < low[i]) isLow = false;
