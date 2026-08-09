@@ -12,7 +12,6 @@
 [![Estado](https://img.shields.io/badge/Estado-Activo-brightgreen?style=flat-square)](https://guetaquant.com)
 [![SFC Colombia](https://img.shields.io/badge/SFC_Colombia-Decreto_2555_de_2010-orange?style=flat-square)](https://guetaquant.com/nuestra-mision/)
 [![Zero Señales](https://img.shields.io/badge/Zero%20Se%C3%B1ales-Política%20Estricta-red?style=flat-square)](https://guetaquant.com/nuestra-mision/)
-<!-- CI badges (placeholders — se activan al crear el repo en GitHub):
 [![Compile MQL](https://github.com/guetaquant-byte/guetaquant-tools/actions/workflows/compile-mql.yml/badge.svg)](https://github.com/guetaquant-byte/guetaquant-tools/actions/workflows/compile-mql.yml)
 [![Static Checks](https://github.com/guetaquant-byte/guetaquant-tools/actions/workflows/static-checks.yml/badge.svg)](https://github.com/guetaquant-byte/guetaquant-tools/actions/workflows/static-checks.yml)
 -->

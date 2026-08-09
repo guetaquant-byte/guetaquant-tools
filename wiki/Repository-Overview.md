@@ -17,8 +17,9 @@
 
 ## Repo status (2026-08-09)
 
-- ✅ **All 22 MQL files compile-clean gate** (MQL4 files free of MQL5-only API — enforced by CI parity script)
-- ✅ **CI**: `compile-mql.yml` (Windows + MetaEditor) + `static-checks.yml` (parity + README claims gates)
+- ✅ **MQL4 11/11 + MQL5 11/11 compile in CI** (GitHub Actions, Windows + MetaEditor — `compile-mql.yml`, green)
+- ✅ **Static gates**: `static-checks.yml` (MQL4 parity — no MQL5-only API — + README claims, negation-aware)
+- ✅ **Platform cache**: MT4/MT5 installs cached → reruns ~1.5 min
 - 🧪 **Golden-value tests**: planned (`tests/golden/`)
 - 📜 **License**: AGPLv3
 - 🔒 **Privacy**: local-first journal, zero external requests in core (see [Privacy & Security](Privacy-and-Security))

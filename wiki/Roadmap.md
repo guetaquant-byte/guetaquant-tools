@@ -10,7 +10,7 @@
 | Volume Profile binning mirror fix (POC/VAH/VAL correct) | ✅ shipped |
 | Divergence dead-code fixes (CVD/MACD/RSI var-tracked pivots) | ✅ shipped |
 | cTrader critical fixes (DCA flood, trailing drain, grid guard, Supertrend API, Thickness) | ✅ shipped |
-| CI: compile-mql (Windows) + static-checks (parity + claims) | ✅ shipped — **verify first Windows run on GitHub** |
+| CI: compile-mql (Windows) + static-checks (parity + claims) | ✅ **GREEN 2026-08-09 — MQL4 11/11 + MQL5 11/11 compilan** |
 | README truth-alignment (tool status, magic numbers, no unbacked claims) | ✅ shipped |
 | Golden-value test framework (`tests/golden/`, Python reference impl) | ⏳ planned |
 | Per-tool verification cards in READMEs | ⏳ planned |
