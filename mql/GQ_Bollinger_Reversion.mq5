@@ -88,7 +88,8 @@ void OnTick()
    if (lower == EMPTY_VALUE || upper == EMPTY_VALUE || middle == EMPTY_VALUE) return;
    if (atr <= 0.0) return;
 
-   double close[], volume[];
+   double close[];
+   long volume[];
    ArraySetAsSeries(close, true);
    ArraySetAsSeries(volume, true);
    if (CopyClose(g_sym, g_tf, 0, 3, close) < 3) return;
@@ -96,8 +97,8 @@ void OnTick()
 
    double close0 = close[0];
    double close1 = close[1];
-   double vol0 = volume[0];
-   double vol1 = volume[1];
+   double vol0 = (double)volume[0];
+   double vol1 = (double)volume[1];
 
    bool hasLong = false, hasShort = false;
    for (int i = PositionsTotal() - 1; i >= 0; i--)

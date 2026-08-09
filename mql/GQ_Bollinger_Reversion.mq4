@@ -74,18 +74,18 @@ void OnTick()
    //--- Sell: price touches upper band AND RSI > 70
    if (!hasShort && close0 >= upper && rsi0 > 70.0 && vol0 > vol1)
    {
-      double sl = upper + atr;
-      double tp = middle;
-      int ticket = OrderSend(_Symbol, OP_SELL, LotSize, Bid, 3, sl, tp, "GQ_BB", MagicNumber, 0, clrRed);
-      if (ticket < 0) Print("Sell open failed: ", GetLastError());
+      double slSell = upper + atr;
+      double tpSell = middle;
+      int ticketSell = OrderSend(_Symbol, OP_SELL, LotSize, Bid, 3, slSell, tpSell, "GQ_BB", MagicNumber, 0, clrRed);
+      if (ticketSell < 0) Print("Sell open failed: ", GetLastError());
    }
 
    //--- Exit on opposite touch
    if (hasLong && close0 >= middle)
    {
-      for (int i = OrdersTotal() - 1; i >= 0; i--)
+      for (int j = OrdersTotal() - 1; j >= 0; j--)
       {
-         if (!OrderSelect(i, SELECT_BY_POS, MODE_TRADES)) continue;
+         if (!OrderSelect(j, SELECT_BY_POS, MODE_TRADES)) continue;
          if (OrderSymbol() != _Symbol) continue;
          if (OrderMagicNumber() != MagicNumber) continue;
          if (OrderType() == OP_BUY)
@@ -98,9 +98,9 @@ void OnTick()
 
    if (hasShort && close0 <= middle)
    {
-      for (int i = OrdersTotal() - 1; i >= 0; i--)
+      for (int k = OrdersTotal() - 1; k >= 0; k--)
       {
-         if (!OrderSelect(i, SELECT_BY_POS, MODE_TRADES)) continue;
+         if (!OrderSelect(k, SELECT_BY_POS, MODE_TRADES)) continue;
          if (OrderSymbol() != _Symbol) continue;
          if (OrderMagicNumber() != MagicNumber) continue;
          if (OrderType() == OP_SELL)

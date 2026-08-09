@@ -171,21 +171,21 @@ jobs:
         with:
           dotnet-version: "8.0.x"
 
-      - name: Gate de sintaxis C# con cTrader.Automate
+      - name: Gate de sintaxis C# con stubs de la API
         shell: bash
         timeout-minutes: 8
         run: |
           set -e
           mkdir -p /tmp/ctbuilder && cd /tmp/ctbuilder
           dotnet new classlib -n cTraderBuild -o . --force >/dev/null
-          dotnet add package cTrader.Automate --version 1.0.19 >/dev/null
           rm -f Class1.cs
+          # Stubs.cs (ctrader/) define la superficie mínima de la API de cTrader:
+          # la compilación ALGO real solo ocurre dentro de cTrader Automate
+          # (SDK propietario no disponible en CI). Este job valida sintaxis y
+          # tipos de nuestros cBots contra esa superficie.
           cp "$GITHUB_WORKSPACE/ctrader/"*.cs .
-          # La compilación ALGO real solo ocurre en cTrader Automate (SDK propietario).
-          # Este job es un gate estático de sintaxis/API. Si el SDK no cubre una
-          # clase base, se reporta aquí como fallo de sintaxis.
           if dotnet build --nologo -v q 2>/tmp/ctbuild.log; then
-            echo "cTrader: sintaxis OK (gate estático)"
+            echo "cTrader: sintaxis OK (gate estático con stubs)"
           else
             echo "cTrader: errores detectados (ver log abajo)"
             grep -E "error CS" /tmp/ctbuild.log | head -20 || tail -30 /tmp/ctbuild.log
