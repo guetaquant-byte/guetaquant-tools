@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""MQL4/MQL5 parity gate for Gueta Quant tools.
+"""Gate de paridad MQL4/MQL5 para herramientas de Gueta Quant. / MQL4/MQL5 parity gate for Gueta Quant tools.
 
 Checks (fail => exit 1):
   1. No `.mq4` file may use MQL5-only API:

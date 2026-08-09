@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""README claims gate for Gueta Quant tools.
+"""Gate de claims del README para herramientas de Gueta Quant. / README claims gate for Gueta Quant tools.
 
 Checks (fail => exit 1):
   1. Every file reference with an extension (.mq4/.mq5/.pb/.cs) mentioned in
