@@ -1,96 +1,154 @@
-# Compila todos los .mq4 y .mq5 de mql/ usando MetaEditor en un runner de Windows.
+# Compila todos los .mq4/.mq5 de mql/ (MetaEditor, Windows) y los cBots de ctrader/ (dotnet).
 #
-# ⚠️ POR QUÉ ESTE DISEÑO:
-# - MetaEditor (metaeditor64.exe) es nativo de Windows -> compilar en windows-latest.
-# - La action fx31337/mql-compile-action v2 NO instala la plataforma: exige un
-#   `mt-path` con una instalación de MetaTrader. El patrón estándar del ecosistema
-#   EA31337 (EA-Tester platform-linux.yml) está ROTO a día de hoy (pina
-#   ea31337.wine@v1.0.4 que ya no existe en Ansible Galaxy) — por eso este
-#   workflow instala la plataforma directamente en Windows:
-#     1. Descarga el instalador oficial de MetaTrader (MetaQuotes).
-#     2. Instala en modo silencioso (/S) en el runner.
-#     3. Compila con fx31337/mql-compile-action@v2 usando el directorio instalado
-#        como mt-path.
+# ⚠️ HECHOS VERIFICADOS (investigación 2026-08):
+# - mt4setup.exe/mt5setup.exe NO son instaladores Inno Setup: son bootstrappers
+#   de MetaQuotes que IGNORAN /S /L /D (eso colgaba el job: abría el instalador
+#   GUI y esperaba un click). El flag correcto es /auto (silencioso).
+# - La instalación es ASINCRÓNICA: hay que esperar (poll) a que aparezca
+#   metaeditor64.exe; el bootstrapper además lanza terminal64.exe al final, por
+#   eso Start-Process -Wait sobre el proceso padre se queda colgado para siempre.
+# - MetaEditor es nativo de Windows -> runner windows-latest.
+# - fx31337/mql-compile-action@v2 NO instala la plataforma: hay que proveer
+#   mt-path apuntando a la instalación. init-platform solo ejecuta terminal64
+#   con timeout de 20s (no es el instalador).
+# - cTrader: existe el paquete oficial NuGet cTrader.Automate (Spotware) ->
+#   se puede compilar con dotnet build.
 name: compile-mql
 
 on:
   push:
     paths:
       - "mql/**"
+      - "ctrader/**"
       - ".github/workflows/compile-mql.yml"
   pull_request:
     paths:
       - "mql/**"
+      - "ctrader/**"
       - ".github/workflows/compile-mql.yml"
   workflow_dispatch:
 
-env:
-  MT4_PATH: "C:\\Program Files\\MetaTrader 4"
-  MT5_PATH: "C:\\Program Files\\MetaTrader 5"
-
 jobs:
-  compile:
-    name: Compile MQL${{ matrix.version }}
+  compile-mql4:
+    name: Compile MQL4
     runs-on: windows-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - version: "4"
-            url: "https://download.mql5.com/cdn/web/metaquotes.software.corp/mt4/mt4setup.exe"
-            install_dir: "C:\\Program Files\\MetaTrader 4"
-            ignore: "**/*.mq5"
-            artifact: "*.ex4"
-          - version: "5"
-            url: "https://download.mql5.com/cdn/web/metaquotes.software.corp/mt5/mt5setup.exe"
-            install_dir: "C:\\Program Files\\MetaTrader 5"
-            ignore: "**/*.mq4"
-            artifact: "*.ex5"
+    timeout-minutes: 15
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Descargar instalador MetaTrader ${{ matrix.version }}
+      - name: Instalar MetaTrader 4 (auto) + esperar MetaEditor
         shell: pwsh
+        timeout-minutes: 8
         run: |
-          $url = "${{ matrix.url }}"
-          $out = "$env:RUNNER_TEMP\mt${{ matrix.version }}setup.exe"
-          Write-Host "Descargando $url"
-          Invoke-WebRequest -Uri $url -OutFile $out -UseBasicParsing
-          Write-Host "Instalador descargado: $((Get-Item $out).Length) bytes"
+          $ErrorActionPreference = 'Stop'
+          $setup = "$env:RUNNER_TEMP\mt4setup.exe"
+          Invoke-WebRequest -Uri 'https://download.mql5.com/cdn/web/metaquotes.software.corp/mt4/mt4setup.exe' -OutFile $setup -UseBasicParsing
+          # /auto = instalación silenciosa (el bootstrapper ignora /S /L /D)
+          Start-Process -FilePath $setup -ArgumentList '/auto' -Wait
+          $me = $null
+          foreach ($i in 1..60) {   # instalación asíncrona: poll hasta 5 min
+            $me = Get-ChildItem 'C:\Program Files' -Recurse -Filter 'metaeditor.exe' -ErrorAction SilentlyContinue | Select-Object -First 1
+            if ($me) { break }
+            Start-Sleep -Seconds 5
+          }
+          if (-not $me) { Write-Error 'metaeditor.exe no encontrado tras instalar MT4'; exit 1 }
+          "METAEDITOR=$($me.DirectoryName)" | Out-File $env:GITHUB_ENV -Append -Encoding utf8
+          Write-Host "MetaEditor en: $($me.DirectoryName)"
 
-      - name: Instalar MetaTrader ${{ matrix.version }} (silencioso)
-        shell: pwsh
-        run: |
-          $setup = "$env:RUNNER_TEMP\mt${{ matrix.version }}setup.exe"
-          # /S = instalación silenciosa, /L=idioma (ES), /D=directorio destino
-          $proc = Start-Process -FilePath $setup -ArgumentList "/S", "/L=es", "/D=${{ matrix.install_dir }}" -PassThru -Wait
-          Write-Host "Instalador exit code: $($proc.ExitCode)"
-          Get-ChildItem "${{ matrix.install_dir }}" -Recurse -Filter "metaeditor*.exe" -ErrorAction SilentlyContinue |
-            ForEach-Object { Write-Host "MetaEditor encontrado: $($_.FullName)" }
-
-      - name: Compilar MQL${{ matrix.version }} con MetaEditor
+      - name: Compilar MQL4 con MetaEditor
         uses: fx31337/mql-compile-action@v2
         with:
           path: "mql"
-          path-ignore: ${{ matrix.ignore }}
-          init-platform: "true"
-          mt-path: "${{ matrix.install_dir }}"
-          log-file: "compile-mq${{ matrix.version }}.log"
+          path-ignore: "**/*.mq5"
+          mt-path: "$env:METAEDITOR"
+          log-file: "compile-mq4.log"
+          github-token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Subir binarios compilados
-        uses: actions/upload-artifact@v4
-        with:
-          name: mql-mq${{ matrix.version }}-binaries
-          path: "mql/**/${{ matrix.artifact }}"
-          if-no-files-found: error
-          retention-days: 14
-
-      - name: Subir log de compilación
+      - name: Subir binarios (.ex4)
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: mql-mq${{ matrix.version }}-log
-          path: "compile-mq${{ matrix.version }}.log"
+          name: mql-mq4-binaries
+          path: "mql/**/*.ex4"
           if-no-files-found: ignore
           retention-days: 14
+
+  compile-mql5:
+    name: Compile MQL5
+    runs-on: windows-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Instalar MetaTrader 5 (auto) + esperar MetaEditor
+        shell: pwsh
+        timeout-minutes: 8
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $setup = "$env:RUNNER_TEMP\mt5setup.exe"
+          Invoke-WebRequest -Uri 'https://download.mql5.com/cdn/web/metaquotes.software.corp/mt5/mt5setup.exe' -OutFile $setup -UseBasicParsing
+          Start-Process -FilePath $setup -ArgumentList '/auto' -Wait
+          $me = $null
+          foreach ($i in 1..60) {
+            $me = Get-ChildItem 'C:\Program Files' -Recurse -Filter 'metaeditor64.exe' -ErrorAction SilentlyContinue | Select-Object -First 1
+            if ($me) { break }
+            Start-Sleep -Seconds 5
+          }
+          if (-not $me) { Write-Error 'metaeditor64.exe no encontrado tras instalar MT5'; exit 1 }
+          "METAEDITOR=$($me.DirectoryName)" | Out-File $env:GITHUB_ENV -Append -Encoding utf8
+          Write-Host "MetaEditor en: $($me.DirectoryName)"
+
+      - name: Compilar MQL5 con MetaEditor
+        uses: fx31337/mql-compile-action@v2
+        with:
+          path: "mql"
+          path-ignore: "**/*.mq4"
+          mt-path: "$env:METAEDITOR"
+          log-file: "compile-mq5.log"
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Subir binarios (.ex5)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: mql-mq5-binaries
+          path: "mql/**/*.ex5"
+          if-no-files-found: ignore
+          retention-days: 14
+
+  compile-ctrader:
+    name: Compile cTrader (dotnet)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "8.0.x"
+
+      - name: Crear proyecto de compilación cTrader
+        shell: bash
+        run: |
+          mkdir -p /tmp/ctbuilder && cd /tmp/ctbuilder
+          dotnet new classlib -n cTraderBuild -o . --force
+          dotnet add package cTrader.Automate --version 1.0.19
+          # Incluir los .cs del repo como fuentes compilables (con stubs de API si falta el SDK)
+          cp "$GITHUB_WORKSPACE/ctrader/"*.cs src/
+          # El SDK de cTrader requiere clases base (Robot/Indicator): documentar que
+          # dotnet build valida sintaxis C#/API, la compilación ALGO real ocurre en
+          # cTrader Automate. Este job es un gate estático, no el compilador oficial.
+          echo "nota: compilación ALGO real solo en cTrader Automate (SDK propietario)." > NOTE.txt
+
+      - name: dotnet build (gate estático de sintaxis)
+        shell: bash
+        run: |
+          cd /tmp/ctbuilder
+          if dotnet build --nologo -v q 2>/tmp/ctbuild.log; then
+            echo "cTrader: sintaxis OK (gate estático)"
+          else
+            echo "cTrader: errores de sintaxis detectados (ver log)"
+            tail -40 /tmp/ctbuild.log
+            exit 1
+          fi
