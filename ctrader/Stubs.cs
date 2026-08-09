@@ -17,6 +17,8 @@ namespace cAlgo.API
         public double Last(int index) => 0;
         public double this[int i] => 0;
         public int Count => 0;
+        public double Maximum(int count) => 0;
+        public double Minimum(int count) => 0;
     }
 
     public class Symbol
@@ -33,6 +35,17 @@ namespace cAlgo.API
         public string Name { get; set; }
         public double NormalizeVolumeInUnits(double v) => v;
         public double NormalizeVolume(double v) => v;
+    }
+
+    public class Bars
+    {
+        public Series ClosePrices { get; set; } = new Series();
+        public Series HighPrices { get; set; } = new Series();
+        public Series LowPrices { get; set; } = new Series();
+        public Series OpenPrices { get; set; } = new Series();
+        public Series TickVolume { get; set; } = new Series();
+        public int Count => 0;
+        public double Last(int index) => 0;
     }
 
     public class Position
@@ -67,11 +80,11 @@ namespace cAlgo.API
     public class Robot : IDisposable
     {
         public Symbol Symbol { get; set; }
-        public Series Bars { get; set; }          // Series de precios (Bars.ClosePrices etc.)
+        public Bars Bars { get; set; }
         public IEnumerable<Position> Positions => Array.Empty<Position>();
         public IEnumerable<PendingOrder> PendingOrders => Array.Empty<PendingOrder>();
         public MarketData MarketData { get; set; }
-        public Indicators Indicators { get; set; }
+        public IndicatorsApi Indicators { get; set; }
         public Account Account { get; set; }
 
         protected void Print(string msg) { }
@@ -86,6 +99,8 @@ namespace cAlgo.API
         protected virtual void OnStart() { }
         protected virtual void OnTick() { }
         protected virtual void OnBar() { }
+        protected virtual void OnBarClosed() { }
+        protected virtual void OnStop() { }
         protected virtual void OnPositionOpened(Position pos) { }
         protected virtual void OnPositionClosed(Position pos) { }
         protected virtual void OnPositionModified(Position pos) { }
@@ -105,17 +120,21 @@ namespace cAlgo.API
     public class MarketData
     {
         public Series GetSeries(string symbol, TimeFrame tf) => new Series();
-        public Series GetBars(string symbol, TimeFrame tf) => new Series();
+        public Bars GetBars(string symbol, TimeFrame tf) => new Bars();
         public Series GetTicks(string symbol) => new Series();
     }
 
-    public class Indicators
+    public class IndicatorsApi
     {
         public AverageTrueRange AverageTrueRange(int period, MovingAverageType maType = MovingAverageType.Simple) => new AverageTrueRange();
         public ExponentialMovingAverage ExponentialMovingAverage(Series src, int period) => new ExponentialMovingAverage();
         public SimpleMovingAverage SimpleMovingAverage(Series src, int period) => new SimpleMovingAverage();
         public RelativeStrengthIndex RelativeStrengthIndex(Series src, int period) => new RelativeStrengthIndex();
         public Momentum Momentum(Series src, int period) => new Momentum();
+        public BollingerBands BollingerBands(Series src, int period, double dev, MovingAverageType maType = MovingAverageType.Simple) => new BollingerBands();
+        public MacdHistogram MacdHistogram(Series src, int fast, int slow, int signal) => new MacdHistogram();
+        public TrueRange TrueRange(Series src) => new TrueRange();
+        public ParabolicSAR ParabolicSAR(double step, double max) => new ParabolicSAR();
         public Supertrend Supertrend(int period, int multiplier) => new Supertrend();
         public Supertrend SuperTrend(int period, int multiplier, Series h, Series l, Series c) => new Supertrend();
     }
@@ -147,6 +166,32 @@ namespace cAlgo.API
         public Series UpTrend { get; set; } = new Series();
         public Series DownTrend { get; set; } = new Series();
         public Series Result { get; set; } = new Series();
+    }
+    public class BollingerBands
+    {
+        public Series Result { get; set; } = new Series();
+        public Series Upper { get; set; } = new Series();
+        public Series Lower { get; set; } = new Series();
+        public Series Middle { get; set; } = new Series();
+    }
+    public class MacdHistogram
+    {
+        public Series Result { get; set; } = new Series();
+        public Series Histogram { get; set; } = new Series();
+        public Series Signal { get; set; } = new Series();
+    }
+    public class TrueRange
+    {
+        public Series Result { get; set; } = new Series();
+    }
+    public class ParabolicSAR
+    {
+        public Series Result { get; set; } = new Series();
+    }
+    public class TextBlock
+    {
+        public Thickness Padding { get; set; }
+        public string Text { get; set; }
     }
 
     public struct Thickness

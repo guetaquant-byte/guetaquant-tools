@@ -34,8 +34,8 @@ int OnInit()
    g_tf = _Period;
    SetIndexBuffer(0, g_bos_up, INDICATOR_DATA);
    SetIndexBuffer(1, g_bos_down, INDICATOR_DATA);
-   SetIndexEmptyValue(0, EMPTY_VALUE);
-   SetIndexEmptyValue(1, EMPTY_VALUE);
+   PlotIndexSetDouble(0, PLOT_EMPTY_VALUE, EMPTY_VALUE);
+   PlotIndexSetDouble(1, PLOT_EMPTY_VALUE, EMPTY_VALUE);
    PlotIndexSetInteger(0, PLOT_ARROW, 241);
    PlotIndexSetInteger(1, PLOT_ARROW, 242);
    IndicatorSetString(INDICATOR_SHORTNAME, "GQ_Market_Structure(" + IntegerToString(PivotLeft) + "," + IntegerToString(PivotRight) + ")");

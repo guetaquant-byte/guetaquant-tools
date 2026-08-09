@@ -123,7 +123,7 @@ void OpenOrder(int type, double atr)
    {
       sl = Ask + atr * 1.5;
       tp = Bid - atr * 3.0;
-      int ticket = OrderSend(_Symbol, OP_SELL, lot, Bid, 3, sl, tp, "GQ_MACD", MagicNumber, 0, clrRed);
-      if (ticket < 0) Print("Sell open failed: ", GetLastError());
+      int ticketSell = OrderSend(_Symbol, OP_SELL, lot, Bid, 3, sl, tp, "GQ_MACD", MagicNumber, 0, clrRed);
+      if (ticketSell < 0) Print("Sell open failed: ", GetLastError());
    }
 }
