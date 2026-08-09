@@ -50,10 +50,10 @@ int OnCalculate(const int rates_total,
    double maxH = iHigh(_Symbol, _Period, 0);
    double minL = iLow(_Symbol, _Period, 0);
 
-   for (int i = 1; i < startBar; i++)
+   for (int n = 1; n < startBar; n++)
    {
-      double h = iHigh(_Symbol, _Period, i);
-      double l = iLow(_Symbol, _Period, i);
+      double h = iHigh(_Symbol, _Period, n);
+      double l = iLow(_Symbol, _Period, n);
       if (h > maxH) maxH = h;
       if (l < minL) minL = l;
    }
