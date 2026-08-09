@@ -67,15 +67,16 @@ int OnCalculate(const int rates_total,
    ArrayInitialize(volProfile, 0);
 
    //--- Distribute volume into price rows
-   for (int i = 1; i < startBar; i++)   // i=0 (barra en formaci\u00f3n) excluida: evita repintado
+   // i=0 (barra en formacion) excluida: evita repintado
+   for (int m = 1; m < startBar; m++)
    {
-      double h = iHigh(_Symbol, _Period, i);
-      double l = iLow(_Symbol, _Period, i);
-      double vol = (double)iVolume(_Symbol, _Period, i);
+      double hh = iHigh(_Symbol, _Period, m);
+      double ll = iLow(_Symbol, _Period, m);
+      double vol = (double)iVolume(_Symbol, _Period, m);
 
-      // Binning ascendente consistente con el c\u00e1lculo de precios (minL + fila*rowHeight)
-      int topRow = (int)((h - minL) / rowHeight);
-      int botRow = (int)((l - minL) / rowHeight);
+      // Binning ascendente consistente con el calculo de precios (minL + fila*rowHeight)
+      int topRow = (int)((hh - minL) / rowHeight);
+      int botRow = (int)((ll - minL) / rowHeight);
       if (topRow < 0) topRow = 0;
       if (botRow >= Rows) botRow = Rows - 1;
       if (topRow > botRow) { int t = topRow; topRow = botRow; botRow = t; }
