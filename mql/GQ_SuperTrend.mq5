@@ -70,14 +70,17 @@ void OnTick()
       }
    }
 
-   int limit = ATRPeriod + 1;
-   double close[], high[], low[];
+   // Ventana completa (200 barras) para recursion correcta del SuperTrend
+   int limit = MathMin(200, Bars(g_sym, g_tf));
+   double close[], high[], low[], atrArr[];
    ArraySetAsSeries(close, true);
    ArraySetAsSeries(high, true);
    ArraySetAsSeries(low, true);
+   ArraySetAsSeries(atrArr, true);
    if (CopyClose(g_sym, g_tf, 0, limit, close) < limit) return;
    if (CopyHigh(g_sym, g_tf, 0, limit, high) < limit) return;
    if (CopyLow(g_sym, g_tf, 0, limit, low) < limit) return;
+   if (CopyBuffer(g_atr_handle, 0, 0, limit, atrArr) < limit) return;
 
    double hl2[];
    ArrayResize(hl2, limit);
@@ -94,7 +97,7 @@ void OnTick()
    for (int i = 0; i < limit; i++)
    {
       double med = (high[i] + low[i]) / 2.0;
-      double r = atr * Multiplier;
+      double r = atrArr[i] * Multiplier;   // ATR por barra
       upperBand[i] = med + r;
       lowerBand[i] = med - r;
    }

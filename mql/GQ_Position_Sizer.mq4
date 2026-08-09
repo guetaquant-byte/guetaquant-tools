@@ -97,6 +97,7 @@ void OnTick()
    double minLot = MarketInfo(Symbol(), MODE_MINLOT);
    double maxLot = MarketInfo(Symbol(), MODE_MAXLOT);
    double lotStep = MarketInfo(Symbol(), MODE_LOTSTEP);
+   if (lotStep <= 0.0) lotStep = 0.01;   // guardia division por cero
    
    // Redondear al paso de lote permitido
    calculatedLots = MathFloor(calculatedLots / lotStep) * lotStep;

@@ -161,23 +161,29 @@ namespace cAlgo.Robots
             return 0;
         }
 
+        private readonly System.Collections.Generic.HashSet<long> _partialCloseFired = new System.Collections.Generic.HashSet<long>();
+
         private void HandlePartialClose(Position pos, double entryPrice, double grossProfit)
         {
             double pipsDistance = Math.Abs(pos.TradeType == TradeType.Buy ? Symbol.Bid - entryPrice : Symbol.Ask - entryPrice);
             double rrRatio = pipsDistance / (Math.Abs((double)(pos.StopLoss.HasValue ? Math.Abs(entryPrice - pos.StopLoss.Value) : 10 * Symbol.PipSize)));
 
-            if (rrRatio >= PartialClose_RR1 && PartialClose_Pct1 > 0)
+            // One-shot por nivel: evita el drenaje geometrico por cierres parciales repetidos cada tick
+            if (rrRatio >= PartialClose_RR1 && PartialClose_Pct1 > 0 && !_partialCloseFired.Contains(pos.Id * 10 + 1))
             {
                 double closeVolume = Symbol.NormalizeVolumeInUnits(pos.VolumeInUnits * PartialClose_Pct1 / 100);
                 if (closeVolume > 0 && closeVolume < pos.VolumeInUnits)
                 {
                     var result = ClosePosition(pos, closeVolume);
                     if (result.IsSuccessful)
+                    {
+                        _partialCloseFired.Add(pos.Id * 10 + 1);
                         Print($"Partial close {PartialClose_Pct1}% at {rrRatio:F2}RR for {pos.Id}");
+                    }
                 }
             }
 
-            if (rrRatio >= PartialClose_RR2 && PartialClose_Pct2 > 0)
+            if (rrRatio >= PartialClose_RR2 && PartialClose_Pct2 > 0 && !_partialCloseFired.Contains(pos.Id * 10 + 2))
             {
                 var updatedPos = Positions.FirstOrDefault(p => p.Id == pos.Id);
                 if (updatedPos != null)
@@ -187,7 +193,10 @@ namespace cAlgo.Robots
                     {
                         var result = ClosePosition(updatedPos, closeVolume);
                         if (result.IsSuccessful)
+                        {
+                            _partialCloseFired.Add(pos.Id * 10 + 2);
                             Print($"Partial close {PartialClose_Pct2}% at {rrRatio:F2}RR for {pos.Id}");
+                        }
                     }
                 }
             }

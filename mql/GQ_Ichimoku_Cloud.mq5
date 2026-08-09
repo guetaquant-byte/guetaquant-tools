@@ -60,8 +60,6 @@ int OnInit()
    SetIndexBuffer(5, g_cloudA, INDICATOR_DATA);
    SetIndexBuffer(6, g_cloudB, INDICATOR_DATA);
    IndicatorSetString(INDICATOR_SHORTNAME, "GQ_Ichimoku(" + IntegerToString(Tenkan) + "," + IntegerToString(Kijun) + "," + IntegerToString(Senkou) + ")");
-   PlotIndexSetInteger(5, PLOT_LINE_SHIFT, Kijun);
-   PlotIndexSetInteger(6, PLOT_LINE_SHIFT, Kijun);
    return INIT_SUCCEEDED;
 }
 

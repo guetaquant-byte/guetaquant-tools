@@ -35,8 +35,26 @@ macdLow = ta.pivotlow(macdLine, 5, 5)
 priceHigh = ta.pivothigh(macdSrc, 5, 5)
 priceLow = ta.pivotlow(macdSrc, 5, 5)
 
-bullDiv = showDivergence and not na(macdLow) and macdLow > macdLow[1] and not na(priceLow) and priceLow < priceLow[1]
-bearDiv = showDivergence and not na(macdHigh) and macdHigh < macdHigh[1] and not na(priceHigh) and priceHigh > priceHigh[1]
+// pivothigh/pivotlow devuelven na salvo en la barra de confirmacion: comparar pivotes consecutivos con var
+var float prevMacdLow = na
+var float prevPriceLow = na
+var float prevMacdHigh = na
+var float prevPriceHigh = na
+
+bool bullDiv = false
+bool bearDiv = false
+
+if not na(macdLow) and not na(priceLow)
+    if not na(prevMacdLow) and not na(prevPriceLow)
+        bullDiv := showDivergence and macdLow > prevMacdLow and priceLow < prevPriceLow
+    prevMacdLow := macdLow
+    prevPriceLow := priceLow
+
+if not na(macdHigh) and not na(priceHigh)
+    if not na(prevMacdHigh) and not na(prevPriceHigh)
+        bearDiv := showDivergence and macdHigh < prevMacdHigh and priceHigh > prevPriceHigh
+    prevMacdHigh := macdHigh
+    prevPriceHigh := priceHigh
 
 plotshape(bullDiv, "Bull Div", shape.triangleup, location.bottom, color.green, size=size.small)
 plotshape(bearDiv, "Bear Div", shape.triangledown, location.top, color.red, size=size.small)

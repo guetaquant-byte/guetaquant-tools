@@ -1,0 +1,80 @@
+name: ✨ Solicitud de Funcionalidad / Feature Request
+description: Propón una mejora o herramienta nueva para Gueta Quant
+title: "[Feature] "
+labels: [enhancement]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Gueta Quant es 100% educativo y anti-estafa. Propuestas de señales de compra/venta,
+        gestión de cuentas o scraping de datos de usuarios serán rechazadas sin discusión
+        (política del repositorio).
+  - type: dropdown
+    id: platform
+    attributes:
+      label: Plataforma objetivo / Target platform
+      description: ¿Dónde debería implementarse?
+      options:
+        - MetaTrader 4 (MQL4)
+        - MetaTrader 5 (MQL5)
+        - TradingView (Pine Script v6)
+        - cTrader (C# cBot)
+        - Multi-plataforma (misma lógica en 2+ plataformas)
+    validations:
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problema que resuelve / Problem it solves
+      description: ¿Qué limitación actual motiva esta solicitud?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Propuesta / Proposed feature
+      description: Describe la funcionalidad concreta, entradas, salidas y parámetros configurables
+    validations:
+      required: true
+  - type: textarea
+    id: logic
+    attributes:
+      label: Lógica cuantitativa (requerida)
+      description: >
+        Describe la fórmula o regla matemática. Herramientas sin lógica verificable
+        (estocástico sin fórmula, "mágico") no se aceptan. Si aplica, incluye fórmula,
+        fuentes (libro/artículo) y condiciones de entrada/salida.
+      placeholder: "Ej. ATR(14) * multiplicador para stop; media móvil de 200 como filtro..."
+    validations:
+      required: true
+  - type: dropdown
+    id: repaint
+    attributes:
+      label: Comportamiento de repintado esperado / Expected repaint behavior
+      description: Ver docs/QA_STANDARD.md para la taxonomía
+      options:
+        - Sin repintado (solo valores confirmados)
+        - Repintado aceptable y documentado (indica cuál y por qué)
+        - No sé / requiere investigación
+    validations:
+      required: true
+  - type: input
+    id: timeframe
+    attributes:
+      label: Timeframes y símbolos objetivo
+      placeholder: "Todos los timeframes · pares FX principales"
+  - type: textarea
+    id: references
+    attributes:
+      label: Referencias / Sources
+      description: "Enlaces a artículos, papers o implementaciones de referencia (opcional pero valorado)"
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Compromisos del solicitante / Requestor commitments
+      options:
+        - label: Acepto incluir documentación en español (README por plataforma)
+        - label: Acepto el test de golden values (valores de referencia conocidos) si se implementa
+        - label: Acepto el estándar No-Repaint (docs/QA_STANDARD.md) para la verificación
+    validations:
+      required: true

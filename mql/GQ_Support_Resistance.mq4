@@ -3,7 +3,6 @@
 #property version   "1.00"
 #property indicator_chart_window
 #property indicator_buffers 0
-#property indicator_plots   0
 
 //--- input parameters
 input int      PivotLookback       = 10;
@@ -154,7 +153,7 @@ int OnCalculate(const int rates_total,
 
       string labelName = "GQ_SR_SUP_LBL_" + IntegerToString(i);
       ObjectDelete(0, labelName);
-      ObjectCreate(0, labelName, OBJ_TEXT, 0, time[0], supLevels[i]);
+      ObjectCreate(0, labelName, OBJ_TEXT, 0, iTime(_Symbol, _Period, 0), supLevels[i]);
       ObjectSetString(0, labelName, OBJPROP_TEXT, "S" + IntegerToString(i + 1) + " " + DoubleToString(supLevels[i], _Digits));
       ObjectSetInteger(0, labelName, OBJPROP_COLOR, clrLime);
       ObjectSetInteger(0, labelName, OBJPROP_FONTSIZE, 8);
@@ -164,7 +163,7 @@ int OnCalculate(const int rates_total,
    {
       string labelName = "GQ_SR_RES_LBL_" + IntegerToString(i);
       ObjectDelete(0, labelName);
-      ObjectCreate(0, labelName, OBJ_TEXT, 0, time[0], resLevels[i]);
+      ObjectCreate(0, labelName, OBJ_TEXT, 0, iTime(_Symbol, _Period, 0), resLevels[i]);
       ObjectSetString(0, labelName, OBJPROP_TEXT, "R" + IntegerToString(i + 1) + " " + DoubleToString(resLevels[i], _Digits));
       ObjectSetInteger(0, labelName, OBJPROP_COLOR, clrRed);
       ObjectSetInteger(0, labelName, OBJPROP_FONTSIZE, 8);

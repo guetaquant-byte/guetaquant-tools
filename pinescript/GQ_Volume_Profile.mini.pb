@@ -17,7 +17,22 @@ var line vaHighLine = na
 var line vaLowLine = na
 var label pocLabel = na
 
+var box[] vpBoxes = array.new_box()
+var line[] vpLines = array.new_line()
+var label[] vpLabels = array.new_label()
+
 if barstate.islast
+    // Limpiar dibujos de recomputos anteriores (evita acumulacion hasta max_boxes_count)
+    for b in vpBoxes
+        box.delete(b)
+    for l in vpLines
+        line.delete(l)
+    for lb in vpLabels
+        label.delete(lb)
+    array.clear(vpBoxes)
+    array.clear(vpLines)
+    array.clear(vpLabels)
+
     float high = ta.highest(high, lookback)
     float low = ta.lowest(low, lookback)
     float step = (high - low) / rows
@@ -81,8 +96,8 @@ if barstate.islast
         float dn = array.get(dnVol, i)
         color c = up > dn ? colorUp : colorDown
         if rowVol > 0
-            box.new(bar_index + 1, rowMid - step / 2, bar_index + 1 + barWidth, rowMid + step / 2,
-             border_color=c, bgcolor=c, text="", text_color=na)
+            array.push(vpBoxes, box.new(bar_index + 1, rowMid - step / 2, bar_index + 1 + barWidth, rowMid + step / 2,
+             border_color=c, bgcolor=c, text="", text_color=na))
     
     // Draw POC
     if showPOC

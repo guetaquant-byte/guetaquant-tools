@@ -1,5 +1,5 @@
 //@version=6
-indicator(title="GQ Market Structure", shorttitle="GQ_Struct", overlay=true)
+indicator(title="GQ Market Structure", shorttitle="GQ_Struct", overlay=true, max_boxes_count=500)
 
 leftBars = input.int(5, "Pivot Lookback Left")
 rightBars = input.int(5, "Pivot Lookback Right")
@@ -33,8 +33,8 @@ if not na(swingLow)
     lastSwingLowBar := bar_index
     lastSwingLow := swingLow
 
-bool bosBull = not na(lastSwingLow) and not na(prevSwingLow) and low > lastSwingLow and lastSwingLow > prevSwingLow and swingSizeOk(lastSwingLow, prevSwingLow)
-bool bosBear = not na(lastSwingHigh) and not na(prevSwingHigh) and high < lastSwingHigh and lastSwingHigh < prevSwingHigh and swingSizeOk(lastSwingHigh, prevSwingHigh)
+bool bosBull = not na(lastSwingLow) and not na(prevSwingLow) and low > lastSwingLow and lastSwingLow > prevSwingLow and swingSizeOk(lastSwingLow, prevSwingLow) and low[1] <= lastSwingLow
+bool bosBear = not na(lastSwingHigh) and not na(prevSwingHigh) and high < lastSwingHigh and lastSwingHigh < prevSwingHigh and swingSizeOk(lastSwingHigh, prevSwingHigh) and high[1] >= lastSwingHigh
 
 bool chochBull = not na(lastSwingLow) and not na(lastSwingHigh) and lastSwingLow > lastSwingLow[1] and lastSwingHigh < lastSwingHigh[1] and swingSizeOk(lastSwingLow, lastSwingLow[1])
 bool chochBear = not na(lastSwingHigh) and not na(lastSwingLow) and lastSwingHigh < lastSwingHigh[1] and lastSwingLow > lastSwingLow[1] and swingSizeOk(lastSwingHigh, lastSwingHigh[1])
@@ -47,32 +47,46 @@ plotshape(showBOS and chochBear, "CHoCH Bear", shape.labeldown, location.aboveba
 float fvgUpper = na
 float fvgLower = na
 
+var box lastFvgUp = na
+var box lastFvgDn = na
+
 if low[1] > high[2]
     fvgUpper := low[1]
     fvgLower := high[2]
     if fvgUpper - fvgLower > fvgThreshold and showFVG
-        box.new(bar_index[2], fvgUpper, bar_index, fvgLower, border_color=color.new(color.green, 0), bgcolor=color.new(color.green, 75))
+        if not na(lastFvgUp)
+            box.delete(lastFvgUp)
+        lastFvgUp := box.new(bar_index[2], fvgUpper, bar_index, fvgLower, border_color=color.new(color.green, 0), bgcolor=color.new(color.green, 75))
 
 if high[1] < low[2]
     fvgUpper := low[2]
     fvgLower := high[1]
     if fvgUpper - fvgLower > fvgThreshold and showFVG
-        box.new(bar_index[2], fvgUpper, bar_index, fvgLower, border_color=color.new(color.red, 0), bgcolor=color.new(color.red, 75))
+        if not na(lastFvgDn)
+            box.delete(lastFvgDn)
+        lastFvgDn := box.new(bar_index[2], fvgUpper, bar_index, fvgLower, border_color=color.new(color.red, 0), bgcolor=color.new(color.red, 75))
 
 float obHigh = na
 float obLow = na
+
+var box lastObHigh = na
+var box lastObLow = na
 
 if not na(swingHigh)
     obHigh := high
     obLow := low
     if showOB
-        box.new(bar_index - rightBars - leftBars, obHigh, bar_index, obLow, border_color=color.new(color.red, 60), bgcolor=color.new(color.red, 25))
+        if not na(lastObHigh)
+            box.delete(lastObHigh)
+        lastObHigh := box.new(bar_index - rightBars - leftBars, obHigh, bar_index, obLow, border_color=color.new(color.red, 60), bgcolor=color.new(color.red, 25))
 
 if not na(swingLow)
     obHigh := high
     obLow := low
     if showOB
-        box.new(bar_index - rightBars - leftBars, obHigh, bar_index, obLow, border_color=color.new(color.green, 60), bgcolor=color.new(color.green, 25))
+        if not na(lastObLow)
+            box.delete(lastObLow)
+        lastObLow := box.new(bar_index - rightBars - leftBars, obHigh, bar_index, obLow, border_color=color.new(color.green, 60), bgcolor=color.new(color.green, 25))
 
 trendUp = not na(lastSwingLow) and not na(lastSwingHigh) and lastSwingLow > lastSwingLow[1] and lastSwingHigh > lastSwingHigh[1]
 trendDown = not na(lastSwingLow) and not na(lastSwingHigh) and lastSwingLow < lastSwingLow[1] and lastSwingHigh < lastSwingHigh[1]

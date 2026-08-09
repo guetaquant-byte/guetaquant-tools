@@ -1,0 +1,52 @@
+# Checks estáticos de repo: paridad MQL4/MQL5, claims del README y presencia
+# de documentación. Corre en ubuntu (solo Python puro, sin MetaEditor).
+name: static-checks
+
+on:
+  push:
+    paths:
+      - "mql/**"
+      - "pinescript/**"
+      - "ctrader/**"
+      - "README.md"
+      - "scripts/**"
+      - ".github/workflows/static-checks.yml"
+  pull_request:
+    paths:
+      - "mql/**"
+      - "pinescript/**"
+      - "ctrader/**"
+      - "README.md"
+      - "scripts/**"
+      - ".github/workflows/static-checks.yml"
+  workflow_dispatch:
+
+jobs:
+  checks:
+    name: Static checks
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Paridad MQL4/MQL5 + Pine v6
+        run: python3 scripts/check_mql_parity.py
+
+      - name: Claims del README (frases bloqueadas y referencias de archivos)
+        run: python3 scripts/check_readme_claims.py
+
+      # markdownlint "mínimo": el contrato del repo exige un README de estado
+      # por plataforma (ver sección Estado del README raíz) y el README raíz.
+      # El lint de estilo completo (markdownlint-cli2) queda fuera de alcance.
+      - name: READMEs requeridos existen
+        run: |
+          for f in README.md mql/README.md pinescript/README.md ctrader/README.md; do
+            test -f "$f" || { echo "Falta README requerido: $f"; exit 1; }
+            test -s "$f" || { echo "README vacío: $f"; exit 1; }
+          done
+          echo "OK: README raíz + 3 READMEs por plataforma presentes"

@@ -15,7 +15,7 @@ checkTF5 = input.string("4h", "TF #5", options=["1m", "5m", "15m", "30m", "1h", 
 checkTF6 = input.string("1D", "TF #6", options=["1m", "5m", "15m", "30m", "1h", "4h", "1D", "1W"])
 
 trendScore(tf) =>
-    [emaF, emaM, emaS, emaVS] = request.security(syminfo.tickerid, tf, [ta.ema(src, emaFast), ta.ema(src, emaMid), ta.ema(src, emaSlow), ta.ema(src, emaVerySlow)])
+    [emaF, emaM, emaS, emaVS] = request.security(syminfo.tickerid, tf, [ta.ema(src, emaFast), ta.ema(src, emaSlow)], lookahead=barmerge.lookahead_off), ta.ema(src, emaMid), ta.ema(src, emaSlow), ta.ema(src, emaVerySlow)])
     int score = 0
     score += emaF > emaM ? 1 : -1
     score += emaM > emaS ? 1 : -1

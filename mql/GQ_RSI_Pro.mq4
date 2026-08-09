@@ -3,7 +3,6 @@
 #property version   "1.00"
 #property indicator_chart_window
 #property indicator_buffers 2
-#property indicator_plots   2
 #property indicator_type1   DRAW_ARROW
 #property indicator_color1  clrLime
 #property indicator_type2   DRAW_ARROW
@@ -30,8 +29,8 @@ int OnInit()
       Print("Invalid input parameters");
       return INIT_PARAMETERS_INCORRECT;
    }
-   SetIndexBuffer(0, g_buyArrow, INDICATOR_DATA);
-   SetIndexBuffer(1, g_sellArrow, INDICATOR_DATA);
+   SetIndexBuffer(0, g_buyArrow);
+   SetIndexBuffer(1, g_sellArrow);
    SetIndexEmptyValue(0, EMPTY_VALUE);
    SetIndexEmptyValue(1, EMPTY_VALUE);
    IndicatorSetString(INDICATOR_SHORTNAME, "GQ_RSI_Pro(" + IntegerToString(RSIPeriod) + ")");

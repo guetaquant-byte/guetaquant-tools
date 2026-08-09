@@ -3,7 +3,6 @@ using System.Linq;
 using cAlgo.API;
 using cAlgo.API.Indicators;
 using cAlgo.API.Requests;
-using cAlgo.Indicators;
 
 namespace cAlgo.Robots
 {
@@ -54,7 +53,7 @@ namespace cAlgo.Robots
             _fastEma = Indicators.ExponentialMovingAverage(Bars.ClosePrices, FastEMA);
             _slowEma = Indicators.ExponentialMovingAverage(Bars.ClosePrices, SlowEMA);
             _atr = Indicators.AverageTrueRange(ATRPeriod, MovingAverageType.Simple);
-            _superTrend = Indicators.SuperTrend(SuperTrendPeriod, SuperTrendMultiplier, Bars.HighPrices, Bars.LowPrices, Bars.ClosePrices);
+            _superTrend = Indicators.Supertrend(SuperTrendPeriod, SuperTrendMultiplier);
         }
 
         protected override void OnBarClosed()
@@ -86,9 +85,10 @@ namespace cAlgo.Robots
         private void UpdateIndicators()
         {
             _currentATR = _atr.Result.Last(1);
-            double superTrendValue = _superTrend.Result.Last(1);
+            // Supertrend expone UpTrend/DownTrend (no un unico Result)
             double closePrice = Bars.ClosePrices.Last(1);
-            _superTrendTrend = closePrice > superTrendValue ? 1 : -1;
+            bool inUpTrend = closePrice > _superTrend.UpTrend.Last(1) && _superTrend.UpTrend.Last(1) > 0;
+            _superTrendTrend = inUpTrend ? 1 : -1;
         }
 
         private void OpenPosition(TradeType tradeType)

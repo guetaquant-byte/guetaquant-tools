@@ -1,0 +1,120 @@
+name: 🐛 Reporte de Bug / Bug Report
+description: Reporta un fallo en una herramienta de Gueta Quant (MQL, Pine Script o cTrader)
+title: "[Bug] "
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Gracias por reportar. Completa los campos de la plataforma afectada. Un bug sin
+        datos de entorno es difícil de reproducir. No incluyas secretos ni datos de cuenta.
+  - type: dropdown
+    id: platform
+    attributes:
+      label: Plataforma / Platform
+      description: ¿Qué plataforma ejecuta la herramienta?
+      options:
+        - MetaTrader 4 (MQL4)
+        - MetaTrader 5 (MQL5)
+        - TradingView (Pine Script v6)
+        - cTrader (C# cBot)
+    validations:
+      required: true
+  - type: input
+    id: tool
+    attributes:
+      label: Herramienta / Tool
+      description: Nombre del archivo afectado, ej. `mql/GQ_Volume_Profile.mq4`
+      placeholder: "mql/GQ_Volume_Profile.mq4"
+    validations:
+      required: true
+  - type: textarea
+    id: behavior
+    attributes:
+      label: Comportamiento esperado vs. real / Expected vs. actual behavior
+      description: "Describe qué debería pasar y qué ocurre realmente (ideal: captura de pantalla)"
+    validations:
+      required: true
+  - type: textarea
+    id: repro
+    attributes:
+      label: Pasos para reproducir / Steps to reproduce
+      placeholder: |
+        1. Adjunta el indicador a EURUSD M15
+        2. Configura X=...
+        3. Observa que...
+    validations:
+      required: true
+  - type: markdown
+    attributes:
+      value: "## MetaTrader (MT4 / MT5)"
+  - type: input
+    id: mt_build
+    attributes:
+      label: "Build de la plataforma (obligatorio para MT4/MT5)"
+      description: "Ayuda → Acerca de... → Build. Ej. MT4 build 1420, MT5 build 4600"
+      placeholder: "MT4 build 1420 / MT5 build 4600"
+  - type: dropdown
+    id: mt_mode
+    attributes:
+      label: Modo de ejecución (MT)
+      options:
+        - Gráfico (indicador/EA en vivo)
+        - Strategy Tester (backtest)
+        - Ambos
+  - type: markdown
+    attributes:
+      value: "## TradingView (Pine Script)"
+  - type: dropdown
+    id: tv_plan
+    attributes:
+      label: Plan de TradingView
+      options:
+        - Free
+        - Essential (Pro)
+        - Plus
+        - Premium
+  - type: input
+    id: tv_bars
+    attributes:
+      label: Barras en el gráfico / Bars on chart
+      description: "¿Cuántas barras cargadas? (afecta límites de ejecución y lookback)"
+      placeholder: "20.000"
+  - type: input
+    id: tv_timeframe
+    attributes:
+      label: Timeframe y símbolo
+      placeholder: "EURUSD · 15m"
+  - type: markdown
+    attributes:
+      value: "## cTrader (C#)"
+  - type: input
+    id: ctrader_version
+    attributes:
+      label: Versión de cTrader / cTrader version
+      description: "cTrader → Ajustes → Acerca de. Ej. 4.6.0.38447"
+      placeholder: "4.6.0.38447"
+  - type: input
+    id: ctrader_account_type
+    attributes:
+      label: Tipo de cuenta (demo/real) y broker
+      placeholder: "Demo · Broker X"
+  - type: markdown
+    attributes:
+      value: "## Información adicional"
+  - type: textarea
+    id: logs
+    attributes:
+      label: "Logs / errores de consola (si aplica)"
+      description: "Expert Log, ventana de Alerta, consola de Pine, pestaña Logs de cTrader"
+      render: shell
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Verificaciones previas / Pre-submission checks
+      options:
+        - label: Probé la última versión del código en `main` (no una copia vieja)
+        - label: El bug ocurre también en demo/cuenta de pruebas (no solo en real)
+        - label: Revisé que no exista un issue duplicado
+    validations:
+      required: true

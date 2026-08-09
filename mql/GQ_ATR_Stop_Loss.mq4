@@ -3,7 +3,6 @@
 #property version   "1.00"
 #property indicator_chart_window
 #property indicator_buffers 0
-#property indicator_plots   0
 
 //--- input parameters
 input int      ATRPeriod     = 14;
@@ -47,8 +46,8 @@ int OnCalculate(const int rates_total,
    double atr = iATR(_Symbol, _Period, ATRPeriod, 0);
    if (atr <= 0.0) return rates_total;
 
-   double longStop = high[0] - atr * ATRMultiplier;
-   double shortStop = low[0] + atr * ATRMultiplier;
+   double longStop = iHigh(_Symbol,_Period,0) - atr * ATRMultiplier;
+   double shortStop = iLow(_Symbol,_Period,0) + atr * ATRMultiplier;
 
    ObjectDelete(0, "GQ_ATR_Long_Stop");
    ObjectCreate(0, "GQ_ATR_Long_Stop", OBJ_HLINE, 0, 0, longStop);

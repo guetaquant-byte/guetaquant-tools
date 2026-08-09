@@ -56,6 +56,7 @@ namespace cAlgo.Robots
             if (currentDrawdown < -MaxDrawdownPercent)
             {
                 CloseAllGridPositions();
+                CancelAllGridOrders();   // evita que las ordenes pendientes sigan rellenando la grilla
                 Print($"Max drawdown reached. Closing all positions.");
                 return;
             }

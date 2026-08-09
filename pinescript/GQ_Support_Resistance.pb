@@ -44,6 +44,8 @@ while array.size(levelPrices) > maxLevels * 2
     array.remove(levelTouches, minIdx)
     array.remove(levelTypes, minIdx)
 
+var line[] drawnLines = array.new_line()
+var label[] drawnLabels = array.new_label()
 for i = 0 to array.size(levelPrices) - 1
     float price = array.get(levelPrices, i)
     int touches = array.get(levelTouches, i)
@@ -55,5 +57,4 @@ for i = 0 to array.size(levelPrices) - 1
     lineColor := color.new(lineColor, 100 - lineAlpha)
     line.new(bar_index - pivotLookback * 2, price, bar_index + 10, price, color=lineColor, width=lineWidth, extend=extend.right, style=isResistance ? line.style_solid : line.style_solid)
     if showStrength
-        label lbl = label.new(bar_index + 2, price, str.tostring(touches) + "x " + ltype, color=lineColor, style=label.style_label_center, textcolor=color.white, size=size.small)
-        label.delete(lbl[1])
+        label.new(bar_index + 2, price, str.tostring(touches) + "x " + ltype, color=lineColor, style=label.style_label_center, textcolor=color.white, size=size.small)

@@ -3,7 +3,6 @@
 #property version   "1.00"
 #property indicator_chart_window
 #property indicator_buffers 2
-#property indicator_plots   2
 #property indicator_type1   DRAW_ARROW
 #property indicator_color1  clrLime
 #property indicator_type2   DRAW_ARROW
@@ -26,8 +25,8 @@ int OnInit()
       Print("Invalid input parameters");
       return INIT_PARAMETERS_INCORRECT;
    }
-   SetIndexBuffer(0, g_bos_up, INDICATOR_DATA);
-   SetIndexBuffer(1, g_bos_down, INDICATOR_DATA);
+   SetIndexBuffer(0, g_bos_up);
+   SetIndexBuffer(1, g_bos_down);
    SetIndexEmptyValue(0, EMPTY_VALUE);
    SetIndexEmptyValue(1, EMPTY_VALUE);
    IndicatorSetString(INDICATOR_SHORTNAME, "GQ_Market_Structure(" + IntegerToString(PivotLeft) + "," + IntegerToString(PivotRight) + ")");
@@ -71,7 +70,7 @@ int OnCalculate(const int rates_total,
    double lastSwingHigh = 0, lastSwingLow = 0;
    datetime lastSwingHighTime = 0, lastSwingLowTime = 0;
 
-   for (int i = lookback; i < rates_total - 1; i++)
+   for (int i = lookback; i < rates_total - PivotLeft - 1; i++)   // bound alto[i+j] dentro del array
    {
       bool isSwingHigh = true;
       bool isSwingLow = true;
@@ -91,9 +90,9 @@ int OnCalculate(const int rates_total,
 
       double minSwing = MinSwingSize_Points * Point;
 
-      if (isSwingHigh && lastSwingHigh > 0)
+      if (isSwingHigh)
       {
-         if (MathAbs(currentHigh - lastSwingHigh) >= minSwing)
+         if (lastSwingHigh > 0 && MathAbs(currentHigh - lastSwingHigh) >= minSwing)
          {
             DrawTrendline("GQ_MS_SH_", lastSwingHighTime, lastSwingHigh, time[i], currentHigh, clrRed);
          }
@@ -101,9 +100,9 @@ int OnCalculate(const int rates_total,
          lastSwingHighTime = time[i];
       }
 
-      if (isSwingLow && lastSwingLow > 0)
+      if (isSwingLow)
       {
-         if (MathAbs(currentLow - lastSwingLow) >= minSwing)
+         if (lastSwingLow > 0 && MathAbs(currentLow - lastSwingLow) >= minSwing)
          {
             DrawTrendline("GQ_MS_SL_", lastSwingLowTime, lastSwingLow, time[i], currentLow, clrLime);
          }
@@ -111,24 +110,13 @@ int OnCalculate(const int rates_total,
          lastSwingLowTime = time[i];
       }
 
-      if (isSwingHigh)
-      {
-         lastSwingHigh = currentHigh;
-         lastSwingHighTime = time[i];
-      }
-      if (isSwingLow)
-      {
-         lastSwingLow = currentLow;
-         lastSwingLowTime = time[i];
-      }
-
-      //--- Break of Structure: price breaks last swing high (BOS up) or low (BOS down)
-      if (lastSwingHigh > 0 && close[i] > lastSwingHigh)
+      //--- Break of Structure: fire only on the transition bar (close[i-1] on the other side)
+      if (lastSwingHigh > 0 && close[i] > lastSwingHigh && close[i - 1] <= lastSwingHigh)
       {
          g_bos_up[i] = low[i] - 10 * Point;
          CreateLabel("GQ_MS_BOSU_", time[i], low[i] - 15 * Point, "BOS UP", clrLime);
       }
-      if (lastSwingLow > 0 && close[i] < lastSwingLow)
+      if (lastSwingLow > 0 && close[i] < lastSwingLow && close[i - 1] >= lastSwingLow)
       {
          g_bos_down[i] = high[i] + 10 * Point;
          CreateLabel("GQ_MS_BOSD_", time[i], high[i] + 15 * Point, "BOS DN", clrRed);

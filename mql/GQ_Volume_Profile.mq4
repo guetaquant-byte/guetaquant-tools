@@ -3,7 +3,6 @@
 #property version   "1.00"
 #property indicator_chart_window
 #property indicator_buffers 0
-#property indicator_plots   0
 
 //--- input parameters
 input int      Rows       = 24;
@@ -45,7 +44,7 @@ int OnCalculate(const int rates_total,
 {
    if (rates_total < Lookback) return 0;
 
-   int startBar = Lookback - 1;
+   int startBar = Lookback;
    if (startBar >= rates_total) startBar = rates_total - 1;
 
    double maxH = iHigh(_Symbol, _Period, 0);
@@ -68,14 +67,15 @@ int OnCalculate(const int rates_total,
    ArrayInitialize(volProfile, 0);
 
    //--- Distribute volume into price rows
-   for (int i = 0; i < startBar; i++)
+   for (int i = 1; i < startBar; i++)   // i=0 (barra en formaci\u00f3n) excluida: evita repintado
    {
       double h = iHigh(_Symbol, _Period, i);
       double l = iLow(_Symbol, _Period, i);
       double vol = (double)iVolume(_Symbol, _Period, i);
 
-      int topRow = (int)((maxH - h) / rowHeight);
-      int botRow = (int)((maxH - l) / rowHeight);
+      // Binning ascendente consistente con el c\u00e1lculo de precios (minL + fila*rowHeight)
+      int topRow = (int)((h - minL) / rowHeight);
+      int botRow = (int)((l - minL) / rowHeight);
       if (topRow < 0) topRow = 0;
       if (botRow >= Rows) botRow = Rows - 1;
       if (topRow > botRow) { int t = topRow; topRow = botRow; botRow = t; }
@@ -130,22 +130,20 @@ int OnCalculate(const int rates_total,
 
    //--- Draw histogram boxes
    ObjectsDeleteAll(0, "GQ_VP_");
+   if (maxVol <= 0) return rates_total;
 
    for (int i = 0; i < Rows; i++)
    {
       double rowLow = minL + i * rowHeight;
       double rowHigh = rowLow + rowHeight;
-      double width = volProfile[i] / maxVol * 100 < 5 ? 5 : volProfile[i] / maxVol * 100;
 
       string name = "GQ_VP_BOX_" + IntegerToString(i);
-      datetime tCenter = time[0] + (datetime)(PeriodSeconds((ENUM_TIMEFRAMES)_Period) * (Lookback / 2));
       ObjectCreate(0, name, OBJ_RECTANGLE, 0, 0, rowHigh, 0, rowLow);
 
-      double rightShift = width * 2 * Point * 100;
       ObjectSetDouble(0, name, OBJPROP_PRICE1, rowHigh);
       ObjectSetDouble(0, name, OBJPROP_PRICE2, rowLow);
-      ObjectSetInteger(0, name, OBJPROP_TIME1, time[Lookback - 1]);
-      ObjectSetInteger(0, name, OBJPROP_TIME2, time[0]);
+      ObjectSetInteger(0, name, OBJPROP_TIME1, iTime(_Symbol, _Period, Lookback - 1));
+      ObjectSetInteger(0, name, OBJPROP_TIME2, iTime(_Symbol, _Period, 0));
 
       color boxColor = clrDodgerBlue;
       if (i == pocRow) boxColor = clrGold;
@@ -169,7 +167,7 @@ int OnCalculate(const int rates_total,
 
       string pocLabel = "GQ_VP_POC_LBL";
       ObjectDelete(0, pocLabel);
-      ObjectCreate(0, pocLabel, OBJ_TEXT, 0, time[0], pocPrice);
+      ObjectCreate(0, pocLabel, OBJ_TEXT, 0, iTime(_Symbol, _Period, 0), pocPrice);
       ObjectSetString(0, pocLabel, OBJPROP_TEXT, "POC " + DoubleToString(pocPrice, _Digits));
       ObjectSetInteger(0, pocLabel, OBJPROP_COLOR, clrGold);
       ObjectSetInteger(0, pocLabel, OBJPROP_FONTSIZE, 8);
@@ -197,14 +195,14 @@ int OnCalculate(const int rates_total,
 
       string vaHLabel = "GQ_VP_VAH_LBL";
       ObjectDelete(0, vaHLabel);
-      ObjectCreate(0, vaHLabel, OBJ_TEXT, 0, time[0], vaHighPrice);
+      ObjectCreate(0, vaHLabel, OBJ_TEXT, 0, iTime(_Symbol, _Period, 0), vaHighPrice);
       ObjectSetString(0, vaHLabel, OBJPROP_TEXT, "VAH " + DoubleToString(vaHighPrice, _Digits));
       ObjectSetInteger(0, vaHLabel, OBJPROP_COLOR, clrRoyalBlue);
       ObjectSetInteger(0, vaHLabel, OBJPROP_FONTSIZE, 8);
 
       string vaLLabel = "GQ_VP_VAL_LBL";
       ObjectDelete(0, vaLLabel);
-      ObjectCreate(0, vaLLabel, OBJ_TEXT, 0, time[0], vaLowPrice);
+      ObjectCreate(0, vaLLabel, OBJ_TEXT, 0, iTime(_Symbol, _Period, 0), vaLowPrice);
       ObjectSetString(0, vaLLabel, OBJPROP_TEXT, "VAL " + DoubleToString(vaLowPrice, _Digits));
       ObjectSetInteger(0, vaLLabel, OBJPROP_COLOR, clrRoyalBlue);
       ObjectSetInteger(0, vaLLabel, OBJPROP_FONTSIZE, 8);

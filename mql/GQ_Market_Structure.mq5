@@ -84,7 +84,9 @@ int OnCalculate(const int rates_total,
    datetime lastSwingHighTime = 0, lastSwingLowTime = 0;
    double point = SymbolInfoDouble(g_sym, SYMBOL_POINT);
 
-   for (int i = lookback; i < rates_total - 1; i++)
+   // Arrays en serie (indice 0 = barra actual): iterar hacia ABAJO = orden cronologico,
+   // acotar i+j para evitar lecturas fuera de rango (rates_total - PivotLeft - 1)
+   for (int i = rates_total - PivotLeft - 1; i >= lookback; i--)
    {
       bool isSwingHigh = true;
       bool isSwingLow = true;
@@ -124,13 +126,13 @@ int OnCalculate(const int rates_total,
          lastSwingLowTime = time[i];
       }
 
-      //--- Break of Structure
-      if (lastSwingHigh > 0 && close[i] > lastSwingHigh)
+      //--- Break of Structure: solo en la barra de transicion (cierre previo del otro lado)
+      if (lastSwingHigh > 0 && close[i] > lastSwingHigh && close[i + 1] <= lastSwingHigh)
       {
          g_bos_up[i] = low[i] - 10 * point;
          CreateLabel("GQ_MS_BOSU_", time[i], low[i] - 15 * point, "BOS UP", clrLime);
       }
-      if (lastSwingLow > 0 && close[i] < lastSwingLow)
+      if (lastSwingLow > 0 && close[i] < lastSwingLow && close[i + 1] >= lastSwingLow)
       {
          g_bos_down[i] = high[i] + 10 * point;
          CreateLabel("GQ_MS_BOSD_", time[i], high[i] + 15 * point, "BOS DN", clrRed);

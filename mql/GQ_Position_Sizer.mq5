@@ -119,6 +119,7 @@ void OnTick()
    double minLot = SymbolInfoDouble(_Symbol, SYMBOL_VOLUME_MIN);
    double maxLot = SymbolInfoDouble(_Symbol, SYMBOL_VOLUME_MAX);
    double lotStep = SymbolInfoDouble(_Symbol, SYMBOL_VOLUME_STEP);
+   if (lotStep <= 0.0) lotStep = 0.01;   // guardia division por cero
    
    // Redondear al paso de lote permitido
    calculatedLots = MathFloor(calculatedLots / lotStep) * lotStep;

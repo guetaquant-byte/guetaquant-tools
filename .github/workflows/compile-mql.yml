@@ -1,0 +1,71 @@
+# Compila todos los .mq4 y .mq5 de mql/ usando MetaEditor en un runner de Windows.
+#
+# ⚠️ POR QUÉ WINDOWS OBLIGATORIO: MetaEditor (metaeditor64.exe) — el compilador
+# oficial de MetaQuotes para MQL4/MQL5 — es UNA APLICACIÓN NATIVA DE WINDOWS.
+# No existe versión Linux/macOS del compilador. La action fx31337/mql-compile-action
+# (el patrón estándar del ecosistema EA31337) instala la plataforma MetaTrader
+# y ejecuta metaeditor64.exe; por lo tanto exige `runs-on: windows-latest`.
+# No intentes mover este job a ubuntu-latest: fallará en el primer paso.
+#
+# Diseño: la action compila una carpeta y permite ignorar patrones (path-ignore).
+# La matrix mq4/mq5 compila TODO mql/ pero ignorando el tipo opuesto, y sube
+# los binarios .ex4/.ex5 resultantes como artifacts descargables.
+name: compile-mql
+
+on:
+  push:
+    paths:
+      - "mql/**"
+      - ".github/workflows/compile-mql.yml"
+  pull_request:
+    paths:
+      - "mql/**"
+      - ".github/workflows/compile-mql.yml"
+  workflow_dispatch:
+
+jobs:
+  compile:
+    name: Compile MQL (${{ matrix.platform }})
+    runs-on: windows-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        platform: [mq4, mq5]
+        include:
+          - platform: mq4
+            ignore: "**/*.mq5"   # compilar solo .mq4
+            artifact: "*.ex4"
+          - platform: mq5
+            ignore: "**/*.mq4"   # compilar solo .mq5
+            artifact: "*.ex5"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Compilar MQL${{ matrix.platform == 'mq4' && '4' || '5' }} con MetaEditor
+        uses: fx31337/mql-compile-action@v2
+        with:
+          path: "mql"                 # carpeta con todos los fuentes MQL
+          path-ignore: ${{ matrix.ignore }}
+          # init-platform: true descarga los includes estándar de MetaQuotes
+          # (Arrays/*, Trade/*, ...) vía terminal64.exe. Nuestros archivos no
+          # usan #include, pero se mantiene por robustez ante futuros cambios.
+          init-platform: "true"
+          log-file: "compile-${{ matrix.platform }}.log"
+
+      - name: Subir binarios compilados (${{ matrix.platform }})
+        uses: actions/upload-artifact@v4
+        with:
+          name: mql-${{ matrix.platform }}-binaries
+          path: "mql/**/${{ matrix.artifact }}"
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Subir log de compilación
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: mql-${{ matrix.platform }}-log
+          path: "compile-${{ matrix.platform }}.log"
+          if-no-files-found: ignore
+          retention-days: 14

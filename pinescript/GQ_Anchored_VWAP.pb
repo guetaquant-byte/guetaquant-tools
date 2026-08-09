@@ -24,9 +24,9 @@ isAnchor2 = false
 isAnchor3 = false
 
 if anchorMethod == "Timestamp"
-    isAnchor1 := ta.change(anchorTimestamp) != 0
-    isAnchor2 := ta.change(anchor2Timestamp) != 0
-    isAnchor3 := ta.change(anchor3Timestamp) != 0
+    isAnchor1 := time >= anchorTimestamp
+    isAnchor2 := time >= anchor2Timestamp
+    isAnchor3 := time >= anchor3Timestamp
 else if anchorMethod == "Bar Index"
     isAnchor1 := bar_index == anchorBar
 else

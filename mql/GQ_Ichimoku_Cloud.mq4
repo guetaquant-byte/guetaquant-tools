@@ -3,7 +3,6 @@
 #property version   "1.00"
 #property indicator_chart_window
 #property indicator_buffers 7
-#property indicator_plots   7
 #property indicator_type1   DRAW_LINE
 #property indicator_color1  clrMediumBlue
 #property indicator_width1  1
@@ -46,16 +45,24 @@ int OnInit()
       Print("Invalid input parameters");
       return INIT_PARAMETERS_INCORRECT;
    }
-   SetIndexBuffer(0, g_tenkan, INDICATOR_DATA);
-   SetIndexBuffer(1, g_kijun, INDICATOR_DATA);
-   SetIndexBuffer(2, g_senkouA, INDICATOR_DATA);
-   SetIndexBuffer(3, g_senkouB, INDICATOR_DATA);
-   SetIndexBuffer(4, g_chikou, INDICATOR_DATA);
-   SetIndexBuffer(5, g_cloudA, INDICATOR_DATA);
-   SetIndexBuffer(6, g_cloudB, INDICATOR_DATA);
+   SetIndexBuffer(0, g_tenkan);
+   SetIndexBuffer(1, g_kijun);
+   SetIndexBuffer(2, g_senkouA);
+   SetIndexBuffer(3, g_senkouB);
+   SetIndexBuffer(4, g_chikou);
+   SetIndexBuffer(5, g_cloudA);
+   SetIndexBuffer(6, g_cloudB);
+   // Buffers en modo serie: indice 0 = barra actual (consistente con iHigh(shift))
+   ArraySetAsSeries(g_tenkan, true);
+   ArraySetAsSeries(g_kijun, true);
+   ArraySetAsSeries(g_senkouA, true);
+   ArraySetAsSeries(g_senkouB, true);
+   ArraySetAsSeries(g_chikou, true);
+   ArraySetAsSeries(g_cloudA, true);
+   ArraySetAsSeries(g_cloudB, true);
    IndicatorSetString(INDICATOR_SHORTNAME, "GQ_Ichimoku(" + IntegerToString(Tenkan) + "," + IntegerToString(Kijun) + "," + IntegerToString(Senkou) + ")");
-   PlotIndexSetInteger(5, PLOT_LINE_SHIFT, Kijun);
-   PlotIndexSetInteger(6, PLOT_LINE_SHIFT, Kijun);
+   SetIndexShift(5, Kijun);
+   SetIndexShift(6, Kijun);
    return INIT_SUCCEEDED;
 }
 
@@ -99,6 +106,11 @@ int OnCalculate(const int rates_total,
                 const int &spread[])
 {
    if (rates_total < Senkou + Kijun + 1) return 0;
+
+   ArraySetAsSeries(time, true);
+   ArraySetAsSeries(close, true);
+   ArraySetAsSeries(high, true);
+   ArraySetAsSeries(low, true);
 
    int limit = rates_total - 1;
    if (prev_calculated > 0) limit = rates_total - prev_calculated;

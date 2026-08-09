@@ -161,7 +161,7 @@ int OnCalculate(const int rates_total,
    //--- Draw POC line
    if (ShowPOC)
    {
-      double pocPrice = minL + (pocRow + 0.5) * rowHeight;
+      double pocPrice = maxH - (pocRow + 0.5) * rowHeight;   // fila 0 = precio superior (binning top-down)
       string pocName = "GQ_VP_POC";
       ObjectDelete(0, pocName);
       ObjectCreate(0, pocName, OBJ_HLINE, 0, 0, pocPrice);
@@ -180,8 +180,8 @@ int OnCalculate(const int rates_total,
    //--- Draw VA lines
    if (ShowVA)
    {
-      double vaHighPrice = minL + (vaHigh + 1) * rowHeight;
-      double vaLowPrice = minL + vaLow * rowHeight;
+      double vaHighPrice = maxH - (vaHigh + 1) * rowHeight;
+      double vaLowPrice = maxH - vaLow * rowHeight;
 
       string vaHName = "GQ_VP_VAH";
       ObjectDelete(0, vaHName);

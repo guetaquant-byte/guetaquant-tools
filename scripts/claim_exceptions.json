@@ -1,0 +1,27 @@
+{
+  "_comment": "Whitelist de claims del README. Cada claim-ok permite que una frase de la blocklist de scripts/check_readme_claims.py aparezca en los README. 'files': lista de rutas relativas al repo — si AL MENOS UNA existe (y el README que la menciona es verificable), el claim se considera respaldado por código. Agregar entradas deliberadamente, no para silenciar el checker.",
+  "FVG": {
+    "files": ["pinescript/GQ_Market_Structure.pb", "mql/GQ_Market_Structure.mq4"],
+    "why": "GQ Market Structure implementa FVG (ShowFVG/FVGThreshold en MQL; rectángulos FVG en Pine)."
+  },
+  "CHoCH": {
+    "files": ["pinescript/GQ_Market_Structure.pb", "mql/GQ_Market_Structure.mq4"],
+    "why": "GQ Market Structure dibuja quiebres de estructura BOS/CHoCH."
+  },
+  "Order Blocks": {
+    "files": ["pinescript/GQ_Market_Structure.pb", "mql/GQ_Market_Structure.mq4"],
+    "why": "GQ Market Structure dibuja zonas de Order Blocks (showOrderBlocks)."
+  },
+  "hidden divergence": {
+    "files": ["mql/GQ_RSI_Pro.mq4", "pinescript/GQ_RSI_Pro.pb"],
+    "why": "GQ RSI Pro detecta divergencias regulares y ocultas (bullish/bearish)."
+  },
+  "divergencias ocultas": {
+    "files": ["mql/GQ_RSI_Pro.mq4", "pinescript/GQ_RSI_Pro.pb"],
+    "why": "Mismo respaldo que 'hidden divergence' en ES."
+  },
+  "trailing stop": {
+    "files": ["mql/GQ_SuperTrend.mq4", "mql/GQ_ATR_Stop_Loss.mq4", "ctrader/GQ_Trailing_Stop_Manager.cs"],
+    "why": "SuperTrend/ATR Stop Loss usan trailing stop por ATR; cTrader Trailing Stop Manager implementa 4 métodos."
+  }
+}

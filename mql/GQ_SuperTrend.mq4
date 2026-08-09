@@ -48,7 +48,8 @@ void OnTick()
       if (OrderType() == OP_SELL) hasShort = true;
    }
 
-   int limit = ATRPeriod + 1;
+   // Ventana completa (200 barras) para recursion correcta del SuperTrend
+   int limit = MathMin(200, Bars(_Symbol, _Period));
    double hl2[];
    ArrayResize(hl2, limit);
    for (int i = 0; i < limit; i++)
@@ -65,7 +66,7 @@ void OnTick()
    for (int i = 0; i < limit; i++)
    {
       double med = (iHigh(_Symbol, _Period, i) + iLow(_Symbol, _Period, i)) / 2.0;
-      double r = atr * Multiplier;
+      double r = iATR(_Symbol, _Period, ATRPeriod, i) * Multiplier;   // ATR por barra
       upperBand[i] = med + r;
       lowerBand[i] = med - r;
    }

@@ -30,8 +30,27 @@ cvdLow = ta.pivotlow(smoothedCVD, 5, 5)
 priceHigh = ta.pivothigh(close, 5, 5)
 priceLow = ta.pivotlow(close, 5, 5)
 
-bullCvdDiv = showDivergences and not na(cvdLow) and cvdLow > cvdLow[1] and not na(priceLow) and priceLow < priceLow[1]
-bearCvdDiv = showDivergences and not na(cvdHigh) and cvdHigh < cvdHigh[1] and not na(priceHigh) and priceHigh > priceHigh[1]
+// pivothigh/pivotlow solo devuelven valor en la barra de confirmacion (na en el resto).
+// Rastrear el pivote previo con var para comparar dos pivotes consecutivos.
+var float prevCvdLow = na
+var float prevPriceLow = na
+var float prevCvdHigh = na
+var float prevPriceHigh = na
+
+bool bullCvdDiv = false
+bool bearCvdDiv = false
+
+if not na(cvdLow) and not na(priceLow)
+    if not na(prevCvdLow) and not na(prevPriceLow)
+        bullCvdDiv := showDivergences and cvdLow > prevCvdLow and priceLow < prevPriceLow
+    prevCvdLow := cvdLow
+    prevPriceLow := priceLow
+
+if not na(cvdHigh) and not na(priceHigh)
+    if not na(prevCvdHigh) and not na(prevPriceHigh)
+        bearCvdDiv := showDivergences and cvdHigh < prevCvdHigh and priceHigh > prevPriceHigh
+    prevCvdHigh := cvdHigh
+    prevPriceHigh := priceHigh
 
 plotshape(bullCvdDiv, "Bull CVD Div", shape.triangleup, location.belowbar, color.green, size=size.small)
 plotshape(bearCvdDiv, "Bear CVD Div", shape.triangledown, location.abovebar, color.red, size=size.small)

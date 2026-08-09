@@ -92,7 +92,7 @@ namespace cAlgo.Robots
                 ForegroundColor = Color.White,
                 BackgroundColor = Color.FromArgb(200, 20, 20, 20),
                 FontSize = 12,
-                Padding = new Thickness(8, 6),
+                Padding = new Thickness(8, 6, 8, 6),
                 HorizontalAlignment = HorizontalAlignment.Left,
                 VerticalAlignment = VerticalAlignment.Top
             };

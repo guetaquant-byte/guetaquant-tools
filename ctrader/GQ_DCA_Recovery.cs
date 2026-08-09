@@ -89,6 +89,10 @@ namespace cAlgo.Robots
 
             if (currentLevel == 0)
             {
+                // Evita el flood de ordenes: si ya existe una orden pendiente GQDCA, no crear otra
+                if (PendingOrders.Any(p => p.Label == GQDCA_LABEL))
+                    return;
+
                 double atrValue = _atr.Result.Last(1);
                 double entryOffset = atrValue * EntrySpacing_ATR;
                 double entryPrice = tradeType == TradeType.Buy

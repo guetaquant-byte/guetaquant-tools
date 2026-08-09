@@ -12,6 +12,10 @@
 [![Estado](https://img.shields.io/badge/Estado-Activo-brightgreen?style=flat-square)](https://guetaquant.com)
 [![SFC Colombia](https://img.shields.io/badge/SFC_Colombia-Decreto_2555_de_2010-orange?style=flat-square)](https://guetaquant.com/nuestra-mision/)
 [![Zero Señales](https://img.shields.io/badge/Zero%20Se%C3%B1ales-Política%20Estricta-red?style=flat-square)](https://guetaquant.com/nuestra-mision/)
+<!-- CI badges (placeholders — se activan al crear el repo en GitHub):
+[![Compile MQL](https://github.com/guetaquant-byte/guetaquant-tools/actions/workflows/compile-mql.yml/badge.svg)](https://github.com/guetaquant-byte/guetaquant-tools/actions/workflows/compile-mql.yml)
+[![Static Checks](https://github.com/guetaquant-byte/guetaquant-tools/actions/workflows/static-checks.yml/badge.svg)](https://github.com/guetaquant-byte/guetaquant-tools/actions/workflows/static-checks.yml)
+-->
 
 [🌐 Sitio Web](https://guetaquant.com) · [📖 Blog Educativo](https://guetaquant.com/blog/) · [📓 Trading Journal](https://guetaquant.com/journal/) · [🛠️ Herramientas](https://guetaquant.com/herramientas/)
 
@@ -21,6 +25,23 @@
 
 > [!CAUTION]
 > **⚠️ AVISO REGULATORIO SFC COLOMBIA:** Este repositorio es de uso **exclusivamente educativo**. Ningún código, indicador, ni herramienta publicada aquí constituye asesoría de inversión, señal de compra/venta, ni promesa de rentabilidad. Actividades de asesoría en valores sin registro ante la SFC son ilegales bajo el **Decreto 2555 de 2010 y la Ley 964 de 2005**. El trading conlleva riesgo sustancial de pérdida de capital.
+
+---
+
+## 📊 Estado del Repositorio / Repository Status
+
+**44 herramientas · todas compilan en CI · estado de calidad por herramienta en [mql/README.md](mql/README.md), [pinescript/README.md](pinescript/README.md), [ctrader/README.md](ctrader/README.md)**
+
+| Componente | Estado |
+|---|---|
+| ✅ **Compila** | CI en GitHub Actions: MQL4/MQL5 compilados con MetaEditor (Windows) → `.ex4`/`.ex5` como artifacts. Pine v6 y C# son revisados estáticamente (sin compilador oficial en runners Linux). |
+| 🧪 **Tests** | Golden values (valores de referencia por herramienta) — **planificado** (`tests/golden/`, ver [docs/QA_STANDARD.md](docs/QA_STANDARD.md)) |
+| 📜 **Licencia** | AGPLv3 ([LICENSE](./LICENSE)) |
+| 🔍 **Verificación** | Cada indicador debe pasar la tarjeta de verificación (repintado, alerts, golden values) antes de ser marcado "verificado" |
+
+*EN mirror: 44 tools · all compile in CI · per-tool quality status in the platform
+READMEs. Golden-value tests planned. License AGPLv3. Honest status: a tool is only
+"verified" after passing the [QA Standard](docs/QA_STANDARD.md) card.*
 
 ---
 
@@ -74,13 +95,13 @@ Nuestro enfoque se basa en el **Cálculo Vigesimal Muisca (Gueta)** — rigor ma
 | # | Herramienta | Tipo | Archivo | Descripción |
 |---|------------|------|---------|-------------|
 | 1 | **GQ Position Sizer** | EA | `mql/GQ_Position_Sizer.mq4` / `.mq5` | Calcula lotaje por ATR y riesgo 2% |
-| 2 | **GQ SuperTrend** | EA | `mql/GQ_SuperTrend.mq4` / `.mq5` | Trend following con trailing stop ATR |
+| 2 | **GQ SuperTrend** | EA | `mql/GQ_SuperTrend.mq4` / `.mq5` | Trend following con SuperTrend ATR (TP fijo 1xATR, reversión en cruce) |
 | 3 | **GQ MACD Trader** | EA | `mql/GQ_MACD_Trader.mq4` / `.mq5` | Cruces MACD + gestión de riesgo ATR |
 | 4 | **GQ Bollinger Reversion** | EA | `mql/GQ_Bollinger_Reversion.mq4` / `.mq5` | Reversión al medio con BB + RSI |
 | 5 | **GQ Trend Follow** | EA | `mql/GQ_Trend_Follow.mq4` / `.mq5` | Seguidor de tendencia con MA crossover |
 | 6 | **GQ RSI Pro** | Indicador | `mql/GQ_RSI_Pro.mq4` / `.mq5` | RSI con detección de divergencias |
 | 7 | **GQ ATR Stop Loss** | Indicador | `mql/GQ_ATR_Stop_Loss.mq4` / `.mq5` | Trailing stop visual basado en ATR |
-| 8 | **GQ Market Structure** | Indicador | `mql/GQ_Market_Structure.mq4` / `.mq5` | Estructura de mercado BOS/CHoCH |
+| 8 | **GQ Market Structure** | Indicador | `mql/GQ_Market_Structure.mq4` / `.mq5` | Estructura de mercado BOS/CHoCH (heurística price-action sobre swings) |
 | 9 | **GQ Ichimoku Cloud** | Indicador | `mql/GQ_Ichimoku_Cloud.mq4` / `.mq5` | Sistema Ichimoku completo |
 | 10 | **GQ Support & Resistance** | Indicador | `mql/GQ_Support_Resistance.mq4` / `.mq5` | S/R dinámicos con clustering de pivotes |
 | 11 | **GQ Volume Profile** | Indicador | `mql/GQ_Volume_Profile.mq4` / `.mq5` | Perfil de volumen con POC/VA |
@@ -97,7 +118,7 @@ Nuestro enfoque se basa en el **Cálculo Vigesimal Muisca (Gueta)** — rigor ma
 | 4 | **GQ RSI Pro** | `pinescript/GQ_RSI_Pro.pb` | RSI + divergencias regulares/ocultas |
 | 5 | **GQ MACD Pro** | `pinescript/GQ_MACD_Pro.pb` | MACD con histograma de momentum |
 | 6 | **GQ Bollinger Bands** | `pinescript/GQ_Bollinger_Bands.pb` | Bandas con detección de squeeze |
-| 7 | **GQ Market Structure** | `pinescript/GQ_Market_Structure.pb` | SMC/ICT: FVG, BOS, CHoCH, order blocks |
+| 7 | **GQ Market Structure** | `pinescript/GQ_Market_Structure.pb` | SMC/ICT: FVG, BOS, CHoCH, OB (heurística price-action, no order-flow institucional) |
 | 8 | **GQ Order Flow CVD** | `pinescript/GQ_Order_Flow_CVD.pb` | Delta de volumen acumulativo |
 | 9 | **GQ Anchored VWAP** | `pinescript/GQ_Anchored_VWAP.pb` | VWAP multi-ancla con 3 líneas simultáneas |
 | 10 | **GQ Support & Resistance** | `pinescript/GQ_Support_Resistance.pb` | S/R con clustering de pivotes |
@@ -254,6 +275,8 @@ Tu Dispositivo
 3. Agrega tu código con documentación en **español**
 4. Abre un **Pull Request** describiendo la lógica cuantitativa
 
+> 📖 Guía completa por plataforma, checks obligatorios y PR checklist en [`CONTRIBUTING.md`](./CONTRIBUTING.md).
+
 > **Política de Contribución:** No se aceptan señales de trading, bots de copy-trading comerciales, ni código que requiera acceso a datos de usuarios. Solo herramientas educativas y de gestión de riesgo local.
 
 ---
@@ -315,7 +338,7 @@ Our approach is rooted in **Muisca Vigesimal Calculus (Gueta)** — pure mathema
 | # | Tool | Type | File | Description |
 |---|------|------|------|-------------|
 | 1 | **GQ Position Sizer** | EA | `mql/GQ_Position_Sizer.mq4` / `.mq5` | ATR-based position sizing |
-| 2 | **GQ SuperTrend** | EA | `mql/GQ_SuperTrend.mq4` / `.mq5` | Trend following with ATR trailing stop |
+| 2 | **GQ SuperTrend** | EA | `mql/GQ_SuperTrend.mq4` / `.mq5` | Trend following with SuperTrend ATR (fixed 1xATR TP, flip-on-cross) |
 | 3 | **GQ MACD Trader** | EA | `mql/GQ_MACD_Trader.mq4` / `.mq5` | MACD crossovers + ATR risk |
 | 4 | **GQ Bollinger Reversion** | EA | `mql/GQ_Bollinger_Reversion.mq4` / `.mq5` | BB + RSI mean reversion |
 | 5 | **GQ Trend Follow** | EA | `mql/GQ_Trend_Follow.mq4` / `.mq5` | MA crossover trend follower |
@@ -338,7 +361,7 @@ Our approach is rooted in **Muisca Vigesimal Calculus (Gueta)** — pure mathema
 | 4 | **GQ RSI Pro** | `pinescript/GQ_RSI_Pro.pb` | RSI + regular/hidden divergences |
 | 5 | **GQ MACD Pro** | `pinescript/GQ_MACD_Pro.pb` | MACD momentum histogram |
 | 6 | **GQ Bollinger Bands** | `pinescript/GQ_Bollinger_Bands.pb` | Bands with squeeze detection |
-| 7 | **GQ Market Structure** | `pinescript/GQ_Market_Structure.pb` | SMC/ICT: FVG, BOS, CHoCH |
+| 7 | **GQ Market Structure** | `pinescript/GQ_Market_Structure.pb` | SMC/ICT: FVG, BOS, CHoCH (price-action heuristic, not institutional order flow) |
 | 8 | **GQ Order Flow CVD** | `pinescript/GQ_Order_Flow_CVD.pb` | Cumulative Volume Delta |
 | 9 | **GQ Anchored VWAP** | `pinescript/GQ_Anchored_VWAP.pb` | Multi-anchor VWAP (3 lines) |
 | 10 | **GQ Support & Resistance** | `pinescript/GQ_Support_Resistance.pb` | S/R with pivot clustering |
