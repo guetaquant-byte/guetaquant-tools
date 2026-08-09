@@ -97,6 +97,8 @@ namespace cAlgo.API
         protected TradeResult PlaceStopOrder(TradeType t, double volume, double price, string label, double? sl, double? tp) => new TradeResult { IsSuccessful = true };
         protected TradeResult PlaceLimitOrder(TradeType t, double volume, double price, string label, double? sl, double? tp) => new TradeResult { IsSuccessful = true };
         protected TradeResult PlaceMarketOrder(TradeType t, double volume, string label, double? sl, double? tp) => new TradeResult { IsSuccessful = true };
+        protected TradeResult ExecuteStopOrder(StopOrderRequest request) => new TradeResult { IsSuccessful = true };
+        protected TradeResult ExecuteLimitOrder(LimitOrderRequest request) => new TradeResult { IsSuccessful = true };
 
         protected virtual void OnStart() { }
         protected virtual void OnTick() { }
@@ -170,13 +172,13 @@ namespace cAlgo.API
     {
         public Series Result { get; set; } = new Series();
     }
-    public class Supertrend
+    public class SuperTrend
     {
         public Series UpTrend { get; set; } = new Series();
         public Series DownTrend { get; set; } = new Series();
         public Series Result { get; set; } = new Series();
     }
-    public class SuperTrend : Supertrend { }   // alias de tipo usado por GQ_Trend_Follower
+    public class Supertrend : SuperTrend { }   // API de cTrader devuelve Supertrend; GQ_Trend_Follower lo asigna a SuperTrend
     public class BollingerBands
     {
         public Series Result { get; set; } = new Series();
@@ -249,13 +251,32 @@ namespace cAlgo.API.Requests
     using cAlgo.API;
     public class StopOrderRequest
     {
+        public StopOrderRequest() { }
+        public StopOrderRequest(TradeType tradeType, double volume, double price) { }
         public TradeType TradeType { get; set; }
         public double Volume { get; set; }
         public double Price { get; set; }
         public string Label { get; set; }
         public double? StopLoss { get; set; }
         public double? TakeProfit { get; set; }
-        public TimeSpan? ExpirationTime { get; set; }
+        public double? StopLossPips { get; set; }
+        public double? TakeProfitPips { get; set; }
+        public string Comment { get; set; }
+        public DateTime? ExpirationTime { get; set; }
+    }
+
+    public class LimitOrderRequest
+    {
+        public LimitOrderRequest() { }
+        public LimitOrderRequest(TradeType tradeType, double volume, double price) { }
+        public TradeType TradeType { get; set; }
+        public double Volume { get; set; }
+        public double Price { get; set; }
+        public string Label { get; set; }
+        public double? StopLossPips { get; set; }
+        public double? TakeProfitPips { get; set; }
+        public string Comment { get; set; }
+        public DateTime? ExpirationTime { get; set; }
     }
 }
 
