@@ -39,9 +39,10 @@ void OnTick()
 
    int total = OrdersTotal();
    bool hasLong = false, hasShort = false;
-   for (int i = 0; i < total; i++)
+   int i, j;   // MQL4: scope de funcion — declarar una sola vez
+   for (i = 0; i < total; i++)
    {
-      if (!OrderSelect(i, SELECT_BY_POS, MODE_TRADES)) continue;
+      if (!OrderSelect(j, SELECT_BY_POS, MODE_TRADES)) continue;
       if (OrderSymbol() != _Symbol) continue;
       if (OrderMagicNumber() != MagicNumber) continue;
       if (OrderType() == OP_BUY) hasLong = true;
@@ -52,7 +53,7 @@ void OnTick()
    int limit = MathMin(200, Bars(_Symbol, _Period));
    double hl2[];
    ArrayResize(hl2, limit);
-   for (int i = 0; i < limit; i++)
+   for (i = 0; i < limit; i++)
    {
       hl2[i] = (iHigh(_Symbol, _Period, i) + iLow(_Symbol, _Period, i)) / 2.0;
    }
@@ -63,7 +64,7 @@ void OnTick()
    double trend[];
    ArrayResize(trend, limit);
 
-   for (int i = 0; i < limit; i++)
+   for (i = 0; i < limit; i++)
    {
       double med = (iHigh(_Symbol, _Period, i) + iLow(_Symbol, _Period, i)) / 2.0;
       double r = iATR(_Symbol, _Period, ATRPeriod, i) * Multiplier;   // ATR por barra
@@ -71,7 +72,7 @@ void OnTick()
       lowerBand[i] = med - r;
    }
 
-   for (int i = limit - 2; i >= 0; i--)
+   for (i = limit - 2; i >= 0; i--)
    {
       if (iClose(_Symbol, _Period, i) <= upperBand[i + 1])
          lowerBand[i] = MathMax(lowerBand[i], lowerBand[i + 1]);
@@ -79,7 +80,7 @@ void OnTick()
          upperBand[i] = MathMin(upperBand[i], upperBand[i + 1]);
    }
 
-   for (int i = limit - 1; i >= 0; i--)
+   for (i = limit - 1; i >= 0; i--)
    {
       if (i == limit - 1)
       {
@@ -119,9 +120,9 @@ void OnTick()
 //---+
 void CloseAllLong()
 {
-   for (int i = OrdersTotal() - 1; i >= 0; i--)
+   for (j = OrdersTotal() - 1; j >= 0; j--)
    {
-      if (!OrderSelect(i, SELECT_BY_POS, MODE_TRADES)) continue;
+      if (!OrderSelect(j, SELECT_BY_POS, MODE_TRADES)) continue;
       if (OrderSymbol() != _Symbol) continue;
       if (OrderMagicNumber() != MagicNumber) continue;
       if (OrderType() == OP_BUY)
@@ -135,9 +136,9 @@ void CloseAllLong()
 //---+
 void CloseAllShort()
 {
-   for (int i = OrdersTotal() - 1; i >= 0; i--)
+   for (j = OrdersTotal() - 1; j >= 0; j--)
    {
-      if (!OrderSelect(i, SELECT_BY_POS, MODE_TRADES)) continue;
+      if (!OrderSelect(j, SELECT_BY_POS, MODE_TRADES)) continue;
       if (OrderSymbol() != _Symbol) continue;
       if (OrderMagicNumber() != MagicNumber) continue;
       if (OrderType() == OP_SELL)
@@ -172,7 +173,7 @@ void OpenOrder(int type, double atr)
    {
       sl = Ask + atr;
       tp = Bid - atr;
-      int ticket = OrderSend(_Symbol, OP_SELL, lot, Bid, 3, sl, tp, "GQ_ST", MagicNumber, 0, clrRed);
-      if (ticket < 0) Print("Sell open failed: ", GetLastError());
+      int ticketSell = OrderSend(_Symbol, OP_SELL, lot, Bid, 3, sl, tp, "GQ_ST", MagicNumber, 0, clrRed);
+      if (ticketSell < 0) Print("Sell open failed: ", GetLastError());
    }
 }
