@@ -1,7 +1,7 @@
 <div align="center">
 
 <!-- LOGO PLACEHOLDER -->
-<img src="[[https://guetaquant.com/images/linkedin_logo.png](https://guetaquant.com/)](https://guetaquant.com/images/gueta-quant-philosophy.avif)" alt="Gueta Quant Logo" width="120" />
+<img src="https://guetaquant.com/images/gueta-quant-philosophy.avif" alt="Gueta Quant Logo" width="120" />
 
 # 🏛️ Gueta Quant — Herramientas Open-Source
 
