@@ -167,6 +167,7 @@ namespace cAlgo.API
         public Series DownTrend { get; set; } = new Series();
         public Series Result { get; set; } = new Series();
     }
+    public class SuperTrend : Supertrend { }   // alias de tipo usado por GQ_Trend_Follower
     public class BollingerBands
     {
         public Series Result { get; set; } = new Series();

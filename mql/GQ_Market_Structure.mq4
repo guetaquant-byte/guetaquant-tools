@@ -70,22 +70,22 @@ int OnCalculate(const int rates_total,
    double lastSwingHigh = 0, lastSwingLow = 0;
    datetime lastSwingHighTime = 0, lastSwingLowTime = 0;
 
-   for (int i = lookback; i < rates_total - PivotLeft - 1; i++)   // bound alto[i+j] dentro del array
+   for (int m = lookback; m < rates_total - PivotLeft - 1; m++)   // bound alto[m+j] dentro del array
    {
       bool isSwingHigh = true;
       bool isSwingLow = true;
-      double currentHigh = high[i];
-      double currentLow = low[i];
+      double currentHigh = high[m];
+      double currentLow = low[m];
 
-      for (int j = 1; j <= PivotLeft; j++)
+      for (int j1 = 1; j1 <= PivotLeft; j1++)
       {
-         if (high[i + j] >= currentHigh) isSwingHigh = false;
-         if (low[i + j] <= currentLow) isSwingLow = false;
+         if (high[m + j1] >= currentHigh) isSwingHigh = false;
+         if (low[m + j1] <= currentLow) isSwingLow = false;
       }
-      for (int j = 1; j <= PivotRight; j++)
+      for (int j2 = 1; j2 <= PivotRight; j2++)
       {
-         if (high[i - j] >= currentHigh) isSwingHigh = false;
-         if (low[i - j] <= currentLow) isSwingLow = false;
+         if (high[m - j2] >= currentHigh) isSwingHigh = false;
+         if (low[m - j2] <= currentLow) isSwingLow = false;
       }
 
       double minSwing = MinSwingSize_Points * Point;
@@ -94,32 +94,32 @@ int OnCalculate(const int rates_total,
       {
          if (lastSwingHigh > 0 && MathAbs(currentHigh - lastSwingHigh) >= minSwing)
          {
-            DrawTrendline("GQ_MS_SH_", lastSwingHighTime, lastSwingHigh, time[i], currentHigh, clrRed);
+            DrawTrendline("GQ_MS_SH_", lastSwingHighTime, lastSwingHigh, time[m], currentHigh, clrRed);
          }
          lastSwingHigh = currentHigh;
-         lastSwingHighTime = time[i];
+         lastSwingHighTime = time[m];
       }
 
       if (isSwingLow)
       {
          if (lastSwingLow > 0 && MathAbs(currentLow - lastSwingLow) >= minSwing)
          {
-            DrawTrendline("GQ_MS_SL_", lastSwingLowTime, lastSwingLow, time[i], currentLow, clrLime);
+            DrawTrendline("GQ_MS_SL_", lastSwingLowTime, lastSwingLow, time[m], currentLow, clrLime);
          }
          lastSwingLow = currentLow;
-         lastSwingLowTime = time[i];
+         lastSwingLowTime = time[m];
       }
 
-      //--- Break of Structure: fire only on the transition bar (close[i-1] on the other side)
-      if (lastSwingHigh > 0 && close[i] > lastSwingHigh && close[i - 1] <= lastSwingHigh)
+      //--- Break of Structure: fire only on the transition bar (close[m-1] on the other side)
+      if (lastSwingHigh > 0 && close[m] > lastSwingHigh && close[m - 1] <= lastSwingHigh)
       {
-         g_bos_up[i] = low[i] - 10 * Point;
-         CreateLabel("GQ_MS_BOSU_", time[i], low[i] - 15 * Point, "BOS UP", clrLime);
+         g_bos_up[m] = low[m] - 10 * Point;
+         CreateLabel("GQ_MS_BOSU_", time[m], low[m] - 15 * Point, "BOS UP", clrLime);
       }
-      if (lastSwingLow > 0 && close[i] < lastSwingLow && close[i - 1] >= lastSwingLow)
+      if (lastSwingLow > 0 && close[m] < lastSwingLow && close[m - 1] >= lastSwingLow)
       {
-         g_bos_down[i] = high[i] + 10 * Point;
-         CreateLabel("GQ_MS_BOSD_", time[i], high[i] + 15 * Point, "BOS DN", clrRed);
+         g_bos_down[m] = high[m] + 10 * Point;
+         CreateLabel("GQ_MS_BOSD_", time[m], high[m] + 15 * Point, "BOS DN", clrRed);
       }
    }
 

@@ -45,8 +45,8 @@ int OnInit()
    SetIndexBuffer(1, g_sellArrow, INDICATOR_DATA);
    PlotIndexSetInteger(0, PLOT_ARROW, 233);
    PlotIndexSetInteger(1, PLOT_ARROW, 234);
-   SetIndexEmptyValue(0, EMPTY_VALUE);
-   SetIndexEmptyValue(1, EMPTY_VALUE);
+   PlotIndexSetDouble(0, PLOT_EMPTY_VALUE, EMPTY_VALUE);
+   PlotIndexSetDouble(1, PLOT_EMPTY_VALUE, EMPTY_VALUE);
    IndicatorSetString(INDICATOR_SHORTNAME, "GQ_RSI_Pro(" + IntegerToString(RSIPeriod) + ")");
    return INIT_SUCCEEDED;
 }
