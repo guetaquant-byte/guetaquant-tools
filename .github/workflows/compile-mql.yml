@@ -25,8 +25,6 @@ on:
   workflow_dispatch:
 
 env:
-  MT4_URL: "https://download.mql5.com/cdn/web/14397/mt4/mt4setup.exe"
-  MT5_URL: "https://download.mql5.com/cdn/web/14397/mt5/mt5setup.exe"
   MT4_PATH: "C:\\Program Files\\MetaTrader 4"
   MT5_PATH: "C:\\Program Files\\MetaTrader 5"
 
@@ -39,13 +37,13 @@ jobs:
       matrix:
         include:
           - version: "4"
-            url: "${{ env.MT4_URL }}"
-            install_dir: "${{ env.MT4_PATH }}"
+            url: "https://download.mql5.com/cdn/web/14397/mt4/mt4setup.exe"
+            install_dir: "C:\\Program Files\\MetaTrader 4"
             ignore: "**/*.mq5"
             artifact: "*.ex4"
           - version: "5"
-            url: "${{ env.MT5_URL }}"
-            install_dir: "${{ env.MT5_PATH }}"
+            url: "https://download.mql5.com/cdn/web/14397/mt5/mt5setup.exe"
+            install_dir: "C:\\Program Files\\MetaTrader 5"
             ignore: "**/*.mq4"
             artifact: "*.ex5"
     steps:
