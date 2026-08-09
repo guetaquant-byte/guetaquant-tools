@@ -70,68 +70,68 @@ int OnCalculate(const int rates_total,
    }
 
    int limit = rates_total - 1;
-   for (int i = RSIPeriod + 2; i < limit; i++)
+   for (int k = RSIPeriod + 2; k < limit; k++)
    {
-      double rsi0 = iRSI(_Symbol, _Period, RSIPeriod, PRICE_CLOSE, i);
-      double rsi1 = iRSI(_Symbol, _Period, RSIPeriod, PRICE_CLOSE, i + 1);
-      double rsi2 = iRSI(_Symbol, _Period, RSIPeriod, PRICE_CLOSE, i + 2);
+      double rsi0 = iRSI(_Symbol, _Period, RSIPeriod, PRICE_CLOSE, k);
+      double rsi1 = iRSI(_Symbol, _Period, RSIPeriod, PRICE_CLOSE, k + 1);
+      double rsi2 = iRSI(_Symbol, _Period, RSIPeriod, PRICE_CLOSE, k + 2);
 
       if (rsi0 == EMPTY_VALUE || rsi1 == EMPTY_VALUE) continue;
 
       //--- Oversold cross
       if (rsi1 < Oversold && rsi0 >= Oversold)
       {
-         g_buyArrow[i] = low[i] - 10 * Point;
-         if (AlertEnabled && time[i] != g_lastAlertTime)
+         g_buyArrow[k] = low[k] - 10 * Point;
+         if (AlertEnabled && time[k] != g_lastAlertTime)
          {
             Alert("GQ_RSI_Pro: Oversold cross on ", _Symbol, " ", _Period);
-            g_lastAlertTime = time[i];
+            g_lastAlertTime = time[k];
          }
       }
 
       //--- Overbought cross
       if (rsi1 > Overbought && rsi0 <= Overbought)
       {
-         g_sellArrow[i] = high[i] + 10 * Point;
-         if (AlertEnabled && time[i] != g_lastAlertTime)
+         g_sellArrow[k] = high[k] + 10 * Point;
+         if (AlertEnabled && time[k] != g_lastAlertTime)
          {
             Alert("GQ_RSI_Pro: Overbought cross on ", _Symbol, " ", _Period);
-            g_lastAlertTime = time[i];
+            g_lastAlertTime = time[k];
          }
       }
 
       //--- Bullish divergence: price makes lower low, RSI makes higher low
-      if (i + 4 < rates_total)
+      if (k + 4 < rates_total)
       {
-         double rsi3 = iRSI(_Symbol, _Period, RSIPeriod, PRICE_CLOSE, i + 3);
-         double rsi4 = iRSI(_Symbol, _Period, RSIPeriod, PRICE_CLOSE, i + 4);
-         double low0 = low[i];
-         double low2 = low[i + 2];
-         double low4 = low[i + 4];
+         double rsi3 = iRSI(_Symbol, _Period, RSIPeriod, PRICE_CLOSE, k + 3);
+         double rsi4 = iRSI(_Symbol, _Period, RSIPeriod, PRICE_CLOSE, k + 4);
+         double low0 = low[k];
+         double low2 = low[k + 2];
+         double low4 = low[k + 4];
 
          if (low0 < low2 && low2 < low4 && rsi0 > rsi2 && rsi2 > rsi4)
          {
-            g_buyArrow[i] = low[i] - 20 * Point;
-            DrawTrendline("GQ_RSI_BullDiv_", time[i], low[i], time[i + 4], low[i + 4], clrLime);
-            if (AlertEnabled && time[i] != g_lastAlertTime)
+            g_buyArrow[k] = low[k] - 20 * Point;
+            DrawTrendline("GQ_RSI_BullDiv_", time[k], low[k], time[k + 4], low[k + 4], clrLime);
+            if (AlertEnabled && time[k] != g_lastAlertTime)
             {
                Alert("GQ_RSI_Pro: Bullish divergence on ", _Symbol, " ", _Period);
-               g_lastAlertTime = time[i];
+               g_lastAlertTime = time[k];
             }
          }
 
          //--- Bearish divergence: price makes higher high, RSI makes lower high
-         double high0 = high[i];
-         double high2 = high[i + 2];
-         double high4 = high[i + 4];
+         double high0 = high[k];
+         double high2 = high[k + 2];
+         double high4 = high[k + 4];
          if (high0 > high2 && high2 > high4 && rsi0 < rsi2 && rsi2 < rsi4)
          {
-            g_sellArrow[i] = high[i] + 20 * Point;
-            DrawTrendline("GQ_RSI_BearDiv_", time[i], high[i], time[i + 4], high[i + 4], clrRed);
-            if (AlertEnabled && time[i] != g_lastAlertTime)
+            g_sellArrow[k] = high[k] + 20 * Point;
+            DrawTrendline("GQ_RSI_BearDiv_", time[k], high[k], time[k + 4], high[k + 4], clrRed);
+            if (AlertEnabled && time[k] != g_lastAlertTime)
             {
                Alert("GQ_RSI_Pro: Bearish divergence on ", _Symbol, " ", _Period);
-               g_lastAlertTime = time[i];
+               g_lastAlertTime = time[k];
             }
          }
       }

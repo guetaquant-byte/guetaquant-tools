@@ -80,7 +80,9 @@ namespace cAlgo.API
     public class Robot : IDisposable
     {
         public Symbol Symbol { get; set; }
+        public string SymbolName { get; set; }
         public Bars Bars { get; set; }
+        public Server Server { get; set; }
         public IEnumerable<Position> Positions => Array.Empty<Position>();
         public IEnumerable<PendingOrder> PendingOrders => Array.Empty<PendingOrder>();
         public MarketData MarketData { get; set; }
@@ -110,6 +112,13 @@ namespace cAlgo.API
         public virtual void Dispose() { }
     }
 
+    public class Server
+    {
+        public DateTime Time { get; set; }
+        public string Name { get; set; }
+        public string Version { get; set; }
+    }
+
     public class Account
     {
         public double Equity { get; set; }
@@ -135,8 +144,8 @@ namespace cAlgo.API
         public MacdHistogram MacdHistogram(Series src, int fast, int slow, int signal) => new MacdHistogram();
         public TrueRange TrueRange(Series src) => new TrueRange();
         public ParabolicSAR ParabolicSAR(double step, double max) => new ParabolicSAR();
-        public Supertrend Supertrend(int period, int multiplier) => new Supertrend();
-        public Supertrend SuperTrend(int period, int multiplier, Series h, Series l, Series c) => new Supertrend();
+        public Supertrend Supertrend(int period, double multiplier) => new Supertrend();
+        public Supertrend SuperTrend(int period, double multiplier, Series h, Series l, Series c) => new Supertrend();
     }
 
     public enum MovingAverageType { Simple, Exponential, Weighted, Smoothed }
