@@ -98,6 +98,23 @@ Cualquier trader o investigador de seguridad puede auditar y verificar estas 3 g
 
 ---
 
+### 🤖 4. Capa de IA (Alcance Explícito del Núcleo Local-First)
+
+**Las 3 auditorías anteriores aplican exclusivamente al NÚCLEO del Diario** (registro de operaciones, métricas, filtros, exportación, almacenamiento). **NO aplican a las funciones de IA:**
+
+| Función | Qué ocurre con tus datos |
+|---------|--------------------------|
+| **Núcleo del Diario** (registro, métricas, exportación CSV) | ✅ 100% local. Cero bytes salen del navegador. |
+| **AI Analyzer / AI Companion** (`/api/insights`, `/api/chat`) | ⚠️ **OPT-IN:** al hacer clic en Analizar/Chat, un subconjunto de tu historial de operaciones (símbolo, tipo, entrada/salida, P&L, notas) se envía a Google Gemini (modelo en la nube) vía el servidor de guetaquant.com. **Sin tu clic, nada se envía.** |
+
+- El análisis con IA es **opcional y bajo demanda**: el núcleo funciona 100% offline sin activarlo.
+- Recomendamos no incluir datos sensibles (nombres, cuentas, contraseñas) en el campo de notas si planeas usar la IA.
+- Para permanecer 100% local: simplemente no uses las pestañas de IA, o activa el **Modo Solo-Local** (bloquea todas las llamadas de red) desde Ajustes.
+
+**✅ Resumen verificado:** "Cero datos salen de tu dispositivo" = **verdadero para el núcleo**; "la IA nunca ve tus datos" = **falso por diseño** — la IA es una capa opcional que requiere tu acción explícita y envía datos a un proveedor externo.
+
+---
+
 ### 🔒 Matriz de Seguridad
 
 | Componente | Tecnología | Propósito |
@@ -129,7 +146,7 @@ Todas las herramientas de código abierto proporcionadas en este repositorio est
 ### Preguntas Frecuentes (FAQ)
 
 **P: ¿Gueta Quant puede ver mis operaciones?**
-R: No. La arquitectura Zero-Knowledge significa que ni siquiera nosotros podemos ver tus datos. Todo permanece en tu dispositivo.
+R: No en el núcleo del Diario: la arquitectura Zero-Knowledge significa que el registro de operaciones nunca sale de tu dispositivo. Excepción explícita: si usas el AI Analyzer/Companion (opt-in), el historial se envía a Google Gemini para generar el análisis.
 
 **P: ¿Qué pasa si borro el caché del navegador?**
 R: Tus datos se perderán. Recomendamos exportar respaldos periódicos usando la función de exportación integrada en la app.
@@ -234,6 +251,23 @@ Any trader or security researcher can independently audit and verify these 3 pri
 
 ---
 
+### 🤖 4. AI Layer (Explicit Scope of the Local-First Core)
+
+**The 3 audits above apply EXCLUSIVELY to the Journal CORE** (trade logging, metrics, filters, export, storage). **They do NOT apply to the AI features:**
+
+| Feature | What happens to your data |
+|---------|---------------------------|
+| **Journal Core** (logging, metrics, CSV export) | ✅ 100% local. Zero bytes leave the browser. |
+| **AI Analyzer / AI Companion** (`/api/insights`, `/api/chat`) | ⚠️ **OPT-IN:** when you click Analyze/Chat, a subset of your trade history (symbol, type, entry/exit, P&L, notes) is sent to Google Gemini (cloud model) via guetaquant.com's server. **Without your click, nothing is sent.** |
+
+- AI analysis is **optional and on-demand**: the core works 100% offline without it.
+- We recommend NOT including sensitive data (names, accounts, passwords) in the notes field if you plan to use AI.
+- To stay 100% local: simply don't use the AI tabs, or enable **Local-Only Mode** (blocks all network calls) in Settings.
+
+**✅ Verified summary:** "Zero data leaves your device" = **true for the core**; "the AI never sees your data" = **false by design** — AI is an optional layer requiring your explicit action that sends data to an external provider.
+
+---
+
 ### 🔒 Security Matrix
 
 | Component | Technology | Purpose |
@@ -265,7 +299,7 @@ All open-source tools provided in this repository are licensed under the **GNU A
 ### Frequently Asked Questions
 
 **Q: Can Gueta Quant see my trades?**
-A: No. The Zero-Knowledge architecture means not even we can see your data. Everything stays on your device.
+A: Not in the Journal core: the Zero-Knowledge architecture means trade logging never leaves your device. Explicit exception: if you use the AI Analyzer/Companion (opt-in), the history is sent to Google Gemini to generate the analysis.
 
 **Q: What happens if I clear my browser cache?**
 A: Your data will be lost. We recommend exporting periodic backups using the built-in export function.

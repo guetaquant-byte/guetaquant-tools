@@ -237,7 +237,7 @@ Tu Dispositivo
     │     ├── métricas/
     │     └── configuración/
     └── Service Worker (funciona offline)
-          └── CERO comunicación con servidores externos
+          └── CERO comunicación con servidores externos al registrar operaciones (núcleo local-first; análisis con IA es opt-in)
 ```
 
 > [!NOTE]
