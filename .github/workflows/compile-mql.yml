@@ -116,15 +116,26 @@ jobs:
 
       - name: Instalar MT4 (/auto) y localizar metaeditor.exe
         shell: pwsh
-        timeout-minutes: 6
+        timeout-minutes: 12
         run: |
           $ErrorActionPreference = 'Stop'
           $setup = Join-Path $env:RUNNER_TEMP 'mt4setup.exe'
-          Invoke-WebRequest -Uri 'https://download.mql5.com/cdn/web/metaquotes.software.corp/mt4/mt4setup.exe' -OutFile $setup -UseBasicParsing
-          Write-Host 'Instalación silenciosa (/auto)...'
+          foreach ($attempt in 1..3) {
+            try {
+              Invoke-WebRequest -Uri 'https://download.mql5.com/cdn/web/metaquotes.software.corp/mt4/mt4setup.exe' -OutFile $setup -UseBasicParsing
+              break
+            } catch {
+              Write-Host "Descarga intento $attempt fallo: $_"
+              if ($attempt -eq 3) { throw }
+              Start-Sleep -Seconds 10
+            }
+          }
+          Write-Host "Instalador: $((Get-Item $setup).Length) bytes"
+          Write-Host 'Instalacion silenciosa (/auto)...'
           Start-Process -FilePath $setup -ArgumentList '/auto' -Wait
+          Get-Process -Name 'terminal','terminal64' -ErrorAction SilentlyContinue | Stop-Process -Force -ErrorAction SilentlyContinue
           $me = $null
-          foreach ($i in 1..40) {
+          foreach ($i in 1..90) {
             $me = Get-ChildItem 'C:\Program Files','C:\Program Files (x86)' -Recurse -Filter 'metaeditor.exe' -ErrorAction SilentlyContinue |
                   Where-Object { $_.FullName -notmatch 'MetaTrader 5' } | Select-Object -First 1
             if ($me) { break }
