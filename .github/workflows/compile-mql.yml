@@ -4,12 +4,12 @@
 # - MetaEditor (metaeditor64.exe) es nativo de Windows -> compilar en windows-latest.
 # - La action fx31337/mql-compile-action v2 NO instala la plataforma: exige un
 #   `mt-path` con una instalación de MetaTrader. El patrón estándar del ecosistema
-#   EA31337 es: (1) job en Linux que descarga la plataforma MT4/MT5 y la sube como
-#   artifact (EA31337/EA-Tester platform-linux.yml), (2) job en Windows que la
-#   descarga y la pasa como mt-path.
+#   EA31337 es: (1) job que descarga la plataforma MT4/MT5 y la sube como artifact
+#   (reusable workflow EA31337/EA-Tester platform-linux.yml), (2) job en Windows
+#   que la descarga y la pasa como mt-path.
 #
 # Flujo:
-#   platform (ubuntu)  ->  artifact .mt4 / .mt5
+#   platform (ubuntu, reusable workflow)  ->  artifact .mt4 / .mt5
 #        └──────────────►  compile (windows)  ->  .ex4 / .ex5 artifacts + logs
 name: compile-mql
 
@@ -25,66 +25,52 @@ on:
   workflow_dispatch:
 
 jobs:
-  platform:
-    name: Instalar plataforma MT${{ matrix.version }} (Linux)
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        version: [4, 5]
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+  platform-mt4:
+    name: Instalar plataforma MT4 (Linux)
+    uses: EA31337/EA-Tester/.github/workflows/platform-linux.yml@dev
+    with:
+      artifact_name: mt4
+      artifact_overwrite: true
+      skip_cleanup: true
+      version: 4
 
-      - name: Instalar MetaTrader ${{ matrix.version }} (EA-Tester)
-        uses: EA31337/EA-Tester/.github/workflows/platform-linux.yml@dev
-        with:
-          artifact_name: mt${{ matrix.version }}
-          artifact_overwrite: true
-          skip_cleanup: true
-          version: ${{ matrix.version }}
+  platform-mt5:
+    name: Instalar plataforma MT5 (Linux)
+    uses: EA31337/EA-Tester/.github/workflows/platform-linux.yml@dev
+    with:
+      artifact_name: mt5
+      artifact_overwrite: true
+      skip_cleanup: true
+      version: 5
 
-  compile:
-    name: Compile MQL (${{ matrix.platform }})
-    needs: platform
+  compile-mq4:
+    name: Compile MQL4
+    needs: platform-mt4
     runs-on: windows-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        platform: [mq4, mq5]
-        include:
-          - platform: mq4
-            version: 4
-            ignore: "**/*.mq5"   # compilar solo .mq4
-            artifact: "*.ex4"
-          - platform: mq5
-            version: 5
-            ignore: "**/*.mq4"   # compilar solo .mq5
-            artifact: "*.ex5"
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Descargar plataforma MT${{ matrix.version }}
+      - name: Descargar plataforma MT4
         uses: actions/download-artifact@v4
         with:
-          name: mt${{ matrix.version }}
-          path: .mt${{ matrix.version }}
+          name: mt4
+          path: .mt4
 
-      - name: Compilar MQL${{ matrix.platform == 'mq4' && '4' || '5' }} con MetaEditor
+      - name: Compilar MQL4 con MetaEditor
         uses: fx31337/mql-compile-action@v2
         with:
-          path: "mql"                 # carpeta con todos los fuentes MQL
-          path-ignore: ${{ matrix.ignore }}
-          init-platform: "true"       # descarga includes estándar vía terminal64.exe
-          mt-path: ".mt${{ matrix.version }}"
-          log-file: "compile-${{ matrix.platform }}.log"
+          path: "mql"
+          path-ignore: "**/*.mq5"
+          init-platform: "true"
+          mt-path: ".mt4"
+          log-file: "compile-mq4.log"
 
-      - name: Subir binarios compilados (${{ matrix.platform }})
+      - name: Subir binarios compilados (ex4)
         uses: actions/upload-artifact@v4
         with:
-          name: mql-${{ matrix.platform }}-binaries
-          path: "mql/**/${{ matrix.artifact }}"
+          name: mql-mq4-binaries
+          path: "mql/**/*.ex4"
           if-no-files-found: error
           retention-days: 14
 
@@ -92,7 +78,47 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: mql-${{ matrix.platform }}-log
-          path: "compile-${{ matrix.platform }}.log"
+          name: mql-mq4-log
+          path: "compile-mq4.log"
+          if-no-files-found: ignore
+          retention-days: 14
+
+  compile-mq5:
+    name: Compile MQL5
+    needs: platform-mt5
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Descargar plataforma MT5
+        uses: actions/download-artifact@v4
+        with:
+          name: mt5
+          path: .mt5
+
+      - name: Compilar MQL5 con MetaEditor
+        uses: fx31337/mql-compile-action@v2
+        with:
+          path: "mql"
+          path-ignore: "**/*.mq4"
+          init-platform: "true"
+          mt-path: ".mt5"
+          log-file: "compile-mq5.log"
+
+      - name: Subir binarios compilados (ex5)
+        uses: actions/upload-artifact@v4
+        with:
+          name: mql-mq5-binaries
+          path: "mql/**/*.ex5"
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Subir log de compilación
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: mql-mq5-log
+          path: "compile-mq5.log"
           if-no-files-found: ignore
           retention-days: 14
