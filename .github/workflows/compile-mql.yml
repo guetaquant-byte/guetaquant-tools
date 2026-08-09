@@ -37,12 +37,12 @@ jobs:
       matrix:
         include:
           - version: "4"
-            url: "https://download.mql5.com/cdn/web/14397/mt4/mt4setup.exe"
+            url: "https://download.mql5.com/cdn/web/metaquotes.software.corp/mt4/mt4setup.exe"
             install_dir: "C:\\Program Files\\MetaTrader 4"
             ignore: "**/*.mq5"
             artifact: "*.ex4"
           - version: "5"
-            url: "https://download.mql5.com/cdn/web/14397/mt5/mt5setup.exe"
+            url: "https://download.mql5.com/cdn/web/metaquotes.software.corp/mt5/mt5setup.exe"
             install_dir: "C:\\Program Files\\MetaTrader 5"
             ignore: "**/*.mq4"
             artifact: "*.ex5"
