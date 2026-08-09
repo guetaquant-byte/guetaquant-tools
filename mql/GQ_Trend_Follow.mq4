@@ -77,9 +77,9 @@ void OnTick()
    }
    else if (fastMA0 < slowMA0 && fastMA1 >= slowMA1)
    {
-      double sl = Ask + atr * 2.0;
-      double tp = Bid - atr * 3.0;
-      int ticket = OrderSend(_Symbol, OP_SELL, LotSize, Bid, 3, sl, tp, "GQ_TF", MagicNumber, 0, clrRed);
-      if (ticket < 0) Print("Sell open failed: ", GetLastError());
+      double slSell = Ask + atr * 2.0;
+      double tpSell = Bid - atr * 3.0;
+      int ticketSell = OrderSend(_Symbol, OP_SELL, LotSize, Bid, 3, slSell, tpSell, "GQ_TF", MagicNumber, 0, clrRed);
+      if (ticketSell < 0) Print("Sell open failed: ", GetLastError());
    }
 }
