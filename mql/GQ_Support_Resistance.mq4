@@ -55,7 +55,10 @@ int OnCalculate(const int rates_total,
 
    int lookback = PivotLookback;
 
-   for (int i = lookback; i < rates_total - lookback; i++)
+   int i, j;   // MQL4: scope de funcion — declarar una sola vez
+   bool clustered;
+   string labelName;
+   for (i = lookback; i < rates_total - lookback; i++)
    {
       bool isHigh = true;
       bool isLow = true;
@@ -91,10 +94,10 @@ int OnCalculate(const int rates_total,
 
    double clusterDist = ClusterDistance_Points * Point;
 
-   for (int i = 0; i < shCount; i++)
+   for (i = 0; i < shCount; i++)
    {
-      bool clustered = false;
-      for (int j = 0; j < resCount; j++)
+      clustered = false;
+      for (j = 0; j < resCount; j++)
       {
          if (MathAbs(swingHighs[i] - resLevels[j]) <= clusterDist)
          {
@@ -110,10 +113,10 @@ int OnCalculate(const int rates_total,
       }
    }
 
-   for (int i = 0; i < slCount; i++)
+   for (i = 0; i < slCount; i++)
    {
-      bool clustered = false;
-      for (int j = 0; j < supCount; j++)
+      clustered = false;
+      for (j = 0; j < supCount; j++)
       {
          if (MathAbs(swingLows[i] - supLevels[j]) <= clusterDist)
          {
@@ -132,7 +135,7 @@ int OnCalculate(const int rates_total,
    //--- Draw levels
    string resName, supName;
 
-   for (int i = 0; i < resCount; i++)
+   for (i = 0; i < resCount; i++)
    {
       resName = "GQ_SR_RES_" + IntegerToString(i);
       ObjectDelete(0, resName);
@@ -142,7 +145,7 @@ int OnCalculate(const int rates_total,
       ObjectSetInteger(0, resName, OBJPROP_STYLE, STYLE_DASH);
    }
 
-   for (int i = 0; i < supCount; i++)
+   for (i = 0; i < supCount; i++)
    {
       supName = "GQ_SR_SUP_" + IntegerToString(i);
       ObjectDelete(0, supName);
@@ -151,7 +154,7 @@ int OnCalculate(const int rates_total,
       ObjectSetInteger(0, supName, OBJPROP_WIDTH, 1);
       ObjectSetInteger(0, supName, OBJPROP_STYLE, STYLE_DASH);
 
-      string labelName = "GQ_SR_SUP_LBL_" + IntegerToString(i);
+      labelName = "GQ_SR_SUP_LBL_" + IntegerToString(i);
       ObjectDelete(0, labelName);
       ObjectCreate(0, labelName, OBJ_TEXT, 0, iTime(_Symbol, _Period, 0), supLevels[i]);
       ObjectSetString(0, labelName, OBJPROP_TEXT, "S" + IntegerToString(i + 1) + " " + DoubleToString(supLevels[i], _Digits));
@@ -159,9 +162,9 @@ int OnCalculate(const int rates_total,
       ObjectSetInteger(0, labelName, OBJPROP_FONTSIZE, 8);
    }
 
-   for (int i = 0; i < resCount; i++)
+   for (i = 0; i < resCount; i++)
    {
-      string labelName = "GQ_SR_RES_LBL_" + IntegerToString(i);
+      labelName = "GQ_SR_RES_LBL_" + IntegerToString(i);
       ObjectDelete(0, labelName);
       ObjectCreate(0, labelName, OBJ_TEXT, 0, iTime(_Symbol, _Period, 0), resLevels[i]);
       ObjectSetString(0, labelName, OBJPROP_TEXT, "R" + IntegerToString(i + 1) + " " + DoubleToString(resLevels[i], _Digits));
