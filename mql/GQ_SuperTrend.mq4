@@ -120,6 +120,7 @@ void OnTick()
 //---+
 void CloseAllLong()
 {
+   int j;
    for (j = OrdersTotal() - 1; j >= 0; j--)
    {
       if (!OrderSelect(j, SELECT_BY_POS, MODE_TRADES)) continue;
@@ -136,6 +137,7 @@ void CloseAllLong()
 //---+
 void CloseAllShort()
 {
+   int j;
    for (j = OrdersTotal() - 1; j >= 0; j--)
    {
       if (!OrderSelect(j, SELECT_BY_POS, MODE_TRADES)) continue;
