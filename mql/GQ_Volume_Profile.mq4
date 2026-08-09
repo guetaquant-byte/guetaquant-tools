@@ -89,17 +89,17 @@ int OnCalculate(const int rates_total,
    //--- Find POC (highest volume row)
    int pocRow = 0;
    double maxVol = 0;
-   for (int i = 0; i < Rows; i++)
+   for (int p = 0; p < Rows; p++)
    {
-      if (volProfile[i] > maxVol)
+      if (volProfile[p] > maxVol)
       {
-         maxVol = volProfile[i];
-         pocRow = i;
+         maxVol = volProfile[p];
+         pocRow = p;
       }
    }
 
    double totalVol = 0;
-   for (int i = 0; i < Rows; i++) totalVol += volProfile[i];
+   for (int v = 0; v < Rows; v++) totalVol += volProfile[v];
 
    //--- Calculate Value Area
    double vaTarget = totalVol * VAPercent / 100.0;
