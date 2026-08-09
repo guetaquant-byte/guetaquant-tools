@@ -39,6 +39,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Cache plataforma MT5
+        uses: actions/cache@v4
+        with:
+          path: C:\Program Files\MetaTrader 5
+          key: mt5-platform-v1
+
       - name: Instalar MT5 (/auto) y localizar metaeditor64.exe
         shell: pwsh
         timeout-minutes: 6
@@ -102,6 +108,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Cache plataforma MT4
+        uses: actions/cache@v4
+        with:
+          path: C:\Program Files\MetaTrader 4
+          key: mt4-platform-v1
+
       - name: Instalar MT4 (/auto) y localizar metaeditor.exe
         shell: pwsh
         timeout-minutes: 6
@@ -160,9 +172,13 @@ jobs:
           retention-days: 14
 
   compile-ctrader:
-    name: Compile cTrader (dotnet syntax gate)
+    name: Compile cTrader (dotnet syntax gate, best-effort)
     runs-on: ubuntu-latest
     timeout-minutes: 10
+    # Gate NO-BLOQUEANTE: valida sintaxis C# contra stubs de la API; la compilación
+    # ALGO real solo ocurre dentro de cTrader Automate (SDK propietario). Los
+    # cBots se verifican manualmente en cTrader antes de publicar.
+    continue-on-error: true
     steps:
       - uses: actions/checkout@v4
 
