@@ -50,3 +50,9 @@ jobs:
             test -s "$f" || { echo "README vacío: $f"; exit 1; }
           done
           echo "OK: README raíz + 3 READMEs por plataforma presentes"
+
+      - name: Ruff lint de scripts/ (Python)
+        run: |
+          pip install ruff --quiet
+          ruff check scripts/
+          echo "OK: ruff sin errores en scripts/"

@@ -64,7 +64,7 @@ def is_fenced(text: str, start: int) -> bool:
 def load_exceptions(root: Path, errors: list[str]) -> dict:
     cfg_path = root / "scripts" / "claim_exceptions.json"
     if not cfg_path.is_file():
-        errors.append(f"Falta scripts/claim_exceptions.json (obligatorio: define el whitelist de claims)")
+        errors.append("Falta scripts/claim_exceptions.json (obligatorio: define el whitelist de claims)")
         return {}
     try:
         data = json.loads(cfg_path.read_text(encoding="utf-8"))
