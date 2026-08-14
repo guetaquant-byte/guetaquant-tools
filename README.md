@@ -1,3 +1,5 @@
+> ⚠️ **Repaint notice:** `GQ_Volume_Profile` (mql4/mql5) includes the currently-forming bar in its profile, so POC/VAH/VAL and the histogram update intraday as the bar forms (standard intraday volume-profile behavior). For evaluation or decision-making, prefer analyzing closed sessions (e.g., previous day/session), or set the script to a closed-session timeframe. `GQ_Market_Structure` confirms pivots only after the right-side confirmation bars close — no repaint.
+
 <div align="center">
 
 <!-- LOGO PLACEHOLDER -->
