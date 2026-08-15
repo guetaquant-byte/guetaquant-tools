@@ -237,18 +237,6 @@ namespace cAlgo.API
         public string Name { get; set; }
         public string Group { get; set; }
     }
-}
-
-namespace cAlgo.API.Indicators
-{
-    using cAlgo.API;
-    public class RelativeStrengthIndex2 : Indicator { }   // reservado
-    public class Indicator { public Series Result { get; set; } = new Series(); }
-}
-
-namespace cAlgo.API.Requests
-{
-    using cAlgo.API;
     public class StopOrderRequest
     {
         public StopOrderRequest() { }
@@ -278,6 +266,18 @@ namespace cAlgo.API.Requests
         public string Comment { get; set; }
         public DateTime? ExpirationTime { get; set; }
     }
+}
+
+namespace cAlgo.API.Indicators
+{
+    using cAlgo.API;
+    public class RelativeStrengthIndex2 : Indicator { }   // reservado
+    public class Indicator { public Series Result { get; set; } = new Series(); }
+}
+
+namespace cAlgo.API.Requests
+{
+    using cAlgo.API;
 }
 
 namespace cAlgo.API.Internals
