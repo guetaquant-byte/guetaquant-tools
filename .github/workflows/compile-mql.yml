@@ -249,12 +249,13 @@ jobs:
           $mtDir = Split-Path $me.FullName
           $expDir = Join-Path $mtDir 'MQL5\Experts'
           New-Item -ItemType Directory -Force -Path $expDir | Out-Null
-          Get-ChildItem 'mql' -Filter 'GQ_Parity_*.mq5' | ForEach-Object {
-            Copy-Item $_.FullName (Join-Path $expDir $_.Name) -Force
-          }
-          & $me.FullName /compile:((Join-Path $expDir 'GQ_Parity_SMA.mq5'))
-          Start-Sleep -Seconds 4
-          if (-not (Test-Path (Join-Path $expDir 'GQ_Parity_SMA.ex5'))) { Write-Error 'compile failed'; exit 1 }
+          $src = Join-Path (Get-Location) 'mql\GQ_Parity_SMA.mq5'
+          $ex  = [System.IO.Path]::ChangeExtension($src, 'ex5')
+          if (Test-Path $ex) { Remove-Item $ex -Force }
+          & $me.FullName /compile:"$src"
+          Start-Sleep -Seconds 6
+          if (-not (Test-Path $ex)) { Write-Error 'compile failed'; exit 1 }
+          Copy-Item $ex (Join-Path $expDir 'GQ_Parity_SMA.ex5') -Force
           Write-Host 'SMA compiled OK'
       - name: Tester headless and verify trades
         shell: pwsh
