@@ -5,6 +5,7 @@ Unit Tests for Gueta Quant Python Backtester & Volume Profile Engine
 
 import pandas as pd
 import pytest
+
 from gq_backtest import MonteCarloSimulator, VectorizedBacktester, VolumeProfileEngine
 
 

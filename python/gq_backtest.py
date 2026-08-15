@@ -10,6 +10,7 @@ Educational use under SFC Colombia Decreto 2555 de 2010.
 """
 
 from dataclasses import dataclass
+
 import numpy as np
 import pandas as pd
 
