@@ -221,20 +221,18 @@ jobs:
           fi
 
   smoke-tester:
-    name: Smoke test — parity EAs must trade
+    name: Smoke test parity EAs
     runs-on: windows-latest
     timeout-minutes: 25
     needs: compile-mql5
     steps:
       - uses: actions/checkout@v4
-
-      - name: Cache plataforma MT5
+      - name: Cache MT5
         uses: actions/cache@v4
         with:
           path: C:\Program Files\MetaTrader 5
           key: mt5-platform-v1
-
-      - name: Instalar MT5 y compilar los 4 parity EAs
+      - name: Instalar MT5 y compilar
         shell: pwsh
         timeout-minutes: 8
         run: |
@@ -248,57 +246,40 @@ jobs:
             if ($me) { break }
             Start-Sleep -Seconds 5
           }
-          if (-not $me) { Write-Error 'metaeditor64.exe no encontrado'; exit 1 }
+          if (-not $me) { Write-Error 'metaeditor64 not found'; exit 1 }
           $mtDir = Split-Path (Split-Path $me.FullName)
           Get-ChildItem 'mql' -Filter 'GQ_Parity_*.mq5' | ForEach-Object {
-            Copy-Item $_.FullName (Join-Path $mtDir 'MQL5\Experts\' + $_.Name) -Force
+            Copy-Item $_.FullName (Join-Path $mtDir ('MQL5\Experts\' + $_.Name)) -Force
           }
-          & $me.FullName /compile:"$mtDir\MQL5\Experts\GQ_Parity_SMA.mq5" | Out-Null
-          Start-Sleep -Seconds 3
-          Get-ChildItem (Join-Path $mtDir 'MQL5\Experts\') -Filter 'GQ_Parity_*.ex5' | ForEach-Object { Write-Host "Compiled: $($_.Name)" }
-
-      - name: Ejecutar Strategy Tester (SMA smoke) y verificar trades > 0
+          & $me.FullName /compile:((Join-Path $mtDir 'MQL5\Experts\GQ_Parity_SMA.mq5'))
+          Start-Sleep -Seconds 4
+          if (-not (Test-Path (Join-Path $mtDir 'MQL5\Experts\GQ_Parity_SMA.ex5'))) { Write-Error 'compile failed'; exit 1 }
+          Write-Host 'SMA compiled OK'
+      - name: Tester headless and verify trades
         shell: pwsh
         timeout-minutes: 12
         run: |
           $ErrorActionPreference = 'Stop'
-          $mtDir = Get-ChildItem 'C:\Program Files' -Directory -Filter 'MetaTrader 5' | Select-Object -First 1
-          $term = Join-Path $mtDir.FullName 'terminal64.exe'
-          if (-not (Test-Path $term)) { Write-Error 'terminal64.exe no encontrado'; exit 1 }
-          # Configuración del tester (documented headless pattern: config/tester.ini)
-          $cfgDir = Join-Path $mtDir.FullName 'config'
+          $mtDir = (Get-ChildItem 'C:\Program Files' -Directory -Filter 'MetaTrader 5' | Select-Object -First 1).FullName
+          $term = Join-Path $mtDir 'terminal64.exe'
+          if (-not (Test-Path $term)) { Write-Error 'terminal64 not found'; exit 1 }
+          $cfgDir = Join-Path $mtDir 'config'
           New-Item -ItemType Directory -Force -Path $cfgDir | Out-Null
-          $testerIni = @"
-[Common]
-Login=0
-[StrategyTester]
-Experts=GQ_Parity_SMA.ex5
-Symbol=EURUSD
-Period=D1
-Modelling=2
-FromDate=2024.01.01
-ToDate=2025.12.30
-Deposit=10000
-"@
-          Set-Content -Path (Join-Path $cfgDir 'tester.ini') -Value $testerIni -Encoding Ascii
-          Write-Host 'Arrancando terminal para el test...'
-          $p = Start-Process -FilePath $term -ArgumentList ('/portable','/config:' + (Join-Path $cfgDir 'tester.ini')) -PassThru
-          Start-Sleep -Seconds 90
-          # Buscar el reporte XML generado
-          $report = Get-ChildItem (Join-Path $mtDir.FullName 'MQL5\Reports') -Filter '*.xml' -ErrorAction SilentlyContinue | Sort-Object LastWriteTime -Descending | Select-Object -First 1
-          if (-not $report) { Write-Error 'No se generó reporte XML del tester'; exit 1 }
+          $ini = 'Login=0' + [char]10 + '[StrategyTester]' + [char]10 + 'Experts=GQ_Parity_SMA.ex5' + [char]10 + 'Symbol=EURUSD' + [char]10 + 'Period=D1' + [char]10 + 'Modelling=2' + [char]10 + 'FromDate=2024.01.01' + [char]10 + 'ToDate=2025.12.30' + [char]10 + 'Deposit=10000'
+          Set-Content -Path (Join-Path $cfgDir 'tester.ini') -Value $ini -Encoding Ascii
+          $p = Start-Process -FilePath $term -ArgumentList @('/portable', ('/config:' + (Join-Path $cfgDir 'tester.ini'))) -PassThru
+          Start-Sleep -Seconds 100
+          if (-not $p.HasExited) { Stop-Process -Id $p.Id -Force -ErrorAction SilentlyContinue }
+          $report = Get-ChildItem (Join-Path $mtDir 'MQL5\Reports') -Filter '*.xml' -ErrorAction SilentlyContinue | Sort-Object LastWriteTime -Descending | Select-Object -First 1
+          if (-not $report) { Write-Error 'no report generated'; exit 1 }
           $content = Get-Content $report.FullName -Raw
-          if ($content -match '<trade count="0"') {
-            Write-Error "SMOKE FAIL: 0 trades en $($report.Name)"
-            exit 1
-          }
-          Write-Host "SMOKE PASS: reporte $($report.Name)"
-          Copy-Item $report.FullName "$env:RUNNER_TEMP\smoke-report.xml" -Force
-          Get-Content $report.FullName | Select-Object -First 5
-
-      - name: Subir reporte del smoke test
+          Write-Host ('REPORT size ' + $report.Length)
+          if ($content -match '<trade count="0"') { Write-Error 'SMOKE FAIL: 0 trades'; exit 1 }
+          Write-Host 'SMOKE PASS'
+          Copy-Item $report.FullName (Join-Path $env:RUNNER_TEMP 'smoke-report.xml') -Force
+      - name: Upload report
         uses: actions/upload-artifact@v4
         with:
           name: mt5-smoke-report
-          path: ${{ runner.temp }}\smoke-report.xml
+          path: '${{ runner.temp }}/smoke-report.xml'
           retention-days: 7
