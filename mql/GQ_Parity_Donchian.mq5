@@ -53,11 +53,11 @@ void OnTick() {
    datetime t = iTime(_Symbol, _Period, 0);
    if (t == lastBar) return;
    lastBar = t;
-   if (CopyHigh(_Symbol, _Period, 1, InpN + 1, high) < InpN + 1) return;
-   if (CopyLow(_Symbol, _Period, 1, InpN + 1, low) < InpN + 1) return;
+   if (CopyHigh(_Symbol, _Period, 1, InpN, high) < InpN) return;   // bars 1..N only (signal bar = bar 1 is close[0]; channel excludes it)
+   if (CopyLow(_Symbol, _Period, 1, InpN, low) < InpN) return;
    if (CopyClose(_Symbol, _Period, 1, 1, close) < 1) return;
-   double chHigh = high[ArrayMaximum(high, 0, InpN)];   // channel over bars 1..N (excludes forming bar)
-   double chLow  = low[ArrayMinimum(low, 0, InpN)];
+   double chHigh = high[ArrayMaximum(high, 0, InpN - 1)];   // max over bars 1..N
+   double chLow  = low[ArrayMinimum(low, 0, InpN - 1)];
    int dir = 0;
    if (close[0] > chHigh) dir = 1;
    else if (close[0] < chLow) dir = -1;
