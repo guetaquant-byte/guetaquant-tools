@@ -3,10 +3,9 @@ Unit Tests for Gueta Quant Python Backtester & Volume Profile Engine
 ====================================================================
 """
 
-import numpy as np
+from gq_backtest import MonteCarloSimulator, VectorizedBacktester, VolumeProfileEngine
 import pandas as pd
 import pytest
-from gq_backtest import VectorizedBacktester, VolumeProfileEngine, MonteCarloSimulator
 
 
 def test_vectorized_backtester_metrics():

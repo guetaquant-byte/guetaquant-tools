@@ -10,7 +10,6 @@ Educational use under SFC Colombia Decreto 2555 de 2010.
 """
 
 from dataclasses import dataclass
-from typing import Dict, List, Optional
 import numpy as np
 import pandas as pd
 
@@ -18,6 +17,7 @@ import pandas as pd
 @dataclass
 class BacktestResult:
     """Quantitative summary of strategy backtest performance."""
+
     total_trades: int
     win_rate_pct: float
     profit_factor: float
@@ -72,7 +72,6 @@ class VectorizedBacktester:
 
         # Detect position changes for commission & slippage calculation
         data["trade_occurred"] = (data["position"] != data["position"].shift(1)).fillna(False)
-        trade_count = int(data["trade_occurred"].sum())
 
         # Slippage penalty per trade as a fraction of price
         slippage_cost_fraction = (self.slippage_points * 0.00001) / data[price_col]
@@ -95,7 +94,7 @@ class VectorizedBacktester:
 
         # Returns summary
         total_return_pct = float(((data["equity"].iloc[-1] - self.initial_capital) / self.initial_capital) * 100.0)
-        
+
         # Annualized metrics (assuming daily data, 252 bars/year)
         n_bars = max(1, len(data))
         years = max(1 / 252, n_bars / 252.0)
@@ -157,7 +156,7 @@ class VolumeProfileEngine:
         df: pd.DataFrame,
         price_col: str = "close",
         volume_col: str = "volume"
-    ) -> Dict[str, float]:
+    ) -> dict[str, float]:
         """
         Calculates POC, VAH, and VAL from price and volume data.
         """
@@ -228,11 +227,11 @@ class MonteCarloSimulator:
     Simulates sequence permutation to estimate 95th/99th percentile Drawdown.
     """
 
-    def __init__(self, iterations: int = 1_000, seed: Optional[int] = 42):
+    def __init__(self, iterations: int = 1_000, seed: int | None = 42):
         self.iterations = iterations
         self.seed = seed
 
-    def simulate(self, trade_returns: List[float], initial_capital: float = 10_000.0) -> Dict[str, float]:
+    def simulate(self, trade_returns: list[float], initial_capital: float = 10_000.0) -> dict[str, float]:
         """
         Runs Monte Carlo permutations on a sequence of trade returns.
         """
