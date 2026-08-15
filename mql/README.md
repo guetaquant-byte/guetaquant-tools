@@ -1,6 +1,6 @@
 # 📊 MQL4 & MQL5 — Gueta Quant
 
-**26 archivos MQL (11 MQL4 + 15 MQL5) para MetaTrader 4 y MetaTrader 5.**  
+**25 archivos MQL (11 MQL4 + 14 MQL5) para MetaTrader 4 y MetaTrader 5.**  
 Indicadores y EAs educativos. Siempre prueba en demo antes de operar en vivo.
 
 > Repositorio principal: [github.com/guetaquant-byte/guetaquant-tools](https://github.com/guetaquant-byte/guetaquant-tools)
@@ -21,6 +21,20 @@ Indicadores y EAs educativos. Siempre prueba en demo antes de operar en vivo.
 
 Leyenda: ✅ PASS · ⚠️ WARNING (documentado, usar con precaución) · ⏳ PENDING · ❌ NOT YET VALIDATED.
 Próximo gate: Unit tests + golden-value backtests reproducibles (ver `docs/QA_STANDARD.md`).
+## 🔬 Validación Backtest — Paridad MT5 (Fase B, 2026-08-15)
+
+> 🇪🇸 **ES:** Resultados de la auditoría de integridad de backtest (Fase B): los EAs de paridad se ejecutaron en el Strategy Tester de MetaTrader 5 (LiteFinance, `EURUSD_o`, D1, "Every tick", 0.10 lotes, 2024-01-01 → 2025-12-30) y se compararon trade a trade contra el harness reproducible de Gueta (`scratch/validation_engine/backtest.py`).
+
+| EA | Trades MT5 | Trades Gueta | PnL bruto MT5 (sin comisión) | Estado |
+|---|---|---|---|---|
+| GQ_Parity_Momentum | 13 | 11 | +$445.70 | ✅ PARIDAD |
+| GQ_Parity_RSI2 | 97 | 80 | +$711.80 | ✅ PARIDAD |
+| GQ_Parity_SMA | 9 | 6 | −$952.20 | ✅ PARIDAD (desfase de feed) |
+| GQ_Parity_Donchian | 0 | 31 | — | ❌ EXCLUIDO (eliminado) |
+
+> 🇬🇧 **EN:** Backtest integrity audit (Phase B): the parity EAs were run in the MetaTrader 5 Strategy Tester (LiteFinance, `EURUSD_o`, D1, "Every tick", 0.10 lots, 2024-01-01 → 2025-12-30) and compared trade-by-trade against Gueta's reproducible harness. Momentum, RSI2 and SMA reached parity (counts within 1.5×, window overlap, coherent PnL). Donchian produced 0 trades in MT5 across 3 iterations and was **removed** (see `docs/PHASEB_PARITY_RESULTS.md`).
+
+
 
 
 ## 🧠 MQL4 vs MQL5 — ¿Cuál usar?
