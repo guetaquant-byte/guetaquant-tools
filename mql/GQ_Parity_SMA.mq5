@@ -35,7 +35,9 @@ bool GQOpen(const string symbol, const int dir, const double lots, const string 
    req.type = (dir > 0) ? ORDER_TYPE_BUY : ORDER_TYPE_SELL;
    req.deviation = 10;
    req.comment = comment;
-   return OrderSend(req, res);
+   bool ok = OrderSend(req, res);
+   if (!ok) PrintFormat("ORDER FAIL retcode=%d | %s", res.retcode, comment);
+   return ok;
 }
 
 #property description "Gueta parity: SMA 5/100 — do not optimize"
@@ -48,6 +50,16 @@ int hFast = INVALID_HANDLE;
 int hSlow = INVALID_HANDLE;
 double fast[], slow[];
 datetime lastBar = 0;
+
+
+// ── Phase B diagnostics (remove after parity) ──
+int g_diag_tick = 0;
+void GQDiag(const int dir, const double px) {
+   if (g_diag_tick < 3) {
+      PrintFormat("GQDiag | %s D1 | bars=%d | tick#%d dir=%d px=%.5f", _Symbol, Bars(_Symbol, PERIOD_D1), g_diag_tick, dir, px);
+      g_diag_tick++;
+   }
+}
 
 int OnInit() {
    hFast = iMA(_Symbol, _Period, InpFast, 0, MODE_SMA, PRICE_CLOSE);
