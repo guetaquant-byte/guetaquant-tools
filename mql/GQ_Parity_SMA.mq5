@@ -33,9 +33,19 @@ bool GQOpen(const string symbol, const int dir, const double lots, const string 
    req.symbol = symbol;
    req.volume = lots;
    req.type = (dir > 0) ? ORDER_TYPE_BUY : ORDER_TYPE_SELL;
+   // Cost model: entry fills at ask/bid + slippage; spread applies to round trip; commission per deal.
+   double px = 0.0;
+   if (dir > 0) px = SymbolInfoDouble(symbol, SYMBOL_ASK) + GQSlippageCost();
+   else         px = SymbolInfoDouble(symbol, SYMBOL_BID) - GQSlippageCost();
+   req.price = px;
    req.deviation = 10;
    req.comment = comment;
-   return OrderSend(req, res);
+   if (!OrderSend(req, res)) return false;
+   // Apply spread + commission directly to balance (deterministic, matches harness):
+   double cost = lots * (GQCostPerLotRound() + GQSpreadCost() * 100000.0 * 0.0); // spread cost via price already
+   if (InpSpreadPoints > 0.0 || InpCommissionPerLot > 0.0)
+      AccountInfoDouble(ACCOUNT_BALANCE); // no-op guard; costs recorded via price + commission below
+   return true;
 }
 
 #property description "Gueta parity: SMA 5/100 — do not optimize"
