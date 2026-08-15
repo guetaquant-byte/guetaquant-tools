@@ -264,23 +264,47 @@ jobs:
           $mtDir = (Get-ChildItem 'C:\Program Files' -Directory -Filter 'MetaTrader 5' | Select-Object -First 1).FullName
           $term = Join-Path $mtDir 'terminal64.exe'
           if (-not (Test-Path $term)) { Write-Error 'terminal64 not found'; exit 1 }
-          $cfgDir = Join-Path $mtDir 'config'
-          New-Item -ItemType Directory -Force -Path $cfgDir | Out-Null
-          $ini = 'Login=0' + [char]10 + '[StrategyTester]' + [char]10 + 'Experts=GQ_Parity_SMA.ex5' + [char]10 + 'Symbol=EURUSD' + [char]10 + 'Period=D1' + [char]10 + 'Modelling=2' + [char]10 + 'FromDate=2024.01.01' + [char]10 + 'ToDate=2025.12.30' + [char]10 + 'Deposit=10000'
-          Set-Content -Path (Join-Path $cfgDir 'tester.ini') -Value $ini -Encoding Ascii
-          $p = Start-Process -FilePath $term -ArgumentList @('/portable', ('/config:' + (Join-Path $cfgDir 'tester.ini'))) -PassThru
-          Start-Sleep -Seconds 100
+          $testerDir = Join-Path $mtDir 'MQL5\Profiles\Tester'
+          New-Item -ItemType Directory -Force -Path $testerDir | Out-Null
+          $reportDir = Join-Path $mtDir 'MQL5\Files\Reports'
+          New-Item -ItemType Directory -Force -Path $reportDir | Out-Null
+          $reportWin = 'C:\Program Files\MetaTrader 5\MQL5\Files\Reports\smoke_report.html'
+          $ini = '[Tester]' + [char]10 +
+            'Expert=Experts\GQ_Parity_SMA.ex5' + [char]10 +
+            'Symbol=EURUSD' + [char]10 +
+            'Period=D1' + [char]10 +
+            'Model=4' + [char]10 +
+            'Optimization=0' + [char]10 +
+            'FromDate=2024.01.01' + [char]10 +
+            'ToDate=2025.12.30' + [char]10 +
+            'ForwardMode=0' + [char]10 +
+            'Deposit=10000' + [char]10 +
+            'Currency=USD' + [char]10 +
+            'Leverage=1:100' + [char]10 +
+            'ExecutionMode=0' + [char]10 +
+            'Visual=0' + [char]10 +
+            ('Report=' + $reportWin) + [char]10 +
+            'ReplaceReport=1' + [char]10 +
+            'ShutdownTerminal=1' + [char]10 +
+            'UseLocal=1' + [char]10 +
+            'UseRemote=0' + [char]10 +
+            'UseCloud=0'
+          $iniPath = Join-Path $testerDir 'backtest.ini'
+          Set-Content -Path $iniPath -Value $ini -Encoding Ascii
+          Write-Host ('INI: ' + $ini)
+          $p = Start-Process -FilePath $term -ArgumentList @('/portable', ('/config:' + $iniPath)) -PassThru
+          Start-Sleep -Seconds 120
           if (-not $p.HasExited) { Stop-Process -Id $p.Id -Force -ErrorAction SilentlyContinue }
-          $report = Get-ChildItem (Join-Path $mtDir 'MQL5\Reports') -Filter '*.xml' -ErrorAction SilentlyContinue | Sort-Object LastWriteTime -Descending | Select-Object -First 1
-          if (-not $report) { Write-Error 'no report generated'; exit 1 }
-          $content = Get-Content $report.FullName -Raw
-          Write-Host ('REPORT size ' + $report.Length)
-          if ($content -match '<trade count="0"') { Write-Error 'SMOKE FAIL: 0 trades'; exit 1 }
+          $report = Join-Path $reportDir 'smoke_report.html'
+          if (-not (Test-Path $report)) { Write-Error 'no report generated'; exit 1 }
+          $content = Get-Content $report -Raw
+          Write-Host ('REPORT size ' + (Get-Item $report).Length)
+          if ($content -match 'Total Trades.*?<b>0</b>') { Write-Error 'SMOKE FAIL: 0 trades'; exit 1 }
           Write-Host 'SMOKE PASS'
-          Copy-Item $report.FullName (Join-Path $env:RUNNER_TEMP 'smoke-report.xml') -Force
+          Copy-Item $report (Join-Path $env:RUNNER_TEMP 'smoke-report.html') -Force
       - name: Upload report
         uses: actions/upload-artifact@v4
         with:
           name: mt5-smoke-report
-          path: '${{ runner.temp }}/smoke-report.xml'
+          path: '${{ runner.temp }}/smoke-report.html'
           retention-days: 7
