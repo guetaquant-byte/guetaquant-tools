@@ -33,7 +33,7 @@ namespace cAlgo.Robots
         public int DivergenceLookback { get; set; }
 
         [Parameter("Symbols", Group = "Settings", DefaultValue = "EURUSD,GBPUSD,USDJPY,AUDUSD")]
-        public string Symbols { get; set; }
+        public string SymbolsToScan { get; set; }
 
         [Parameter("Auto Trade", Group = "Trade", DefaultValue = false)]
         public bool AutoTrade { get; set; }
@@ -59,7 +59,7 @@ namespace cAlgo.Robots
 
         protected override void OnStart()
         {
-            _symbolList = Symbols.Split(',').Select(s => s.Trim()).ToList();
+            _symbolList = (SymbolsToScan ?? "EURUSD,GBPUSD,USDJPY,AUDUSD").Split(',').Select(s => s.Trim()).ToList();
             _divergenceData = new Dictionary<string, DivergenceData>();
             _divergenceCount = new Dictionary<string, int>();
 
@@ -87,7 +87,7 @@ namespace cAlgo.Robots
                 return;
 
             var data = _divergenceData[symbolName];
-            var series = MarketData.GetSeries(symbolName, TimeFrame);
+            var series = MarketData.GetBars(symbolName, TimeFrame);
 
             if (data.RSI == null)
             {
@@ -110,7 +110,7 @@ namespace cAlgo.Robots
             CheckDivergences(symbolName, symbol, series, data);
         }
 
-        private void DetectPeaksAndValleys(Series series, DivergenceData data, int bars)
+        private void DetectPeaksAndValleys(Bars series, DivergenceData data, int bars)
         {
             data.PricePeaks.Clear();
             data.RsiPeaks.Clear();
@@ -154,7 +154,7 @@ namespace cAlgo.Robots
             }
         }
 
-        private void CheckDivergences(string symbolName, Symbol symbol, Series series, DivergenceData data)
+        private void CheckDivergences(string symbolName, Symbol symbol, Bars series, DivergenceData data)
         {
             int count = _divergenceCount[symbolName];
 

@@ -122,6 +122,7 @@ namespace cAlgo.API
         public IEnumerable<Position> Positions => Array.Empty<Position>();
         public IEnumerable<PendingOrder> PendingOrders => Array.Empty<PendingOrder>();
         public MarketData MarketData { get; set; }
+        public Chart Chart { get; set; } = new Chart();
         public IndicatorsApi Indicators { get; set; }
         public Account Account { get; set; }
 
@@ -224,6 +225,8 @@ namespace cAlgo.API
         public Series Upper { get; set; } = new Series();
         public Series Lower { get; set; } = new Series();
         public Series Middle { get; set; } = new Series();
+        public Series Top => Upper;
+        public Series Bottom => Lower;
     }
     public class MacdHistogram
     {
@@ -251,9 +254,20 @@ namespace cAlgo.API
         public Thickness(double left, double top, double right, double bottom) { }
     }
 
+    public enum HorizontalAlignment { Left, Center, Right }
+    public enum VerticalAlignment { Top, Center, Bottom }
+    public enum StaticPosition { TopLeft, TopRight, BottomLeft, BottomRight, Center }
+
+    public class Chart
+    {
+        public void DrawText(string id, string text, int x, int y, Color color) { }
+        public void DrawText(string id, string text, VerticalAlignment v, HorizontalAlignment h, Color color) { }
+        public void DrawStaticText(string id, string text, VerticalAlignment v, HorizontalAlignment h, Color color) { }
+    }
+
     public enum TimeZones { UTC }
     public enum AccessRights { None, FileSystem }
-    public enum Color { Red, Lime, Green, Blue, Gold, Orange, White, Black, RoyalBlue, DodgerBlue }
+    public enum Color { Red, Lime, Green, Blue, Gold, Orange, White, Black, RoyalBlue, DodgerBlue, Yellow, Cyan, Gray, DarkGray }
 
     public class ParameterAttribute : Attribute
     {

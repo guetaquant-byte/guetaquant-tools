@@ -18,7 +18,7 @@ namespace cAlgo.Robots
     public class GQ_Multi_Symbol_Scanner : Robot
     {
         [Parameter("Symbols", Group = "Settings", DefaultValue = "EURUSD,GBPUSD,USDJPY,AUDUSD,XAUUSD")]
-        public string Symbols { get; set; }
+        public string SymbolsToScan { get; set; }
 
         [Parameter("MA Period", Group = "Indicators", DefaultValue = 200)]
         public int MAPeriod { get; set; }
@@ -65,13 +65,13 @@ namespace cAlgo.Robots
             public RelativeStrengthIndex RSI { get; set; }
             public BollingerBands BB { get; set; }
             public AverageTrueRange ATR { get; set; }
-            public Series Series { get; set; }
+            public Bars Series { get; set; }
             public Symbol Symbol { get; set; }
         }
 
         protected override void OnStart()
         {
-            _symbolList = Symbols.Split(',').Select(s => s.Trim()).ToList();
+            _symbolList = (SymbolsToScan ?? "EURUSD,GBPUSD,USDJPY,AUDUSD,XAUUSD").Split(',').Select(s => s.Trim()).ToList();
             _scores = new Dictionary<string, SymbolScore>();
             _indicators = new Dictionary<string, IndicatorSet>();
 
@@ -84,7 +84,7 @@ namespace cAlgo.Robots
                     continue;
                 }
 
-                var series = MarketData.GetSeries(symbolName, TimeFrame);
+                var series = MarketData.GetBars(symbolName, TimeFrame);
                 var indicatorSet = new IndicatorSet
                 {
                     MA = Indicators.ExponentialMovingAverage(series.ClosePrices, MAPeriod),
