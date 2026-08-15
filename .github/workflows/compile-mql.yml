@@ -247,7 +247,7 @@ jobs:
             Start-Sleep -Seconds 5
           }
           if (-not $me) { Write-Error 'metaeditor64 not found'; exit 1 }
-          $mtDir = Split-Path (Split-Path $me.FullName)
+          $mtDir = Split-Path $me.FullName
           Get-ChildItem 'mql' -Filter 'GQ_Parity_*.mq5' | ForEach-Object {
             Copy-Item $_.FullName (Join-Path $mtDir ('MQL5\Experts\' + $_.Name)) -Force
           }
