@@ -27,6 +27,18 @@
 > **⚠️ AVISO REGULATORIO SFC COLOMBIA:** Este repositorio es de uso **exclusivamente educativo**. Ningún código, indicador, ni herramienta publicada aquí constituye asesoría de inversión, señal de compra/venta, ni promesa de rentabilidad. Actividades de asesoría en valores sin registro ante la SFC son ilegales bajo el **Decreto 2555 de 2010 y la Ley 964 de 2005**. El trading conlleva riesgo sustancial de pérdida de capital.
 
 ---
+## 🔬 Validación Backtest — Paridad MT5 (Fase B, 2026-08-15)
+
+> 🇪🇸 **ES:** Resultados de la auditoría de integridad de backtest (Fase B): los EAs de paridad se ejecutaron en el Strategy Tester de MetaTrader 5 (LiteFinance, `EURUSD_o`, D1, "Every tick", 0.10 lotes, 2024-01-01 → 2025-12-30) y se compararon trade a trade contra el harness reproducible de Gueta (`scratch/validation_engine/backtest.py`).
+
+| EA | Trades MT5 | Trades Gueta | PnL bruto MT5 (sin comisión) | Estado |
+|---|---|---|---|---|
+| GQ_Parity_Momentum | 13 | 11 | +$445.70 | ✅ PARIDAD |
+| GQ_Parity_RSI2 | 97 | 80 | +$711.80 | ✅ PARIDAD |
+| GQ_Parity_SMA | 9 | 6 | −$952.20 | ✅ PARIDAD (desfase de feed) |
+| GQ_Parity_Donchian | 0 | 31 | — | ❌ EXCLUIDO (eliminado) |
+
+> 🇬🇧 **EN:** Backtest integrity audit (Phase B): the parity EAs were run in the MetaTrader 5 Strategy Tester (LiteFinance, `EURUSD_o`, D1, "Every tick", 0.10 lots, 2024-01-01 → 2025-12-30) and compared trade-by-trade against Gueta's reproducible harness. Momentum, RSI2 and SMA reached parity (counts within 1.5×, window overlap, coherent PnL). Donchian produced 0 trades in MT5 across 3 iterations and was **removed** (see `docs/PHASEB_PARITY_RESULTS.md`).
 
 ## 📊 Estado del Repositorio / Repository Status
 
