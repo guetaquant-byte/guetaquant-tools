@@ -16,6 +16,10 @@
 [![Zero Señales](https://img.shields.io/badge/Zero%20Se%C3%B1ales-Política%20Estricta-red?style=flat-square)](https://guetaquant.com/nuestra-mision/)
 [![Compile MQL](https://github.com/guetaquant-byte/guetaquant-tools/actions/workflows/compile-mql.yml/badge.svg)](https://github.com/guetaquant-byte/guetaquant-tools/actions/workflows/compile-mql.yml)
 [![Static Checks](https://github.com/guetaquant-byte/guetaquant-tools/actions/workflows/static-checks.yml/badge.svg)](https://github.com/guetaquant-byte/guetaquant-tools/actions/workflows/static-checks.yml)
+[![PRs Welcome](https://img.shields.io/badge/PRs-Welcome-brightgreen?style=flat-square)](https://github.com/guetaquant-byte/guetaquant-tools/blob/main/CONTRIBUTING.md)
+[![First Timers Friendly](https://img.shields.io/badge/First%20Timers-Friendly-8A2BE2?style=flat-square)](https://github.com/guetaquant-byte/guetaquant-tools/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22)
+[![Last Commit](https://img.shields.io/github/last-commit/guetaquant-byte/guetaquant-tools?style=flat-square)](https://github.com/guetaquant-byte/guetaquant-tools/commits/main)
+[![Repo Size](https://img.shields.io/github/repo-size/guetaquant-byte/guetaquant-tools?style=flat-square)](https://github.com/guetaquant-byte/guetaquant-tools)
 
 [🌐 Sitio Web](https://guetaquant.com) · [📖 Blog Educativo](https://guetaquant.com/blog/) · [📓 Trading Journal](https://guetaquant.com/journal/) · [🛠️ Herramientas](https://guetaquant.com/herramientas/)
 
@@ -572,3 +576,36 @@ See [`LICENSE`](./LICENSE) for full terms.
 *© 2026 Gueta Quant — Todos los derechos reservados bajo AGPLv3 | All rights reserved under AGPLv3*
 
 </div>
+
+---
+
+## 📚 Citar este repositorio / Cite this repository
+
+> 🇪🇸 Para proyectos académicos o educativos:
+
+```bibtex
+@misc{guetaquant_tools_2026,
+  author       = {Gueta Quant},
+  title        = {Gueta Quant Open-Source Tools Suite},
+  year         = {2026},
+  month        = {aug},
+  howpublished = {GitHub},
+  note         = {MetaTrader 4/5, TradingView Pine Script v6, cTrader Automate y Python. Educativo; no constituye asesoría de inversión.},
+  url          = {https://github.com/guetaquant-byte/guetaquant-tools}
+}
+```
+
+> 🇬🇧 For academic or educational work:
+
+```bibtex
+@misc{guetaquant_tools_2026_en,
+  author       = {Gueta Quant},
+  title        = {Gueta Quant Open-Source Tools Suite},
+  year         = {2026},
+  month        = {aug},
+  howpublished = {GitHub},
+  note         = {MetaTrader 4/5, TradingView Pine Script v6, cTrader Automate and Python. Educational; not investment advice.},
+  url          = {https://github.com/guetaquant-byte/guetaquant-tools}
+}
+```
+
