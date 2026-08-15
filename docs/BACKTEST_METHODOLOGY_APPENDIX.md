@@ -1,4 +1,4 @@
-# Anexo Metodológico de Backtesting Cuantitativo (Backtest Methodology Appendix)
+# 🇨🇴 Anexo Metodológico de Backtesting Cuantitativo (ES)
 **Gueta Quant Open-Source Standards — 2026 Sovereign Quantitative Edition**
 
 ---
@@ -77,4 +77,80 @@ Todos los algoritmos e indicadores asociados a estos análisis se encuentran dis
 - cTrader Automate: `ctrader/`
 - Motor Vectorizado Python: `python/`
 
-*Gueta Quant — Open Quantitative Standards 2026*
+---
+---
+
+# 🇬🇧 Quantitative Backtest Methodology Appendix (EN)
+**Gueta Quant Open-Source Standards — 2026 Sovereign Quantitative Edition**
+
+---
+
+## 1. Regulatory & Legal Disclosure (SFC Colombia)
+
+> **MANDATORY LEGAL NOTICE (Decreto 2555 de 2010 & Ley 964 de 2005):**  
+> All historical performance data, quantitative metrics, charts, and code published by Gueta Quant are strictly for **academic and educational purposes only**. Past performance simulations and backtesting models **DO NOT guarantee and are NOT indicative of future results**. Gueta Quant does not provide financial advisory services, broker intermediation, asset management, or trade signaling.
+
+---
+
+## 2. Data Integrity Protocol (Primary Data Feeds)
+
+All backtest metrics published across our articles and toolkits originate from institutional-grade historical data governed by the following rules:
+
+1. **Tick Modeling Quality (99.9%):**
+   - Real tick-by-tick data without artificial interpolation (providers: LMAX Exchange, Dukascopy Swiss ECN, and Darwinex Zero-Markup Raw Feeds).
+   - Real millisecond floating spread variance included.
+2. **Multi-Timeframe Synchronization:**
+   - Strict alignment to UTC or New York time (EST/EDT) to eliminate session overlap distortions across London and New York market opens.
+3. **Survivorship Bias Mitigation:**
+   - Continuous inclusion of delisted pairs, changed contract specifications, and historical liquidity shocks.
+
+---
+
+## 3. Market Friction Model & Execution Costs
+
+A backtest without execution costs is theoretical fiction. All Gueta Quant models include realistic market friction:
+
+| Cost Component | Applied Value | Methodological Rationale |
+|---|---|---|
+| **Brokerage Commission** | **$3.50 USD / lot per side** ($7.00 USD round turn) | Standard institutional Raw/ECN account rate. |
+| **Slippage** | **0.3 to 1.2 pips** based on instrument liquidity | Simulates network latency (20–100 ms) and order book depth exhaustion. |
+| **Dynamic Spread** | Real floating spread + 0.2 pip buffer at rollover | Models spread widening during the 5:00 PM EST daily bank rollover window. |
+| **Swap / Financing** | Daily interbank rate + 3x multiplier on Wednesdays | Accurately models overnight leverage holding costs. |
+
+---
+
+## 4. Sampling Constraints & Multi-Regime Validation
+
+To qualify for publication by Gueta Quant, the backtested sample must satisfy:
+
+1. **Minimum Sample Size:** $N \ge 300$ independent closed trades to guarantee statistical significance ($p < 0.01$).
+2. **Testing Across 3 Macroeconomic Regimes:**
+   - **High Volatility / Liquidity Shock Regime:** COVID-19 shock and aftermath (2020–2021).
+   - **Trending / Rate Hike Cycle Regime:** Federal Reserve tightening cycle and DXY rally (2022–2023).
+   - **Range-Bound / Disinflation Regime:** Macroeconomic consolidation and institutional rotation (2024–2026).
+3. **Out-of-Sample (OOS) Partitioning:**
+   - 70% In-Sample (IS) data partition for parameter calibration.
+   - 30% Out-of-Sample (OOS) blind data partition for strategy validation.
+
+---
+
+## 5. Quantitative Robustness Battery
+
+- **Annualized Sharpe Ratio:** $S = \frac{\mathbb{E}[R_p - R_f]}{\sigma_p} \cdot \sqrt{252}$ ($R_f = 4.5\%$).
+- **Sortino Ratio:** Measures downside semi-deviation: $\text{Sortino} = \frac{\mathbb{E}[R_p - R_f]}{\sigma_{\text{down}}}$.
+- **Calmar Ratio:** $\text{Calmar} = \frac{\text{CAGR}}{|\text{Max Drawdown}|}$.
+- **Profit Factor:** $\text{PF} = \frac{\sum \text{Gross Profits}}{\sum |\text{Gross Losses}|}$.
+- **Deflated Sharpe Ratio (DSR):** Bailey & López de Prado adjustment penalizing trial counts to prevent data snooping.
+- **Monte Carlo Resampling (1,000 runs):** Trade order shuffling to estimate 95th/99th percentile Max Drawdown and ruin probability.
+
+---
+
+## 6. Open-Source Reproducibility
+
+All code and indicators supporting these methodologies are available in this repository:
+- MetaTrader 4 / MetaTrader 5: `mql/`
+- TradingView: `pinescript/`
+- cTrader Automate: `ctrader/`
+- Vectorized Python Engine: `python/`
+
+*© 2026 Gueta Quant — Open Quantitative Standards*
