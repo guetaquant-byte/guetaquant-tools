@@ -144,16 +144,21 @@ Nuestro enfoque se basa en el **Cálculo Vigesimal Muisca (Gueta)** — rigor ma
 
 ---
 
-### 🔐 Auditoría de Privacidad Zero-Knowledge
+### 🐍 Python (Motor Cuantitativo Vectorizado)
 
-> Documentación técnica completa para verificar que el **Trading Journal no transmite datos** a ningún servidor.
+| # | Herramienta | Archivo | Descripción |
+|---|------------|---------|-------------|
+| 1 | **GQ Vectorized Backtester** | `python/gq_backtest.py` | Motor vectorial con comisiones, slippage, Sharpe, Sortino y Drawdown |
+| 2 | **GQ Volume Profile Engine** | `python/gq_backtest.py` | Cálculo de POC, VAH y VAL bajo Auction Market Theory (AMT) |
+| 3 | **GQ Monte Carlo Simulator** | `python/gq_backtest.py` | Permutaciones estadísticas (1.000 runs) para estimar Drawdown P95/P99 |
 
-📄 Ver: [`docs/ZERO_KNOWLEDGE_PRIVACY_AUDIT.md`](./docs/ZERO_KNOWLEDGE_PRIVACY_AUDIT.md)
+---
 
-**Tres pruebas de verificación:**
-1. **Auditoría DevTools (Red)** — Abre F12 → Red y verifica que 0 bytes se transmiten al registrar operaciones
-2. **Modo Avión** — La app funciona completamente offline
-3. **IndexedDB Inspector** — Datos encriptados localmente en tu navegador
+### 📚 Documentación Técnica & Anexos
+
+- 📄 **Anexo Metodológico de Backtesting**: [`docs/BACKTEST_METHODOLOGY_APPENDIX.md`](./docs/BACKTEST_METHODOLOGY_APPENDIX.md) — Estándar de modelado de fricción, calidad de ticks y validación multi-régimen.
+- 📄 **Auditoría de Privacidad Zero-Knowledge**: [`docs/ZERO_KNOWLEDGE_PRIVACY_AUDIT.md`](./docs/ZERO_KNOWLEDGE_PRIVACY_AUDIT.md) — Verificación de cero transmisión de datos en el Trading Journal local.
+- 📄 **Estándar de Calidad y Compliance**: [`docs/QA_STANDARD.md`](./docs/QA_STANDARD.md) — Normas de compilación y regulación SFC Decreto 2555/2010.
 
 ---
 
@@ -451,7 +456,12 @@ guetaquant-tools/
 │   ├── GQ_Session_Scalper.cs       # Session scalper
 │   ├── GQ_Multi_Symbol_Scanner.cs  # Multi-symbol scanner
 │   └── GQ_Risk_Manager.cs          # Portfolio risk
+├── 📂 python/
+│   ├── gq_backtest.py              # Vectorized backtester & volume profile engine
+│   └── test_gq_backtest.py         # Unit tests
 ├── 📂 docs/
+│   ├── BACKTEST_METHODOLOGY_APPENDIX.md # Backtesting methodology
+│   ├── QA_STANDARD.md              # Quality and regulatory standards
 │   └── ZERO_KNOWLEDGE_PRIVACY_AUDIT.md  # Privacy audit
 ├── LICENSE                          # AGPLv3 License
 └── README.md                        # This file

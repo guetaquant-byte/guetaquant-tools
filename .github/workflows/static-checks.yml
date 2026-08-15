@@ -8,6 +8,8 @@ on:
       - "mql/**"
       - "pinescript/**"
       - "ctrader/**"
+      - "python/**"
+      - "docs/**"
       - "README.md"
       - "scripts/**"
       - ".github/workflows/static-checks.yml"
@@ -16,6 +18,8 @@ on:
       - "mql/**"
       - "pinescript/**"
       - "ctrader/**"
+      - "python/**"
+      - "docs/**"
       - "README.md"
       - "scripts/**"
       - ".github/workflows/static-checks.yml"
@@ -23,7 +27,7 @@ on:
 
 jobs:
   checks:
-    name: Static checks
+    name: Static checks & Unit Tests
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -45,14 +49,19 @@ jobs:
       # El lint de estilo completo (markdownlint-cli2) queda fuera de alcance.
       - name: READMEs requeridos existen
         run: |
-          for f in README.md mql/README.md pinescript/README.md ctrader/README.md; do
+          for f in README.md mql/README.md pinescript/README.md ctrader/README.md python/README.md; do
             test -f "$f" || { echo "Falta README requerido: $f"; exit 1; }
             test -s "$f" || { echo "README vacío: $f"; exit 1; }
           done
-          echo "OK: README raíz + 3 READMEs por plataforma presentes"
+          echo "OK: README raíz + READMEs por plataforma presentes"
 
-      - name: Ruff lint de scripts/ (Python)
+      - name: Pruebas unitarias Python & Invariantes de cBots
+        run: |
+          pip install pytest numpy pandas --quiet
+          pytest python/test_gq_backtest.py ctrader/tests/test_cbots_automated.py -v
+
+      - name: Ruff lint de scripts/ y python/
         run: |
           pip install ruff --quiet
-          ruff check scripts/
-          echo "OK: ruff sin errores en scripts/"
+          ruff check scripts/ python/
+          echo "OK: ruff sin errores en scripts/ y python/"
