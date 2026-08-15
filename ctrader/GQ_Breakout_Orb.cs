@@ -123,12 +123,11 @@ namespace cAlgo.Robots
 
         private void SetOpeningRange()
         {
-            var bars = Bars.Take(OrbMinutes);
-            if (bars.Count() < 2)
+            if (Bars.Count < OrbMinutes || Bars.Count < 2)
                 return;
 
-            _rangeHigh = Bars.HighPrices.Maximum(Math.Max(0, Bars.Count - OrbMinutes));
-            _rangeLow = Bars.LowPrices.Minimum(Math.Max(0, Bars.Count - OrbMinutes));
+            _rangeHigh = Bars.HighPrices.Maximum(OrbMinutes);
+            _rangeLow = Bars.LowPrices.Minimum(OrbMinutes);
             _rangeSet = true;
 
             Print($"ORB set: High={_rangeHigh}, Low={_rangeLow}");

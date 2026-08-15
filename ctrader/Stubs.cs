@@ -42,6 +42,7 @@ namespace cAlgo.API
         public double Ask { get; set; }
         public double PipSize { get; set; }
         public double PipValue { get; set; }
+        public double PointSize { get; set; }
         public double TickSize { get; set; }
         public double TickValue { get; set; }
         public double LotSize { get; set; }
@@ -65,6 +66,7 @@ namespace cAlgo.API
         public Series LowPrices { get; set; } = new Series();
         public Series OpenPrices { get; set; } = new Series();
         public Series TickVolume { get; set; } = new Series();
+        public Series TickVolumes => TickVolume;
         public int Count => 0;
         public double Last(int index) => 0;
     }
@@ -90,6 +92,7 @@ namespace cAlgo.API
         public string SymbolName { get; set; }
         public TradeType TradeType { get; set; }
         public double EntryPrice { get; set; }
+        public double TargetPrice { get; set; }
     }
 
     public class TradeResult
@@ -103,6 +106,7 @@ namespace cAlgo.API
         public MarketOrderRequest() { }
         public MarketOrderRequest(TradeType tradeType, double volume) { }
         public TradeType TradeType { get; set; }
+        public string SymbolName { get; set; }
         public double Volume { get; set; }
         public string Label { get; set; }
         public double? StopLoss { get; set; }
@@ -118,6 +122,7 @@ namespace cAlgo.API
         public string SymbolName { get; set; }
         public Symbols Symbols { get; set; } = new Symbols();
         public Bars Bars { get; set; }
+        public TimeFrame TimeFrame { get; set; } = TimeFrame.Minute;
         public Server Server { get; set; }
         public IEnumerable<Position> Positions => Array.Empty<Position>();
         public IEnumerable<PendingOrder> PendingOrders => Array.Empty<PendingOrder>();
@@ -184,6 +189,7 @@ namespace cAlgo.API
         public Momentum Momentum(Series src, int period) => new Momentum();
         public BollingerBands BollingerBands(Series src, int period, double dev, MovingAverageType maType = MovingAverageType.Simple) => new BollingerBands();
         public MacdHistogram MacdHistogram(Series src, int fast, int slow, int signal) => new MacdHistogram();
+        public TrueRange TrueRange() => new TrueRange();
         public TrueRange TrueRange(Series src) => new TrueRange();
         public ParabolicSAR ParabolicSAR(double step, double max) => new ParabolicSAR();
         public Supertrend Supertrend(int period, double multiplier) => new Supertrend();
@@ -246,6 +252,7 @@ namespace cAlgo.API
     {
         public Thickness Padding { get; set; }
         public string Text { get; set; }
+        public Color ForegroundColor { get; set; }
     }
 
     public struct Thickness
@@ -267,7 +274,7 @@ namespace cAlgo.API
 
     public enum TimeZones { UTC }
     public enum AccessRights { None, FileSystem }
-    public enum Color { Red, Lime, Green, Blue, Gold, Orange, White, Black, RoyalBlue, DodgerBlue, Yellow, Cyan, Gray, DarkGray }
+    public enum Color { Red, Lime, Green, Blue, Gold, Orange, White, Black, RoyalBlue, DodgerBlue, Yellow, Cyan, Gray, DarkGray, Magenta }
 
     public class ParameterAttribute : Attribute
     {
