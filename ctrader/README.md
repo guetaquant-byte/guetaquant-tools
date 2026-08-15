@@ -448,4 +448,4 @@ To modify parameters after starting:
 
 ---
 
-*© 2025 Gueta Quant — Educational use under AGPLv3*
+*© 2026 Gueta Quant — Educational use under AGPLv3*

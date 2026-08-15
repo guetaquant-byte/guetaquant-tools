@@ -569,4 +569,4 @@ EAs use a **Magic Number** to identify their own orders, preventing conflicts wh
 
 ---
 
-*© 2025 Gueta Quant — Educational use under AGPLv3*
+*© 2026 Gueta Quant — Educational use under AGPLv3*

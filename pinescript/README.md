@@ -384,4 +384,4 @@ Several indicators use calculations that **may repaint** (change retroactively a
 
 ---
 
-*© 2025 Gueta Quant — Uso educativo bajo AGPLv3 | Educational use under AGPLv3*
+*© 2026 Gueta Quant — Uso educativo bajo AGPLv3 | Educational use under AGPLv3*

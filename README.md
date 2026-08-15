@@ -547,6 +547,6 @@ See [`LICENSE`](./LICENSE) for full terms.
 [![Sitio Web](https://img.shields.io/badge/guetaquant.com-Visit%20Portal-gold?style=for-the-badge&logo=globe)](https://guetaquant.com)
 [![GitHub Org](https://img.shields.io/badge/GitHub-guetaquant--byte-181717?style=for-the-badge&logo=github)](https://github.com/guetaquant-byte)
 
-*© 2025 Gueta Quant — Todos los derechos reservados bajo AGPLv3 | All rights reserved under AGPLv3*
+*© 2026 Gueta Quant — Todos los derechos reservados bajo AGPLv3 | All rights reserved under AGPLv3*
 
 </div>
