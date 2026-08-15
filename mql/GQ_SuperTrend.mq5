@@ -1,3 +1,10 @@
+//+------------------------------------------------------------------+
+//|                                           GQ_SuperTrend.mq5      |
+//|                                                      Gueta Quant |
+//|                                             https://guetaquant.com|
+//|                                                                  |
+//|  Aviso de Riesgo: Fines netamente educativos. Decreto 2555/2010. |
+//+------------------------------------------------------------------+
 #property copyright "GuetaQuant Tools"
 #property link      ""
 #property version   "1.00"

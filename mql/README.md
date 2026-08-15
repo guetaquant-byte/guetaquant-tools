@@ -1,6 +1,6 @@
 # 📊 MQL4 & MQL5 — Gueta Quant
 
-**22 archivos MQL (11 MQL4 + 11 MQL5) para MetaTrader 4 y MetaTrader 5.**  
+**26 archivos MQL (11 MQL4 + 15 MQL5) para MetaTrader 4 y MetaTrader 5.**  
 Indicadores y EAs educativos. Siempre prueba en demo antes de operar en vivo.
 
 > Repositorio principal: [github.com/guetaquant-byte/guetaquant-tools](https://github.com/guetaquant-byte/guetaquant-tools)

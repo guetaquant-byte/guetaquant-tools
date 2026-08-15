@@ -1,7 +1,9 @@
 //+------------------------------------------------------------------+
-//| GQ_Parity_RSI2 — Phase B parity EA                                |
-//| Strategy: RSI(2) mean reversion — buy <15, sell >85, flat between|
-//| Params: InpThreshold=15, InpPeriod=2 (keep fixed for parity)      |
+//|                                           GQ_Parity_RSI2.mq5     |
+//|                                                      Gueta Quant |
+//|                                             https://guetaquant.com|
+//|                                                                  |
+//|  Aviso de Riesgo: Fines netamente educativos. Decreto 2555/2010. |
 //+------------------------------------------------------------------+
 #property strict
 

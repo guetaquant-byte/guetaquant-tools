@@ -1,3 +1,10 @@
+//+------------------------------------------------------------------+
+//|                                           GQ_Divergence_Scanner.cs |
+//|                                                      Gueta Quant |
+//|                                             https://guetaquant.com|
+//|                                                                  |
+//|  Aviso de Riesgo: Fines netamente educativos. Decreto 2555/2010. |
+//+------------------------------------------------------------------+
 using System;
 using System.Collections.Generic;
 using System.Linq;

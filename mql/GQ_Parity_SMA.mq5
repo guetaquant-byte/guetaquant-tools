@@ -1,9 +1,9 @@
 //+------------------------------------------------------------------+
-//| GQ_Parity_SMA — Phase B parity EA (matches Gueta harness)         |
-//| Strategy: SMA crossover (fast=5, slow=100) — daily EURUSD         |
-//| Execution model: signal on CLOSED bar t, order at market on first |
-//| tick of bar t+1 (≈ close[t] within tolerance, per parity protocol)|
-//| Params fixed: InpFast=5, InpSlow=100 (do not change for parity)   |
+//|                                           GQ_Parity_SMA.mq5      |
+//|                                                      Gueta Quant |
+//|                                             https://guetaquant.com|
+//|                                                                  |
+//|  Aviso de Riesgo: Fines netamente educativos. Decreto 2555/2010. |
 //+------------------------------------------------------------------+
 #property strict
 

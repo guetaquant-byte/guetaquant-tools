@@ -1,4 +1,11 @@
 //@version=6
+//+------------------------------------------------------------------+
+//|                                           GQ_RSI_Pro.pb          |
+//|                                                      Gueta Quant |
+//|                                             https://guetaquant.com|
+//|                                                                  |
+//|  Aviso de Riesgo: Fines netamente educativos. Decreto 2555/2010. |
+//+------------------------------------------------------------------+
 indicator(title="GQ RSI Pro", shorttitle="GQ_RSI", overlay=false)
 
 rsiLength = input.int(14, "RSI Length")

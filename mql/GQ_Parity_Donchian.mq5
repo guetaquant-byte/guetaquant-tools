@@ -1,8 +1,9 @@
 //+------------------------------------------------------------------+
-//| GQ_Parity_Donchian — Phase B parity EA                            |
-//| Strategy: Donchian breakout N=10 — buy close>prior 10-bar high,   |
-//| sell close<prior 10-bar low (harness uses shift(1) of the channel)|
-//| Params: InpN=10 (keep fixed for parity)                           |
+//|                                           GQ_Parity_Donchian.mq5 |
+//|                                                      Gueta Quant |
+//|                                             https://guetaquant.com|
+//|                                                                  |
+//|  Aviso de Riesgo: Fines netamente educativos. Decreto 2555/2010. |
 //+------------------------------------------------------------------+
 #property strict
 

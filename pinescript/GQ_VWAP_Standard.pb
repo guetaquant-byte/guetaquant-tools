@@ -1,4 +1,11 @@
 //@version=6
+//+------------------------------------------------------------------+
+//|                                           GQ_VWAP_Standard.pb    |
+//|                                                      Gueta Quant |
+//|                                             https://guetaquant.com|
+//|                                                                  |
+//|  Aviso de Riesgo: Fines netamente educativos. Decreto 2555/2010. |
+//+------------------------------------------------------------------+
 indicator(title="GQ VWAP Standard", shorttitle="GQ_VWAP", overlay=true)
 
 src = input.source(hlc3, "Source")

@@ -1,4 +1,11 @@
 //@version=6
+//+------------------------------------------------------------------+
+//|                                           GQ_Anchored_VWAP.pb    |
+//|                                                      Gueta Quant |
+//|                                             https://guetaquant.com|
+//|                                                                  |
+//|  Aviso de Riesgo: Fines netamente educativos. Decreto 2555/2010. |
+//+------------------------------------------------------------------+
 indicator(title="GQ Anchored VWAP", shorttitle="GQ_AVWAP", overlay=true)
 
 anchorMethod = input.string("Timestamp", "Anchor Method", options=["Timestamp", "Bar Index", "Swing Point"])

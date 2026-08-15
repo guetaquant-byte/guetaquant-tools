@@ -1,4 +1,11 @@
 //@version=6
+//+------------------------------------------------------------------+
+//|                                           GQ_MTF_Trend_Matrix.pb |
+//|                                                      Gueta Quant |
+//|                                             https://guetaquant.com|
+//|                                                                  |
+//|  Aviso de Riesgo: Fines netamente educativos. Decreto 2555/2010. |
+//+------------------------------------------------------------------+
 indicator(title="GQ MTF Trend Matrix", shorttitle="GQ_MTF", overlay=false)
 
 emaFast = input.int(9, "Fast EMA")
@@ -15,7 +22,7 @@ checkTF5 = input.string("4h", "TF #5", options=["1m", "5m", "15m", "30m", "1h", 
 checkTF6 = input.string("1D", "TF #6", options=["1m", "5m", "15m", "30m", "1h", "4h", "1D", "1W"])
 
 trendScore(tf) =>
-    [emaF, emaM, emaS, emaVS] = request.security(syminfo.tickerid, tf, [ta.ema(src, emaFast), ta.ema(src, emaSlow)], lookahead=barmerge.lookahead_off), ta.ema(src, emaMid), ta.ema(src, emaSlow), ta.ema(src, emaVerySlow)])
+    [emaF, emaM, emaS, emaVS] = request.security(syminfo.tickerid, tf, [ta.ema(src, emaFast), ta.ema(src, emaMid), ta.ema(src, emaSlow), ta.ema(src, emaVerySlow)], lookahead=barmerge.lookahead_off)
     int score = 0
     score += emaF > emaM ? 1 : -1
     score += emaM > emaS ? 1 : -1

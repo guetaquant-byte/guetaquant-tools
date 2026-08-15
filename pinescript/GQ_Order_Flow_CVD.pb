@@ -1,4 +1,11 @@
 //@version=6
+//+------------------------------------------------------------------+
+//|                                           GQ_Order_Flow_CVD.pb   |
+//|                                                      Gueta Quant |
+//|                                             https://guetaquant.com|
+//|                                                                  |
+//|  Aviso de Riesgo: Fines netamente educativos. Decreto 2555/2010. |
+//+------------------------------------------------------------------+
 indicator(title="GQ Order Flow CVD", shorttitle="GQ_CVD", overlay=false)
 
 smoothPeriod = input.int(5, "Smoothing Period")

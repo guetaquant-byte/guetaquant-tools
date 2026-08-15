@@ -16,7 +16,6 @@
 [![Zero Señales](https://img.shields.io/badge/Zero%20Se%C3%B1ales-Política%20Estricta-red?style=flat-square)](https://guetaquant.com/nuestra-mision/)
 [![Compile MQL](https://github.com/guetaquant-byte/guetaquant-tools/actions/workflows/compile-mql.yml/badge.svg)](https://github.com/guetaquant-byte/guetaquant-tools/actions/workflows/compile-mql.yml)
 [![Static Checks](https://github.com/guetaquant-byte/guetaquant-tools/actions/workflows/static-checks.yml/badge.svg)](https://github.com/guetaquant-byte/guetaquant-tools/actions/workflows/static-checks.yml)
--->
 
 [🌐 Sitio Web](https://guetaquant.com) · [📖 Blog Educativo](https://guetaquant.com/blog/) · [📓 Trading Journal](https://guetaquant.com/journal/) · [🛠️ Herramientas](https://guetaquant.com/herramientas/)
 

@@ -1,7 +1,9 @@
 //+------------------------------------------------------------------+
-//| GQ_Parity_Momentum — Phase B parity EA                            |
-//| Strategy: Momentum N=60 — long if ROC(60)>5%, short if <-5%      |
-//| Params: InpN=60, InpPct=5 (keep fixed for parity)                 |
+//|                                           GQ_Parity_Momentum.mq5 |
+//|                                                      Gueta Quant |
+//|                                             https://guetaquant.com|
+//|                                                                  |
+//|  Aviso de Riesgo: Fines netamente educativos. Decreto 2555/2010. |
 //+------------------------------------------------------------------+
 #property strict
 
