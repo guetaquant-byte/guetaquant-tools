@@ -7,6 +7,22 @@ Indicadores y EAs educativos. Siempre prueba en demo antes de operar en vivo.
 
 ---
 
+## ✅ Estado de Verificación por Herramienta (2026-08-14)
+
+> **Build ≠ Test ≠ Validated.** Ninguna herramienta está "validada" en backtest real todavía; la columna Backtest es el siguiente gate. Basado en el audit independiente (ACT-G7-01).
+
+| Herramienta | Build (CI) | Static Review | Repaint Review | Unit Tests | Backtest Validation |
+|---|---|---|---|---|---|
+| GQ Volume Profile (mq4/mq5) | ✅ PASS | ✅ PASS | ⚠️ WARNING (incluye barra en formación) | ⏳ PENDING | ❌ NOT YET VALIDATED |
+| GQ Position Sizer (mq4/mq5) | ✅ PASS | ✅ PASS | ✅ N/A (no dibuja en precio) | ⏳ PENDING | ❌ NOT YET VALIDATED |
+| GQ Market Structure (mq4/mq5) | ✅ PASS | ✅ PASS | ✅ PASS (pivots confirmados) | ⏳ PENDING | ❌ NOT YET VALIDATED |
+| GQ_Order_Flow_CVD (.pb) | ⏳ PENDING (Pine estático) | ✅ PASS | ✅ PASS (documentado) | ⏳ PENDING | ❌ NOT YET VALIDATED |
+| Resto de herramientas | ✅ PASS (CI 11/11) | ✅ PASS | ⏳ PENDING | ⏳ PENDING | ❌ NOT YET VALIDATED |
+
+Leyenda: ✅ PASS · ⚠️ WARNING (documentado, usar con precaución) · ⏳ PENDING · ❌ NOT YET VALIDATED.
+Próximo gate: Unit tests + golden-value backtests reproducibles (ver `docs/QA_STANDARD.md`).
+
+
 ## 🧠 MQL4 vs MQL5 — ¿Cuál usar?
 
 | Característica | MQL4 (MT4) | MQL5 (MT5) |
