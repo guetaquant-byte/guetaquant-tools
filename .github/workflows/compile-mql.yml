@@ -1,3 +1,4 @@
+# smoke-tester job: headless MT5 tester, fail on 0 trades (added 2026-08-15)
 # Compila todos los .mq4/.mq5 de mql/ (MetaEditor nativo en Windows) y los cBots de ctrader/ (gate dotnet).
 #
 # ⚠️ LECCIONES APRENDIDAS (investigación + 4 runs fallidos, 2026-08-09):
