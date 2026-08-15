@@ -10,7 +10,22 @@ using System.Linq;
 namespace cAlgo.API
 {
     public enum TradeType { Buy, Sell }
-    public enum TimeFrame { Minute1, Minute5, Minute15, Hour1, Hour4, Day, Week }
+
+    public class TimeFrame
+    {
+        public static TimeFrame Minute { get; } = new TimeFrame();
+        public static TimeFrame Minute1 { get; } = new TimeFrame();
+        public static TimeFrame Minute5 { get; } = new TimeFrame();
+        public static TimeFrame Minute15 { get; } = new TimeFrame();
+        public static TimeFrame Minute30 { get; } = new TimeFrame();
+        public static TimeFrame Hour { get; } = new TimeFrame();
+        public static TimeFrame Hour1 { get; } = new TimeFrame();
+        public static TimeFrame Hour4 { get; } = new TimeFrame();
+        public static TimeFrame Daily { get; } = new TimeFrame();
+        public static TimeFrame Day { get; } = new TimeFrame();
+        public static TimeFrame Weekly { get; } = new TimeFrame();
+        public static TimeFrame Week { get; } = new TimeFrame();
+    }
 
     public class Series
     {
@@ -26,6 +41,7 @@ namespace cAlgo.API
         public double Bid { get; set; }
         public double Ask { get; set; }
         public double PipSize { get; set; }
+        public double PipValue { get; set; }
         public double TickSize { get; set; }
         public double TickValue { get; set; }
         public double LotSize { get; set; }
@@ -35,6 +51,11 @@ namespace cAlgo.API
         public string Name { get; set; }
         public double NormalizeVolumeInUnits(double v) => v;
         public double NormalizeVolume(double v) => v;
+    }
+
+    public class Symbols
+    {
+        public Symbol GetSymbol(string name) => new Symbol();
     }
 
     public class Bars
@@ -77,10 +98,25 @@ namespace cAlgo.API
         public object Error { get; set; }
     }
 
+    public class MarketOrderRequest
+    {
+        public MarketOrderRequest() { }
+        public MarketOrderRequest(TradeType tradeType, double volume) { }
+        public TradeType TradeType { get; set; }
+        public double Volume { get; set; }
+        public string Label { get; set; }
+        public double? StopLoss { get; set; }
+        public double? TakeProfit { get; set; }
+        public double? StopLossPips { get; set; }
+        public double? TakeProfitPips { get; set; }
+        public string Comment { get; set; }
+    }
+
     public class Robot : IDisposable
     {
         public Symbol Symbol { get; set; }
         public string SymbolName { get; set; }
+        public Symbols Symbols { get; set; } = new Symbols();
         public Bars Bars { get; set; }
         public Server Server { get; set; }
         public IEnumerable<Position> Positions => Array.Empty<Position>();
@@ -97,6 +133,8 @@ namespace cAlgo.API
         protected TradeResult PlaceStopOrder(TradeType t, double volume, double price, string label, double? sl, double? tp) => new TradeResult { IsSuccessful = true };
         protected TradeResult PlaceLimitOrder(TradeType t, double volume, double price, string label, double? sl, double? tp) => new TradeResult { IsSuccessful = true };
         protected TradeResult PlaceMarketOrder(TradeType t, double volume, string label, double? sl, double? tp) => new TradeResult { IsSuccessful = true };
+        protected TradeResult ExecuteMarketOrder(TradeType t, string symbol, double volume, string label = "", double? slPips = null, double? tpPips = null, string comment = "") => new TradeResult { IsSuccessful = true };
+        protected TradeResult ExecuteMarketOrder(MarketOrderRequest request) => new TradeResult { IsSuccessful = true };
         protected TradeResult ExecuteStopOrder(StopOrderRequest request) => new TradeResult { IsSuccessful = true };
         protected TradeResult ExecuteLimitOrder(LimitOrderRequest request) => new TradeResult { IsSuccessful = true };
 
@@ -132,6 +170,7 @@ namespace cAlgo.API
     {
         public Series GetSeries(string symbol, TimeFrame tf) => new Series();
         public Bars GetBars(string symbol, TimeFrame tf) => new Bars();
+        public Bars GetBars(TimeFrame tf) => new Bars();
         public Series GetTicks(string symbol) => new Series();
     }
 
