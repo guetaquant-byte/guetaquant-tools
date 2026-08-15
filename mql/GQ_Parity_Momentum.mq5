@@ -55,7 +55,14 @@ void OnTick() {
    int dir = 0;
    if (roc > InpPct) dir = 1;
    else if (roc < -InpPct) dir = -1;
-   else return;
+   else {
+      if (PositionSelect(_Symbol)) GQCloseAll(_Symbol);
+      return;
+   }
+   bool already = PositionSelect(_Symbol);
+   bool is_long = already && PositionGetInteger(POSITION_TYPE) == POSITION_TYPE_BUY;
+   bool is_short = already && PositionGetInteger(POSITION_TYPE) == POSITION_TYPE_SELL;
+   if ((dir > 0 && is_long) || (dir < 0 && is_short)) return;  // signal unchanged: hold
    GQCloseAll(_Symbol);
    if (dir > 0) GQOpen(_Symbol, 1, InpLots, "GQ_Parity_Momentum");
    else         GQOpen(_Symbol, -1, InpLots, "GQ_Parity_Momentum");
