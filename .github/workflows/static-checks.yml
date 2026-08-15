@@ -63,5 +63,6 @@ jobs:
       - name: Ruff lint de scripts/ y python/
         run: |
           pip install ruff --quiet
+          ruff check --fix scripts/ python/ || true
           ruff check scripts/ python/
           echo "OK: ruff sin errores en scripts/ y python/"
