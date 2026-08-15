@@ -104,11 +104,11 @@ class VectorizedBacktester:
         daily_rf = (1.0 + self.risk_free_rate) ** (1.0 / 252.0) - 1.0
         excess_returns = data["strat_returns"] - daily_rf
         std_dev = data["strat_returns"].std()
-        sharpe_ratio = float((excess_returns.mean() / std_dev * np.sqrt(252))) if std_dev > 0 else 0.0
+        sharpe_ratio = float(excess_returns.mean() / std_dev * np.sqrt(252)) if std_dev > 0 else 0.0
 
         downside_returns = data["strat_returns"][data["strat_returns"] < 0]
         downside_std = downside_returns.std()
-        sortino_ratio = float((excess_returns.mean() / downside_std * np.sqrt(252))) if downside_std > 0 else 0.0
+        sortino_ratio = float(excess_returns.mean() / downside_std * np.sqrt(252)) if downside_std > 0 else 0.0
 
         calmar_ratio = float(cagr_pct / max_drawdown_pct) if max_drawdown_pct > 0 else 0.0
 
@@ -118,7 +118,7 @@ class VectorizedBacktester:
         losing_trades = trade_returns[trade_returns < 0]
 
         total_trades = len(trade_returns)
-        win_rate_pct = float((len(winning_trades) / total_trades * 100.0)) if total_trades > 0 else 0.0
+        win_rate_pct = float(len(winning_trades) / total_trades * 100.0) if total_trades > 0 else 0.0
         gross_profit = float(winning_trades.sum()) if len(winning_trades) > 0 else 0.0
         gross_loss = float(abs(losing_trades.sum())) if len(losing_trades) > 0 else 1e-6
         profit_factor = float(gross_profit / gross_loss) if gross_loss > 0 else (99.0 if gross_profit > 0 else 0.0)
