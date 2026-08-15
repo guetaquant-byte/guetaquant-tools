@@ -81,8 +81,16 @@ namespace cAlgo.API
         public double VolumeInUnits { get; set; }
         public double NetProfit { get; set; }
         public double GrossProfit { get; set; }
+        public double Pips { get; set; }
         public double? StopLoss { get; set; }
         public double? TakeProfit { get; set; }
+    }
+
+    public class Positions : IEnumerable<Position>
+    {
+        public int Count => 0;
+        public IEnumerator<Position> GetEnumerator() => Enumerable.Empty<Position>().GetEnumerator();
+        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => GetEnumerator();
     }
 
     public class PendingOrder
@@ -93,6 +101,13 @@ namespace cAlgo.API
         public TradeType TradeType { get; set; }
         public double EntryPrice { get; set; }
         public double TargetPrice { get; set; }
+    }
+
+    public class PendingOrders : IEnumerable<PendingOrder>
+    {
+        public int Count => 0;
+        public IEnumerator<PendingOrder> GetEnumerator() => Enumerable.Empty<PendingOrder>().GetEnumerator();
+        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => GetEnumerator();
     }
 
     public class TradeResult
@@ -124,8 +139,8 @@ namespace cAlgo.API
         public Bars Bars { get; set; }
         public TimeFrame TimeFrame { get; set; } = TimeFrame.Minute;
         public Server Server { get; set; }
-        public IEnumerable<Position> Positions => Array.Empty<Position>();
-        public IEnumerable<PendingOrder> PendingOrders => Array.Empty<PendingOrder>();
+        public Positions Positions { get; set; } = new Positions();
+        public PendingOrders PendingOrders { get; set; } = new PendingOrders();
         public MarketData MarketData { get; set; }
         public Chart Chart { get; set; } = new Chart();
         public IndicatorsApi Indicators { get; set; }
@@ -248,11 +263,17 @@ namespace cAlgo.API
     {
         public Series Result { get; set; } = new Series();
     }
-    public class TextBlock
+    public class Control { }
+
+    public class TextBlock : Control
     {
         public Thickness Padding { get; set; }
         public string Text { get; set; }
         public Color ForegroundColor { get; set; }
+        public Color BackgroundColor { get; set; }
+        public double FontSize { get; set; }
+        public HorizontalAlignment HorizontalAlignment { get; set; }
+        public VerticalAlignment VerticalAlignment { get; set; }
     }
 
     public struct Thickness
@@ -270,11 +291,33 @@ namespace cAlgo.API
         public void DrawText(string id, string text, int x, int y, Color color) { }
         public void DrawText(string id, string text, VerticalAlignment v, HorizontalAlignment h, Color color) { }
         public void DrawStaticText(string id, string text, VerticalAlignment v, HorizontalAlignment h, Color color) { }
+        public void AddControl(Control control) { }
     }
 
     public enum TimeZones { UTC }
     public enum AccessRights { None, FileSystem }
-    public enum Color { Red, Lime, Green, Blue, Gold, Orange, White, Black, RoyalBlue, DodgerBlue, Yellow, Cyan, Gray, DarkGray, Magenta }
+
+    public struct Color
+    {
+        public static readonly Color Red = new Color();
+        public static readonly Color Lime = new Color();
+        public static readonly Color Green = new Color();
+        public static readonly Color Blue = new Color();
+        public static readonly Color Gold = new Color();
+        public static readonly Color Orange = new Color();
+        public static readonly Color White = new Color();
+        public static readonly Color Black = new Color();
+        public static readonly Color RoyalBlue = new Color();
+        public static readonly Color DodgerBlue = new Color();
+        public static readonly Color Yellow = new Color();
+        public static readonly Color Cyan = new Color();
+        public static readonly Color Gray = new Color();
+        public static readonly Color DarkGray = new Color();
+        public static readonly Color Magenta = new Color();
+
+        public static Color FromArgb(int a, int r, int g, int b) => new Color();
+        public static Color FromArgb(int r, int g, int b) => new Color();
+    }
 
     public class ParameterAttribute : Attribute
     {
