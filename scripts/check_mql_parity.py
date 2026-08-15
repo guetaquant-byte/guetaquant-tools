@@ -51,7 +51,12 @@ def check_mq4_purity(mq4: Path, errors: list[str]) -> None:
 
 
 def check_mq4_mq5_twins(mql_dir: Path, errors: list[str]) -> None:
-    """Every .mq4 must have a .mq5 twin and vice versa."""
+    """Every .mq4 must have a .mq5 twin and vice versa.
+
+    Exception: `GQ_Parity_*` are MT5-only research instruments for the
+    Phase B validation run (docs/research_2026-08/backtest-phase-b-parity-protocol.md)
+    and intentionally have no .mq4 twin.
+    """
     mq4 = {p.stem for p in mql_dir.glob("*.mq4")}
     mq5 = {p.stem for p in mql_dir.glob("*.mq5")}
     for stem in sorted(mq4 - mq5):
