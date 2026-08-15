@@ -69,8 +69,11 @@ void OnTick() {
    if (CopyHigh(_Symbol, _Period, 1, InpN, high) < InpN) return;   // bars 1..N only (signal bar = bar 1 is close[0]; channel excludes it)
    if (CopyLow(_Symbol, _Period, 1, InpN, low) < InpN) return;
    if (CopyClose(_Symbol, _Period, 1, 1, close) < 1) return;
-   double chHigh = high[ArrayMaximum(high, 0, InpN - 1)];   // max over bars 1..N
-   double chLow  = low[ArrayMinimum(low, 0, InpN - 1)];
+   double chHigh = -DBL_MAX, chLow = DBL_MAX;
+   for (int j = 0; j < InpN; j++) {   // explicit scan: max/min over copied bars (series-flag independent)
+      if (high[j] > chHigh) chHigh = high[j];
+      if (low[j] < chLow)  chLow  = low[j];
+   }
    int dir = 0;
    if (close[0] > chHigh) dir = 1;
    else if (close[0] < chLow) dir = -1;
