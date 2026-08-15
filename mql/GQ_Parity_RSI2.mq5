@@ -33,7 +33,9 @@ bool GQOpen(const string symbol, const int dir, const double lots, const string 
    req.type = (dir > 0) ? ORDER_TYPE_BUY : ORDER_TYPE_SELL;
    req.deviation = 10;
    req.comment = comment;
-   return OrderSend(req, res);
+   bool ok = OrderSend(req, res);
+   if (!ok) PrintFormat("ORDER FAIL retcode=%d | %s", res.retcode, comment);
+   return ok;
 }
 
 #property description "Gueta parity: RSI(2) 15/2 — do not optimize"
@@ -49,10 +51,21 @@ int hRSI = INVALID_HANDLE;
 double rsi[];
 datetime lastBar = 0;
 
+
+// ── Phase B diagnostics (remove after parity) ──
+int g_diag_tick = 0;
+void GQDiag(const int dir, const double px) {
+   if (g_diag_tick < 3) {
+      PrintFormat("GQDiag | %s D1 | bars=%d | tick#%d dir=%d px=%.5f", _Symbol, Bars(_Symbol, PERIOD_D1), g_diag_tick, dir, px);
+      g_diag_tick++;
+   }
+}
+
 int OnInit() {
    hRSI = iRSI(_Symbol, _Period, InpPeriod, PRICE_CLOSE);
    if (hRSI == INVALID_HANDLE) return INIT_FAILED;
    ArraySetAsSeries(rsi, true);
+   PrintFormat("OnInit | %s | bars=%d", _Symbol, Bars(_Symbol, PERIOD_D1));
    return INIT_SUCCEEDED;
 }
 void OnDeinit(const int r) { if (hRSI != INVALID_HANDLE) IndicatorRelease(hRSI); }
@@ -70,6 +83,7 @@ void OnTick() {
       if (PositionSelect(_Symbol)) GQCloseAll(_Symbol);
       return;
    }
+   GQDiag(dir, 0.0);
    bool already = PositionSelect(_Symbol);
    bool is_long = already && PositionGetInteger(POSITION_TYPE) == POSITION_TYPE_BUY;
    bool is_short = already && PositionGetInteger(POSITION_TYPE) == POSITION_TYPE_SELL;
