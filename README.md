@@ -96,9 +96,9 @@ Nuestro enfoque se basa en el **Cálculo Vigesimal Muisca (Gueta)** — rigor ma
 
 | Principio | Implementación |
 |---|---|
-| 🔐 **Zero Conflictos de Interés** | Sin esquemas de afiliados con brokers no regulados ni captación ilegal de clientes |
+| 🔐 **Sin Rankings de Pago (No Pay-to-Play)** | Evaluaciones independientes; relaciones comerciales públicas y sin efecto en rankings |
 | 📐 **Rigor Cuantitativo** | Algoritmos basados en Pine Script v6, ATR, Volume Profile (POC/VAH/VAL) |
-| 🖥️ **Autonomía Local-First** | El Trading Journal corre 100% en tu dispositivo. Cero datos enviados a servidores |
+| 🖥️ **Autonomía Local-First** | El Trading Journal corre en tu navegador por defecto. Datos en tu dispositivo (IA opcional bajo consentimiento) |
 | ⚖️ **Cumplimiento SFC** | Operamos bajo el marco del Decreto 2555 de 2010 — solo educación |
 | 🔍 **Código Verificable** | Todo el código es auditable públicamente en este repositorio |
 
