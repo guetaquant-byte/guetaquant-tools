@@ -1,0 +1,22 @@
+cff-version: 1.2.0
+message: "If you use GuetaQuant quantitative tools or empirical research in your academic or professional work, please cite it as below."
+authors:
+  - family-names: "Goodarzi"
+    given-names: "Mahdi"
+    affiliation: "Gueta Quant"
+    website: "https://g.dev/mahdigoodarzi"
+title: "GuetaQuant: Open-Source Quantitative Finance Tools & Negative-First Empirical Falsification Research"
+version: 2.4.0
+date-released: 2026-08-19
+url: "https://guetaquant.com"
+repository-code: "https://github.com/guetaquant-byte/guetaquant-tools"
+license: AGPL-3.0
+keywords:
+  - "quantitative-finance"
+  - "backtesting-overfitting"
+  - "deflated-sharpe-ratio"
+  - "combinatorial-purged-cross-validation"
+  - "mql5"
+  - "pine-script-v6"
+  - "algorithmic-trading"
+  - "risk-management"

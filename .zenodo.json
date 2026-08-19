@@ -1,0 +1,24 @@
+{
+  "title": "GuetaQuant: Open-Source Quantitative Finance Tools & Empirical Falsification Research",
+  "creators": [
+    {
+      "name": "Goodarzi, Mahdi",
+      "affiliation": "Gueta Quant",
+      "orcid": ""
+    }
+  ],
+  "description": "Comprehensive open-source suite of 44 quantitative finance tools (MQL5, Pine Script v6, cTrader C#) and negative-first empirical research frameworks evaluating technical trading strategies against Bailey & López de Prado Deflated Sharpe Ratio (DSR) and Combinatorially Symmetric Cross-Validation (CSCV) protocols.",
+  "license": "AGPL-3.0-or-later",
+  "keywords": [
+    "quantitative finance",
+    "algorithmic trading",
+    "deflated sharpe ratio",
+    "backtest overfitting",
+    "risk management",
+    "mql5",
+    "pine script v6",
+    "colombia financial markets"
+  ],
+  "upload_type": "software",
+  "access_right": "open"
+}
