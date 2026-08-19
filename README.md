@@ -9,6 +9,7 @@
 
 **Educación cuantitativa 100% independiente para traders de Colombia y Latinoamérica**
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.22012203.svg)](https://doi.org/10.5281/zenodo.22012203)
 [![Licencia AGPLv3](https://img.shields.io/badge/Licencia-AGPL%20v3-gold?style=flat-square&logo=gnu)](./LICENSE)
 [![Plataforma](https://img.shields.io/badge/Plataforma-MT4%20%7C%20MT5%20%7C%20cTrader%20%7C%20TradingView-blue?style=flat-square)](https://guetaquant.com/herramientas/)
 [![Estado](https://img.shields.io/badge/Estado-Activo-brightgreen?style=flat-square)](https://guetaquant.com)
